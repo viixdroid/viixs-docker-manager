@@ -12,21 +12,13 @@
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DockerManager.Shared\DockerManager.Shared.csproj" />
+    </ItemGroup>
     
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="npm run build:css" />
     </Target>
 
-    <ItemGroup>
-        <Content Include="appsettings.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-        <Content Include="appsettings.Development.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-            <DependentUpon>appsettings.json</DependentUpon>
-        </Content>
-    </ItemGroup> 
-    
 </Project>
