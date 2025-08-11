@@ -1,0 +1,30 @@
+﻿@page "/Containers"
+<h3 class="font-bold text-3xl">Containers</h3>
+
+<table class="mx-auto w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
+    <thead class="bg-gray-900 text-gray-100 text-left">
+    <tr>
+        <th class="font-semibold text-sm px-6 py-4"></th>
+        <th class="font-semibold text-sm px-6 py-4">Name</th>
+        <th class="font-semibold text-sm px-6 py-4">State</th>
+        <th class="font-semibold text-sm px-6 py-4">Image</th>
+        <th class="font-semibold text-sm px-6 py-4">Created</th>
+    </tr>
+    </thead>
+
+    <tr class="divide-y divide-gray-200">
+        <td class="px-6 py-4"><input type="checkbox"/></td>
+        <td class="px-6 py-4"><a href="/containers/jellyfin" class="underline">jellyfin</a></td>
+        <td class="px-6 py-4"><Label class="text-green-500">Running</Label></td>
+        <td class="px-6 py-4">lscr.io/linuxserver/jellyfin:latest</td>
+        <td class="px-6 py-4">2025-08-08 16:49:52</td>
+    </tr>
+
+    <tr>
+        <td class="px-6 py-4"><input type="checkbox"/></td>
+        <td class="px-6 py-4"><a href="/containers/pgadmin" class="underline">pgadmin</a></td>
+        <td class="px-6 py-4"><Label class="text-red-500">Stopped</Label></td>
+        <td class="px-6 py-4">dpage/pgadmin4:latest</td>
+        <td class="px-6 py-4">2025-08-08 16:49:52</td>
+    </tr>
+</table>
