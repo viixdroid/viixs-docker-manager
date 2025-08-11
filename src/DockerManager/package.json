@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
+  },
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/docker-manager.css",
+    "watch:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/docker-manager.css --watch"
+  },
+  "devDependencies": {
+    "@iconify/json": "^2.2.371",
+    "@iconify/tailwind4": "^1.0.6"
+  }
+}
