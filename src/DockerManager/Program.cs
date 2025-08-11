@@ -1,10 +1,16 @@
 using DockerManager.Components;
+using DockerManager.Extensions;
+using DockerManager.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services
+    .AddDataProtectionServices()
+    .AddSharedServices()
+    .AddRazorComponents()
+    .AddInteractiveServerComponents()
+    ;
 
 var app = builder.Build();
 
@@ -23,6 +29,7 @@ app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+    ;
 
 app.Run();
