@@ -2,7 +2,7 @@
 
 internal static class ApplicationConstants
 {
-    public const string ApplicationName = "DockerManager";
+    public const string ApplicationName = "Viix's Docker Manager";
 
     public static class DataProtection
     {
