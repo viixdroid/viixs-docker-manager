@@ -1,36 +1,87 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Reflection
+@using static DockerManager.Constants.ApplicationConstants
+@inherits LayoutComponentBase
 
-<div class="flex h-screen">
-    <!-- Sidebar -->
-    <nav class="@($"bg-gray-800 text-white flex-shrink-0 transition-all duration-300 {(_isCollapsed ? "w-16" : "w-64")}")">
-        <button class="p-2 focus:outline-none" @onclick="ToggleSidebar">
-            <!-- Hamburger icon -->
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        </button>
-        @if (!_isCollapsed)
-        {
-            <div class="p-4 font-bold text-lg">App Name</div>
-        }
-        <ul>
-            @foreach (var item in navigationMenuService.GetNavigationMenuItems())
-            {
-                <li class="px-4 py-2 hover:bg-gray-700 flex items-center">
-                    <NavLink href="@item.Path" class="flex items-center">
-                        <span class="@($"{item.Icon.IconString} text-2xl")"></span>
-                        @if (!_isCollapsed)
-                        {
-                            <label class="px-3 text-base font-medium">@item.Name</label>
-                        }
-                    </NavLink>
+<div class="flex flex-col h-screen w-screen">
+    <header class="flex-none navbar">
+        <div class="flex-1 w-64 max-w-64">
+            <a class="btn btn-ghost text-xl">@ApplicationName</a>
+        </div>
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl">Environment: nuc</a>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal px-1">
+                <li>
+                    <label class="swap swap-rotate">
+                        <!-- this hidden checkbox controls the state -->
+                        <input type="checkbox" class="theme-controller" value="dark"/>
+
+                        <!-- sun icon -->
+                        <span class="swap-off h-5 w-5 fill-current icon-[mdi--white-balance-sunny]"></span>
+                        <span class="swap-on h-5 w-5 fill-current icon-[mdi--moon-and-stars]"></span>
+                    </label>
                 </li>
-            }
-        </ul>
-    </nav>
-    <!-- Main content -->
-    <main class="flex-1 bg-gray-100 p-6 overflow-auto">
-        @Body
-    </main>
+                <li>
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="0" role="button"> User</div>
+                        <ul tabindex="0"
+                            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                            <li>
+                                <a class="justify-between">
+                                    Profile
+                                    <span class="badge">New</span>
+                                </a>
+                            </li>
+                            <li><a>Settings</a></li>
+                            <li><a>Logout</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="flex-auto">
+        <div class="flex flex-row h-full">
+
+            <!-- Sidebar -->
+            <nav
+                class="@($"relative bg-base-200 flex flex-col transition-all duration-300 {(_isCollapsed ? "w-16" : "w-64")}")">
+                <div class="flex-none navbar static">
+                    <div class="flex-none pl-2 ml-2 absolute top-5 -right-3">
+                        <button class="btn btn-circle btn-outline btn-xs" @onclick="ToggleSidebar">
+                        <span
+                            class="@($"{(_isCollapsed ? "icon-[mdi--chevron-right]" : "icon-[mdi--chevron-left]")}")"></span>
+
+                        </button>
+                    </div>
+
+                </div>
+                <ul class="@($"menu grow {(_isCollapsed ? "w-16" : "w-64")}")">
+                    @foreach (var item in navigationMenuService.GetNavigationMenuItems())
+                    {
+                        <li>
+                            <NavLink href="@item.Path" class="tooltip tooltip-right" data-tip=@item.Name>
+                                <span class="@($"{item.Icon.IconString} text-2xl")"></span>
+                                @if (!_isCollapsed)
+                                {
+                                    <label class="px-3 text-base font-medium">@item.Name</label>
+                                }
+                            </NavLink>
+                        </li>
+                    }
+                </ul>
+
+                <footer class="flex-none footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
+                    <aside class="text-xs">
+                        <p>Version @(Assembly.GetExecutingAssembly().GetName().Version?.ToString(3))</p>
+                    </aside>
+                </footer>
+            </nav>
+            <!-- Main content -->
+            <main class="flex-1 p-6 overflow-auto">
+                @Body
+            </main>
+        </div>
+    </div>
 </div>

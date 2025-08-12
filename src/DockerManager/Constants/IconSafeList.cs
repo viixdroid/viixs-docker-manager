@@ -7,10 +7,12 @@
     icon-[mdi-light--cog]
     icon-[solar--info-circle-bold-duotone]
     icon-[mdi--delete]
-    icon-[mdi--pencil]
-    icon-[mdi--plus]
+    icon-[mdi--chevron-right]
+    icon-[mdi--chevron-left]
     icon-[mdi--server]
     icon-[mdi--settings]
+    icon-[mdi--white-balance-sunny]
+    icon-[mdi--moon-and-stars]
     // Add any other icons you use dynamically in your Blazor components here.
 */
 
