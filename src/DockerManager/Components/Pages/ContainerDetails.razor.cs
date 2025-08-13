@@ -5,5 +5,5 @@ namespace DockerManager.Components.Pages;
 public partial class ContainerDetails : ComponentBase
 {
     [Parameter] 
-    public string ContainerName { get; set; }
+    public string? ContainerName { get; set; }
 }
