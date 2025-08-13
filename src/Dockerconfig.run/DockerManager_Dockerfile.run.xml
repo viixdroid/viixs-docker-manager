@@ -4,6 +4,14 @@
       <settings>
         <option name="containerName" value="dockermanager" />
         <option name="contextFolderPath" value="." />
+        <option name="envVars">
+          <list>
+            <DockerEnvVarImpl>
+              <option name="name" value="UID" />
+              <option name="value" value="1000" />
+            </DockerEnvVarImpl>
+          </list>
+        </option>
         <option name="portBindings">
           <list>
             <DockerPortBindingImpl>
@@ -16,8 +24,6 @@
             </DockerPortBindingImpl>
           </list>
         </option>
-        <!-- When running docker on windows, or WSL, it;s quit likely that the docker sock group in the container is 0, or root. So on windows, this value should be 0 -->
-        <option name="commandLineOptions" value="--group-add 0" />
         <option name="sourceFilePath" value="DockerManager/Dockerfile" />
         <option name="volumeBindings">
           <list>
@@ -27,7 +33,7 @@
             </DockerVolumeBindingImpl>
             <DockerVolumeBindingImpl>
               <option name="containerPath" value="/app/keys" />
-              <option name="hostPath" value="%LOCALAPPDATA%\DockerManager\DataProtection" />
+              <option name="hostPath" value="$USER_HOME$/DockerManager/DataProtection" />
             </DockerVolumeBindingImpl>
           </list>
         </option>
