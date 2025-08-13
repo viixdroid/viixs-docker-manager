@@ -3,7 +3,7 @@
 internal static class DockerConstants
 {
     /// <summary>
-    /// According to several internet sources, when dotnet builds, it adds this variable. With this we can now if
+    /// According to several internet sources, when dotnet builds, it adds this variable. With this we can now see if
     /// we are running in a docker environment or just on a host like Windows, *Unix or macOS. 
     /// </summary>
     public const string DotnetRunningInContainer = "DOTNET_RUNNING_IN_CONTAINER";
@@ -18,10 +18,4 @@ internal static class DockerConstants
         public const string Protocol = "npipe";
         public const string Npipe = @"\pipe\docker_engine";
     }
-
-    // public static class Network
-    // {
-    //     public const string Protocol = "http";
-    //     public const string SecureProtocol = "https";
-    // }
 }
