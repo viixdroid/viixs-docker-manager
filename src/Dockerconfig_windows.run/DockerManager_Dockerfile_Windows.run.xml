@@ -1,5 +1,5 @@
-﻿<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="DockerManager/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DockerManager/Dockerfile_Windows" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
     <deployment type="dockerfile">
       <settings>
         <option name="containerName" value="dockermanager" />
@@ -24,6 +24,16 @@
             </DockerPortBindingImpl>
           </list>
         </option>
+        <!-- 
+          When on windows, when you run a container through docker (and WSL2) and you want to access /var/run/docker.sock, 
+          it will add the file /var/run/docker.sock to user root and group root. As that is the case, we cannot use the default
+          docker group, as we will hit a permission denied. So on Windows, we add the running user (1000) to the group 0 (root).
+          Gemini says: `You ARE still using a non-root` user and `You are only granting a specific permission`.
+          
+          Basicly, it's fine on windows to do this. Ultimate goal is to run this on ubuntu linux. Use the other dockerfile 
+          for that. 
+        -->  
+        <option name="commandLineOptions" value="--group-add 0" />
         <option name="sourceFilePath" value="DockerManager/Dockerfile" />
         <option name="volumeBindings">
           <list>
