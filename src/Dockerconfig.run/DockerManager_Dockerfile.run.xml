@@ -16,19 +16,21 @@
             </DockerPortBindingImpl>
           </list>
         </option>
+        <option name="commandLineOptions" value="--group-add 1001 --privileged " />
         <option name="sourceFilePath" value="DockerManager/Dockerfile" />
         <option name="volumeBindings">
           <list>
             <DockerVolumeBindingImpl>
-              <option name="containerPath" value="/app/keys" />
-              <!-- Move this to actual location. Docker doesn't like %LOCALAPPDATA%. possible solution here: https://seankilleen.com/2024/04/how-to-run-docker-based-net-apps-in-jetbrains-rider-without-fast-mode/ -->
-              <option name="hostPath" value="%LOCALAPPDATA%\DockerManager\DataProtection" />
+              <option name="containerPath" value="/var/run/docker.sock" />
+              <option name="hostPath" value="//var/run/docker.sock" />
             </DockerVolumeBindingImpl>
           </list>
         </option>
       </settings>
     </deployment>
     <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
-    <method v="2" />
+    <method v="2">
+      <option name="Build Solution" enabled="true" />
+    </method>
   </configuration>
 </component>
