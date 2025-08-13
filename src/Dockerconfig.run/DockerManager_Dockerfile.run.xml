@@ -16,7 +16,8 @@
             </DockerPortBindingImpl>
           </list>
         </option>
-        <option name="commandLineOptions" value="--group-add 1001 --privileged " />
+        <!-- When running docker on windows, or WSL, it;s quit likely that the docker sock group in the container is 0, or root. So on windows, this value should be 0 -->
+        <option name="commandLineOptions" value="--group-add 0" />
         <option name="sourceFilePath" value="DockerManager/Dockerfile" />
         <option name="volumeBindings">
           <list>
