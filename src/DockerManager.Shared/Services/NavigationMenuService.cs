@@ -3,7 +3,7 @@ using DockerManager.Shared.Models.Frontend.Icons.Iconify;
 
 namespace DockerManager.Shared.Services;
 
-public class NavigationMenuService : INavigationMenuService
+internal class NavigationMenuService : INavigationMenuService
 {
     public IReadOnlyList<NavigationMenuItem> GetNavigationMenuItems()
     {

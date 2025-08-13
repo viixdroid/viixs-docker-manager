@@ -3,13 +3,15 @@ using DockerManager.Shared.Models.Docker;
 using DockerManager.Shared.Services.Docker.Interfaces;
 using Microsoft.Extensions.Configuration;
 
+using static DockerManager.Shared.Constants.DockerConstants;
+
 namespace DockerManager.Shared.Services.Docker;
 
-public class DockerClientService(IConfiguration configuration) : IDockerClientService
+internal class DockerClientService(IConfiguration configuration) : IDockerClientService
 {
     public IDockerClient? GetDockerClient()
     {
-        var isRunningInDocker = configuration.GetValue<bool>("DOTNET_RUNNING_IN_CONTAINER");
+        var isRunningInDocker = configuration.GetValue<bool>(DotnetRunningInContainer);
         if (!isRunningInDocker)
         {
             //When not giving any information, the client itself can figure out the protocol.

@@ -5,7 +5,7 @@ using DockerManager.Shared.Services.Docker.Interfaces;
 
 namespace DockerManager.Shared.Services.Docker;
 
-public class DockerService(IDockerClientService dockerClientService) : IDockerService
+internal class DockerService(IDockerClientService dockerClientService) : IDockerService
 {
     private readonly IDockerClient _dockerClient = dockerClientService.GetDockerClient() ??
                                                    throw new InvalidOperationException(
