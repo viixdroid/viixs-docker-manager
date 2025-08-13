@@ -21,5 +21,6 @@ Global
 	EndGlobalSection
 	GlobalSection(RiderSharedRunConfigurations) = postSolution
 		File = Dockerconfig.run\DockerManager_Dockerfile.run.xml
+		File = Dockerconfig_windows.run\DockerManager_Dockerfile_Windows.run.xml
 	EndGlobalSection
 EndGlobal
