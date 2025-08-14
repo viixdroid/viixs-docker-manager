@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DockerManager.Auth\DockerManager.Auth.csproj" />
       <ProjectReference Include="..\DockerManager.Shared\DockerManager.Shared.csproj" />
     </ItemGroup>
     

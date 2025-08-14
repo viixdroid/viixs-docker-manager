@@ -1,5 +1,7 @@
+using DockerManager.Auth.Extensions;
 using DockerManager.Components;
 using DockerManager.Extensions;
+using DockerManager.Services;
 using DockerManager.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,9 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddDataProtectionServices()
     .AddSharedServices()
+    .AddAuthenticationService(builder.Configuration)
     .AddRazorComponents()
     .AddInteractiveServerComponents()
     ;
+
+builder.Services.AddControllers();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IRegisterService, RegisterService>(); //TODO: move to a more appropriate place
 
 var app = builder.Build();
 
@@ -22,12 +29,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+await app.RunMigrations();
 
+app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+
+app.MapControllers();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     ;
