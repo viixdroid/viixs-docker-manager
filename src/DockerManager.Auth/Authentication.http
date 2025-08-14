@@ -1,0 +1,20 @@
+### Register a new user
+POST http://localhost:8080/api/Account/Register
+Content-Type: application/json
+
+{
+    "email": "test@test.nl",
+    "password": "Test123!",
+    "confirmPassword": "Test123!"
+}
+
+### Login with the registered user
+POST http://localhost:8080/api/Account/Login
+Content-Type: application/json
+
+{
+    "email": "test@test.nl",
+    "password": "Test123!",
+    "rememberMe": true
+}
+
