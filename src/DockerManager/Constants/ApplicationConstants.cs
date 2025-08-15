@@ -14,6 +14,12 @@ internal static class ApplicationConstants
             return Path.Combine(localAppData, ApplicationName, "DataProtection");
         }
     }
+
+    public static class Authentication
+    {
+        public const string JsonWebTokenAuthenticationType = "JsonWebToken";
+        public const string TokenStorageKey = "tokenStorage";
+    }
     
     public const string BackendApiHttpClientName = "BackendApiHttpClient";
 }
