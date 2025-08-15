@@ -14,4 +14,6 @@ internal static class ApplicationConstants
             return Path.Combine(localAppData, ApplicationName, "DataProtection");
         }
     }
+    
+    public const string BackendApiHttpClientName = "BackendApiHttpClient";
 }

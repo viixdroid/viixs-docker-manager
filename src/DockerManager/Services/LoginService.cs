@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Components;
 
 namespace DockerManager.Services;
 
-internal class LoginService(HttpClient httpClient, NavigationManager navigationManager)
-    : AccountBaseService(httpClient, navigationManager)
+internal class LoginService(IHttpClientFactory httpClientFactory, NavigationManager navigationManager)
+    : AccountBaseService(httpClientFactory, navigationManager)
 {
     public async Task<bool> LoginAsync(LoginModel loginModel)
     {
-        var response = await httpClient.PostAsJsonAsync("api/Account/Login", loginModel);
+        var response = await HttpClient.PostAsJsonAsync("api/Account/Login", loginModel);
         var content = await response.Content.ReadFromJsonAsync<ResponseObject<UserLoggedInModel>>();
 
         if (content is not null && content.IsSuccess)

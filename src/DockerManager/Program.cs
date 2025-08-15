@@ -3,6 +3,7 @@ using DockerManager.Components;
 using DockerManager.Extensions;
 using DockerManager.Services;
 using DockerManager.Shared.Extensions;
+using static DockerManager.Constants.ApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,8 @@ builder.Services
     ;
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient(BackendApiHttpClientName);
+;
 builder.Services.AddScoped<IRegisterService, RegisterService>(); //TODO: move to a more appropriate place
 
 var app = builder.Build();

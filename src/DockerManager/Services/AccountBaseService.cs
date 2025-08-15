@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using static DockerManager.Constants.ApplicationConstants;
 
 namespace DockerManager.Services;
 
@@ -6,9 +7,9 @@ public abstract class AccountBaseService
 {
     protected HttpClient HttpClient { get; }
 
-    protected AccountBaseService(HttpClient httpClient, NavigationManager navigationManager)
+    protected AccountBaseService(IHttpClientFactory httpClientFactory, NavigationManager navigationManager)
     {
-        HttpClient = httpClient;
+        HttpClient = httpClientFactory.CreateClient(BackendApiHttpClientName);
         HttpClient.BaseAddress = new Uri(navigationManager.BaseUri);
     }
 }

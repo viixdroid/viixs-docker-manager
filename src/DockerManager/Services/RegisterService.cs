@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Components;
 
 namespace DockerManager.Services;
 
-internal class RegisterService(HttpClient httpClient, NavigationManager navigationManager)
-    : AccountBaseService(httpClient, navigationManager), IRegisterService
+internal class RegisterService(IHttpClientFactory httpClientFactory, NavigationManager navigationManager)
+    : AccountBaseService(httpClientFactory, navigationManager), IRegisterService
 {
     /// <inheritdoc />
     public async Task<(bool, string)> RegisterAsync(RegisterModel model)
