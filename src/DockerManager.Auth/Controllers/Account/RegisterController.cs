@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DockerManager.Auth.Controllers.Account;
 
-public class RegisterController(IUserStore<DockerManagerUser> userStore, UserManager<DockerManagerUser> userManager)
+public class RegisterController(
+    IUserStore<DockerManagerUser> userStore,
+    UserManager<DockerManagerUser> userManager,
+    RoleManager<IdentityRole> roleManager)
     : AccountControllerBase
 {
     [HttpPost]
@@ -29,9 +32,24 @@ public class RegisterController(IUserStore<DockerManagerUser> userStore, UserMan
             return MapIdentityErrors(result);
         }
 
+        const string administratorRole = "Administrator";
+        await AddRoleIfNotExistsAsync(administratorRole);
+        await userManager.AddToRoleAsync(user, administratorRole);
+
         // Simulate successful registration
         return Created("/Account/Login", RegisterResponse.Success("/Account/Login"));
     }
+
+    //TODO: move to more better place than here.
+    private async Task AddRoleIfNotExistsAsync(string roleName)
+    {
+        var roleExists = await roleManager.RoleExistsAsync(roleName);
+        if (!roleExists)
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+
 
     private IActionResult MapIdentityErrors(IdentityResult result)
     {
