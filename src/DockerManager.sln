@@ -26,7 +26,7 @@ Global
 		{C955D62C-8CD4-48A3-BDB2-87B956C18865}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(RiderSharedRunConfigurations) = postSolution
-		File = Dockerconfig.run\DockerManager_Dockerfile.run.xml
-		File = Dockerconfig_windows.run\DockerManager_Dockerfile_Windows.run.xml
+		File = DockerManager\Properties\DockerManager_Dockerfile.run.xml
+		File = DockerManager\Properties\DockerManager_Dockerfile_Windows.run.xml
 	EndGlobalSection
 EndGlobal
