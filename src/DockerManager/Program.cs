@@ -1,8 +1,10 @@
 using DockerManager.Auth.Extensions;
 using DockerManager.Components;
 using DockerManager.Extensions;
+using DockerManager.Providers;
 using DockerManager.Services;
 using DockerManager.Shared.Extensions;
+using Microsoft.AspNetCore.Components.Authorization;
 using static DockerManager.Constants.ApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +20,11 @@ builder.Services
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient(BackendApiHttpClientName);
-;
-builder.Services.AddScoped<IRegisterService, RegisterService>(); //TODO: move to a more appropriate place
+
+//TODO: move to a more appropriate place
+builder.Services.AddScoped<IRegisterService, RegisterService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationProvider>();
 
 var app = builder.Build();
 
