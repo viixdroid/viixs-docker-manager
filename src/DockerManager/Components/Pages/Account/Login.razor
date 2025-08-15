@@ -8,7 +8,7 @@
         <div class="card-body">
             <h2 class="card-title">Login</h2>
             <p>To use this application, you must be logged in.</p>
-            <EditForm Model="LoginModel" method="post"> @* OnValidSubmit="RegisterUser">*@
+            <EditForm Model="LoginModel" method="post" OnValidSubmit="LoginAsync">
                 <DataAnnotationsValidator/>
                 <fieldset class="fieldset">
                     <div>
@@ -31,7 +31,7 @@
                             Remember me
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-neutral mt-4">Register</button>
+                    <button type="submit" class="btn btn-neutral mt-4">Login</button>
                 </fieldset>
             </EditForm>
         </div>
