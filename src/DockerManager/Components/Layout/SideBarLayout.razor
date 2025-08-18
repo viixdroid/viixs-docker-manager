@@ -3,7 +3,7 @@
 @inherits LayoutComponentBase
 
 <div class="flex flex-col h-screen w-screen">
-    <header class="flex-none navbar">
+    <header class="flex-none navbar h-18 max-h-18">
         <div class="flex-1 w-64 max-w-64">
             <a class="btn btn-ghost text-xl">@ApplicationName</a>
         </div>
@@ -13,20 +13,77 @@
         <div class="flex-none">
             <ul class="menu menu-horizontal px-1">
                 <li>
-                    <label class="swap swap-rotate">
-                        <!-- this hidden checkbox controls the state -->
-                        <input type="checkbox" class="theme-controller" value="dark"/>
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="0" role="button" class="btn btn-ghost">
+                            Theme: @CurrentTheme
+                            <span class="icon-[mdi--chevron-down] text-2xl"></span>
+                        </div>
+                        <ul tabindex="0" class="dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-2xl">
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    aria-label="Nord"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    value="nord"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Dark"
+                                    value="dark"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Cyberpunk"
+                                    value="cyberpunk"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Light"
+                                    value="light"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Aqua"
+                                    value="aqua"/>
+                            </li>
+                        </ul>
+                    </div>
 
-                        <!-- sun icon -->
-                        <span class="swap-off h-5 w-5 fill-current icon-[mdi--white-balance-sunny]"></span>
-                        <span class="swap-on h-5 w-5 fill-current icon-[mdi--moon-and-stars]"></span>
-                    </label>
+                    @* <label class="swap swap-rotate"> *@
+                    @*     <!-- this hidden checkbox controls the state --> *@
+                    @*     <input type="checkbox" class="theme-controller" value="dark" @bind="IsDarkMode"/> *@
+                    @* *@
+                    @*     <!-- sun icon --> *@
+                    @*     <span class="swap-off h-5 w-5 fill-current icon-[mdi--white-balance-sunny]"></span> *@
+                    @*     <span class="swap-on h-5 w-5 fill-current icon-[mdi--moon-and-stars]"></span> *@
+                    @* </label> *@
                 </li>
                 <li>
                     <div class="dropdown dropdown-end">
-                        <div tabindex="0" role="button"> User</div>
-                        <ul tabindex="0"
-                            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        <div tabindex="1" role="button" class="btn btn-ghost">
+                            User
+                            <span class="icon-[mdi--chevron-down] text-2xl"></span>
+                        </div>
+                        <ul tabindex="1"
+                            class="dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-2xl">
                             <li>
                                 <a class="justify-between">
                                     Profile
@@ -84,7 +141,8 @@
                     </li>
                 </ul>
 
-                <footer class="flex-none footer sm:footer-horizontal bg-base-300 duration-300 max-h-12 ease-in-out footer-center text-base-content p-4">
+                <footer
+                    class="flex-none footer sm:footer-horizontal bg-base-300 duration-300 max-h-12 ease-in-out footer-center text-base-content p-4">
                     <aside class="text-xs">
                         <p>@(_isCollapsed ? string.Empty : "Version ")@GetVersionNumber(_isCollapsed ? 5 : 14)</p>
                     </aside>
