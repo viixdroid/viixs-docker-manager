@@ -14,7 +14,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DockerManager.Auth\DockerManager.Auth.csproj" />
       <ProjectReference Include="..\DockerManager.Shared\DockerManager.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.13.1" />
     </ItemGroup>
     
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

@@ -1,0 +1,45 @@
+﻿@page "/Account/Register"
+
+@layout MainLayout
+<div class="grid h-screen place-items-center">
+    <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <div class="card-body">
+            <h2 class="card-title">Register your account</h2>
+            <p>To use this application, an account must registered.</p>
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div role="alert" class="alert alert-error">
+                    @ErrorMessage
+                </div>
+            }
+            <EditForm Model="RegisterModel" method="post" OnValidSubmit="RegisterUserAsync">
+                <DataAnnotationsValidator/>
+                <fieldset class="fieldset">
+                    <div>
+                        <legend class="fieldset-legend">Email</legend>
+                        <InputText @bind-Value="RegisterModel.Email" id="RegisterModel.Email" class="input validator"
+                                   autocomplete="username" aria-required="true" placeholder="name@example.com"/>
+                        <ValidationMessage For="() => RegisterModel.Email" class="validator-hint"/>
+                    </div>
+                    <div>
+                        <legend class="fieldset-legend">Password</legend>
+                        <InputText type="password" @bind-Value="RegisterModel.Password" id="RegisterModel.Password"
+                                   class="input validator"
+                                   autocomplete="new-password" aria-required="true" placeholder="Password"/>
+                        <ValidationMessage For="() => RegisterModel.Password" class="validator-hint"/>
+                    </div>
+                    <div>
+                        <legend class="fieldset-legend">Confirm Password</legend>
+                        <InputText type="password" @bind-Value="RegisterModel.ConfirmPassword"
+                                   id="RegisterModel.ConfirmPassword"
+                                   class="input validator"
+                                   autocomplete="new-password" aria-required="true" placeholder="Confirm password"/>
+                        <ValidationMessage For="() => RegisterModel.ConfirmPassword" class="validator-hint"/>
+                    </div>
+                    <button type="submit" class="btn btn-neutral mt-4">Register</button>
+                </fieldset>
+            </EditForm>
+        </div>
+    </div>
+</div>
+

@@ -1,6 +1,11 @@
+using DockerManager.Auth.Extensions;
 using DockerManager.Components;
 using DockerManager.Extensions;
+using DockerManager.Providers;
+using DockerManager.Services;
 using DockerManager.Shared.Extensions;
+using Microsoft.AspNetCore.Components.Authorization;
+using static DockerManager.Constants.ApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +13,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddDataProtectionServices()
     .AddSharedServices()
+    .AddAuthenticationService(builder.Configuration)
     .AddRazorComponents()
     .AddInteractiveServerComponents()
     ;
+
+builder.Services.AddControllers();
+builder.Services.AddHttpClient(BackendApiHttpClientName);
+
+//TODO: move to a more appropriate place
+builder.Services.AddScoped<IRegisterService, RegisterService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationProvider>();
 
 var app = builder.Build();
 
@@ -22,12 +36,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+await app.RunMigrations();
 
+app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+
+app.MapControllers();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     ;

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManager", "DockerMana
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManager.Shared", "DockerManager.Shared\DockerManager.Shared.csproj", "{CC00C308-A7EE-4CDD-9F22-B82B750DB513}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManager.Auth", "DockerManager.Auth\DockerManager.Auth.csproj", "{C955D62C-8CD4-48A3-BDB2-87B956C18865}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,9 +20,13 @@ Global
 		{CC00C308-A7EE-4CDD-9F22-B82B750DB513}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC00C308-A7EE-4CDD-9F22-B82B750DB513}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC00C308-A7EE-4CDD-9F22-B82B750DB513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C955D62C-8CD4-48A3-BDB2-87B956C18865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C955D62C-8CD4-48A3-BDB2-87B956C18865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C955D62C-8CD4-48A3-BDB2-87B956C18865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C955D62C-8CD4-48A3-BDB2-87B956C18865}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(RiderSharedRunConfigurations) = postSolution
-		File = Dockerconfig.run\DockerManager_Dockerfile.run.xml
-		File = Dockerconfig_windows.run\DockerManager_Dockerfile_Windows.run.xml
+		File = DockerManager\Properties\DockerManager_Dockerfile.run.xml
+		File = DockerManager\Properties\DockerManager_Dockerfile_Windows.run.xml
 	EndGlobalSection
 EndGlobal

@@ -72,9 +72,21 @@
                     }
                 </ul>
 
-                <footer class="flex-none footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
+                <ul class="@($"menu flex-none {(_isCollapsed ? "w-16" : "w-64")}")">
+                    <li>
+                        <NavLink href="Account/Admin" class="tooltip tooltip-right" data-tip="Administration">
+                            <span class="@($"icon-[mdi--delete] text-2xl")"></span>
+                            @if (!_isCollapsed)
+                            {
+                                <label class="px-3 text-base font-medium">Administration</label>
+                            }
+                        </NavLink>
+                    </li>
+                </ul>
+
+                <footer class="flex-none footer sm:footer-horizontal bg-base-300 duration-300 max-h-12 ease-in-out footer-center text-base-content p-4">
                     <aside class="text-xs">
-                        <p>Version @(Assembly.GetExecutingAssembly().GetName().Version?.ToString(3))</p>
+                        <p>@(_isCollapsed ? string.Empty : "Version ")@GetVersionNumber(_isCollapsed ? 5 : 14)</p>
                     </aside>
                 </footer>
             </nav>

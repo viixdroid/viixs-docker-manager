@@ -1,31 +1,46 @@
-﻿@page "/Containers"
+﻿@page "/"
+@page "/Containers"
 <h3 class="font-bold text-3xl">Containers</h3>
 
-<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-    <table class="table">
-        <thead class="bg-base-300 text-base-content">
-        <tr>
-            <th></th>
-            <th>Name</th>
-            <th>State</th>
-            <th>Image</th>
-            <th>Created</th>
-        </tr>
-        </thead>
-        <tbody>
-        @{
-            foreach (var containerSummary in _containerSummaries)
-            {
-                <tr class="hover:bg-base-300">
-                    <td><input type="checkbox"/></td>
-                    <td><a href="@($"/containers/{@containerSummary.Id}")" class="underline">@containerSummary.Name</a></td>
-                    <td><span class="text-green-500">@containerSummary.State</span></td>
-                    <td><span class="inline-block">@containerSummary.Image</span></td>
-                    <td>@($"{containerSummary.Created:g}")</td>
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="grid h-full place-items-center">
+            <div class="flex flex-col w-2/5 text-center">
+                <p class="text-lg">Please log in to view the containers.</p>
+                <GoToLoginButton/>
+            </div>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+        <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+            <table class="table">
+                <thead class="bg-base-300 text-base-content">
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>State</th>
+                    <th>Image</th>
+                    <th>Created</th>
                 </tr>
-            }
-        }
+                </thead>
+                <tbody>
+                @{
+                    foreach (var containerSummary in _containerSummaries)
+                    {
+                        <tr class="hover:bg-base-300">
+                            <td><input type="checkbox"/></td>
+                            <td>
+                                <a href="@($"/containers/{@containerSummary.Id}")"
+                                   class="underline">@containerSummary.Name</a></td>
+                            <td><span class="text-green-500">@containerSummary.State</span></td>
+                            <td><span class="inline-block">@containerSummary.Image</span></td>
+                            <td>@($"{containerSummary.Created:g}")</td>
+                        </tr>
+                    }
+                }
 
-        </tbody>
-    </table>
-</div>
+                </tbody>
+            </table>
+        </div>
+    </Authorized>
+</AuthorizeView>
