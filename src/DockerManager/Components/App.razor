@@ -10,11 +10,12 @@
     <ImportMap/>
     <HeadOutlet/>
     <title>@Constants.ApplicationConstants.ApplicationName</title>
+    <script src="js/ThemeService.OnPageLoad.js"></script>
 </head>
 
 <body>
 <!-- No prerender because of localstorage -->
-<Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" /> 
+<Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 <script src="_framework/blazor.web.js"></script>
 </body>
 
