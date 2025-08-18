@@ -26,7 +26,6 @@ public class RegisterController(
         await userManager.SetEmailAsync(user, model.Email); //Prevents "email is invalid" error
         var result = await userManager.CreateAsync(user, model.Password);
 
-        // ReSharper disable once ConvertIfStatementToReturnStatement
         if (!result.Succeeded)
         {
             return MapIdentityErrors(result);
@@ -36,7 +35,6 @@ public class RegisterController(
         await AddRoleIfNotExistsAsync(administratorRole);
         await userManager.AddToRoleAsync(user, administratorRole);
 
-        // Simulate successful registration
         return Created("/Account/Login", RegisterResponse.Success("/Account/Login"));
     }
 
@@ -49,7 +47,6 @@ public class RegisterController(
             await roleManager.CreateAsync(new IdentityRole(roleName));
         }
     }
-
 
     private IActionResult MapIdentityErrors(IdentityResult result)
     {
