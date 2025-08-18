@@ -47,12 +47,12 @@ public static class AuthenticationServiceExtensions
         {
             throw new InvalidOperationException("JWT options are not configured in the application settings.");
         }
-        
-        if(jwtOptions.Secret.Length < 16)
+
+        if (jwtOptions.Secret.Length < 16)
         {
             throw new InvalidOperationException("JWT secret must be at least 16 characters long.");
         }
-        
+
 
         var key = Encoding.ASCII.GetBytes(jwtOptions.Secret);
 
