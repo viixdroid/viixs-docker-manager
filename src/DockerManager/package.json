@@ -10,6 +10,7 @@
   "devDependencies": {
     "@iconify/json": "^2.2.371",
     "@iconify/tailwind4": "^1.0.6",
-    "daisyui": "^5.0.50"
+    "daisyui": "^5.0.50",
+    "nord": "^0.2.1"
   }
 }
