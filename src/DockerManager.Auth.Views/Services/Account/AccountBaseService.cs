@@ -2,7 +2,7 @@
 
 using static DockerManager.Shared.Constants.ApplicationConstants;
 
-namespace DockerManager.Auth.Services.Account;
+namespace DockerManager.Auth.Views.Services.Account;
 
 public abstract class AccountBaseService
 {

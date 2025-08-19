@@ -1,4 +1,4 @@
-﻿namespace DockerManager.Auth.Models.Responses;
+﻿namespace DockerManager.Shared.Models.Responses;
 
 public record ResponseObject(bool IsSuccess, IEnumerable<string>? Errors = null)
 {

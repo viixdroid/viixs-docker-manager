@@ -1,6 +1,7 @@
 ﻿using DockerManager.Auth.Models;
 using DockerManager.Auth.Models.Pages;
 using DockerManager.Auth.Models.Responses;
+using DockerManager.Shared.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

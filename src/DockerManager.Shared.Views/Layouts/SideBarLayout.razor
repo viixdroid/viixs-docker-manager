@@ -1,6 +1,4 @@
-﻿@using System.Reflection
-@using static DockerManager.Shared.Constants.ApplicationConstants
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <div class="flex flex-col h-screen w-screen">
     <header class="flex-none navbar">
@@ -84,7 +82,8 @@
                     </li>
                 </ul>
 
-                <footer class="flex-none footer sm:footer-horizontal bg-base-300 duration-300 max-h-12 ease-in-out footer-center text-base-content p-4">
+                <footer
+                    class="flex-none footer sm:footer-horizontal bg-base-300 duration-300 max-h-12 ease-in-out footer-center text-base-content p-4">
                     <aside class="text-xs">
                         <p>@(_isCollapsed ? string.Empty : "Version ")@GetVersionNumber(_isCollapsed ? 5 : 14)</p>
                     </aside>

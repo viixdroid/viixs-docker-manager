@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace DockerManager.Components;
+namespace DockerManager.Shared.Views.Components;
 
 public partial class GoToLoginButton(NavigationManager navigationManager) : ComponentBase
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace DockerManager.Components.Pages;
+namespace DockerManager.DockerController.Views.Frontend;
 
 public partial class ContainerDetails : ComponentBase
 {
-    [Parameter] 
+    [Parameter]
     public string? ContainerName { get; set; }
 }

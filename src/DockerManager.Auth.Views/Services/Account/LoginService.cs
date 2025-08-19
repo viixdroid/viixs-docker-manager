@@ -2,14 +2,15 @@
 using DockerManager.Auth.Models.Pages;
 using DockerManager.Auth.Models.Responses;
 using DockerManager.Auth.Providers;
-using DockerManager.Auth.Services.Interfaces.Account;
+using DockerManager.Auth.Views.Services.Interfaces.Account;
+using DockerManager.Shared.Models.Responses;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 using static DockerManager.Shared.Constants.ApplicationConstants.Authentication;
 
-namespace DockerManager.Auth.Services.Account;
+namespace DockerManager.Auth.Views.Services.Account;
 
 internal class LoginService(
     IHttpClientFactory httpClientFactory,

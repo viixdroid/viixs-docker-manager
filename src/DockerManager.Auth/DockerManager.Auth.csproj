@@ -19,4 +19,8 @@
     <ItemGroup>
       <ProjectReference Include="..\DockerManager.Shared\DockerManager.Shared.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\Interfaces\" />
+    </ItemGroup>
 </Project>

@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManager.DockerControl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManager.Shared.Views", "DockerManager.Shared.Views\DockerManager.Shared.Views.csproj", "{2D57EA90-4EC6-4A7A-B316-30260A57F6B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManager.DockerController.Views", "DockerManager.DockerController.Views\DockerManager.DockerController.Views.csproj", "{77724541-868E-4D51-BF02-29B92C076571}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockerManager.Auth.Views", "DockerManager.Auth.Views\DockerManager.Auth.Views.csproj", "{A5BC7048-4767-48C0-9E02-1926C1DE9DE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +40,14 @@ Global
 		{2D57EA90-4EC6-4A7A-B316-30260A57F6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D57EA90-4EC6-4A7A-B316-30260A57F6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D57EA90-4EC6-4A7A-B316-30260A57F6B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77724541-868E-4D51-BF02-29B92C076571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77724541-868E-4D51-BF02-29B92C076571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77724541-868E-4D51-BF02-29B92C076571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77724541-868E-4D51-BF02-29B92C076571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5BC7048-4767-48C0-9E02-1926C1DE9DE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5BC7048-4767-48C0-9E02-1926C1DE9DE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5BC7048-4767-48C0-9E02-1926C1DE9DE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5BC7048-4767-48C0-9E02-1926C1DE9DE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(RiderSharedRunConfigurations) = postSolution
 		File = DockerManager\Properties\DockerManager_Dockerfile.run.xml

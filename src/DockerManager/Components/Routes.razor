@@ -1,5 +1,13 @@
-﻿@using DockerManager.Shared.Extensions
-<Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="new []{typeof(ServicesExtensions).Assembly}">
+﻿@using DockerManager.Auth.Views.Extensions
+@using DockerManager.DockerController.Views.Extensions
+@using DockerManager.Shared.Extensions
+
+<Router AppAssembly="typeof(Program).Assembly"
+        AdditionalAssemblies="[
+            typeof(ServicesExtensions).Assembly,
+            typeof(DockerControllerViewsServicesExtensions).Assembly,
+            typeof(DockerManagerAuthenticationViewServicesExtensions).Assembly
+        ]">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(SideBarLayout)">
             <NotAuthorized>

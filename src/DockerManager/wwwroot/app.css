@@ -1,36 +1,41 @@
+/*@import "vanilla-framework";*/
+
 @import "tailwindcss";
 @import "./nord.css";
 
-@plugin "@iconify/tailwind4";
-@plugin "daisyui" {
+@plugin "daisyui"
+{
     themes: nord --default, nord-dark --prefersdark;
 }
+@plugin "@iconify/tailwind4";
+
+/*@include vanilla;*/
 
 /* TODO: Add licenses for the fonts */
 @font-face {
     font-family: "Noto Sans Italic";
-    src: url("fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf") format("truetype");
+    src: url("../fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf") format("truetype");
     font-weight: 400 1000;
     font-display: swap;
 }
 
 @font-face {
     font-family: "Noto Sans";
-    src: url("fonts/NotoSans-VariableFont_wdth,wght.ttf") format("truetype");
+    src: url("../fonts/NotoSans-VariableFont_wdth,wght.ttf") format("truetype");
     font-weight: 400 1000;
     font-display: swap;
 }
 
 @font-face {
     font-family: "Ubuntu Sans Mono";
-    src: url("fonts/UbuntuSansMono-VariableFont_wght.ttf") format("truetype");
+    src: url("../fonts/UbuntuSansMono-VariableFont_wght.ttf") format("truetype");
     font-weight: 500 600;
     font-display: swap;
 }
 
 @font-face {
     font-family: "Ubuntu Sans Mono Italic";
-    src: url("fonts/UbuntuSansMono-Italic-VariableFont_wght.ttf") format("truetype");
+    src: url("../fonts/UbuntuSansMono-Italic-VariableFont_wght.ttf") format("truetype");
     font-weight: 500 600;
     font-display: swap;
 }
@@ -57,7 +62,7 @@
     --color-success: var(--nord14);
     --color-success-content: var(--nord1);
     --color-warning: var(--nord13);
-    --color-warning-content:var(--nord1);
+    --color-warning-content: var(--nord1);
     --color-error: var(--nord11);
     --color-error-content: var(--nord5);
     --radius-selector: 0.5rem;

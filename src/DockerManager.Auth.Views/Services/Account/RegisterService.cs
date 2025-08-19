@@ -1,10 +1,10 @@
 ﻿using System.Net.Http.Json;
 using DockerManager.Auth.Models.Pages;
 using DockerManager.Auth.Models.Responses;
-using DockerManager.Auth.Services.Interfaces.Account;
+using DockerManager.Auth.Views.Services.Interfaces.Account;
 using Microsoft.AspNetCore.Components;
 
-namespace DockerManager.Auth.Services.Account;
+namespace DockerManager.Auth.Views.Services.Account;
 
 internal class RegisterService(IHttpClientFactory httpClientFactory, NavigationManager navigationManager)
     : AccountBaseService(httpClientFactory, navigationManager), IRegisterService

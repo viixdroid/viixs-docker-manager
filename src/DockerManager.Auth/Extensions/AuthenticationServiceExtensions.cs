@@ -4,8 +4,6 @@ using DockerManager.Auth.Models;
 using DockerManager.Auth.Models.Settings;
 using DockerManager.Auth.Providers;
 using DockerManager.Auth.Services;
-using DockerManager.Auth.Services.Account;
-using DockerManager.Auth.Services.Interfaces.Account;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -41,8 +39,6 @@ public static class AuthenticationServiceExtensions
         services.AddJwtAuthentication(configuration);
 
 //TODO: move to a more appropriate place
-        services.AddScoped<IRegisterService, RegisterService>();
-        services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<AuthenticationStateProvider, CustomAuthenticationProvider>();
 
         return services;

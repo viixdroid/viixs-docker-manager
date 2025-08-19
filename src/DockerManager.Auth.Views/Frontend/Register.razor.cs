@@ -1,9 +1,9 @@
 ﻿using DockerManager.Auth.Models.Pages;
-using DockerManager.Auth.Services.Interfaces.Account;
+using DockerManager.Auth.Views.Services.Interfaces.Account;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace DockerManager.Auth.Frontend;
+namespace DockerManager.Auth.Views.Frontend;
 
 public partial class Register(IRegisterService registerService, NavigationManager navigationManager) : ComponentBase
 {
