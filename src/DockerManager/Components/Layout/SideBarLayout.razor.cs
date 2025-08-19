@@ -1,10 +1,16 @@
 ﻿using System.Reflection;
+using DockerManager.Services;
+using DockerManager.Services.Interfaces;
 using DockerManager.Shared.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace DockerManager.Components.Layout;
 
-public partial class SideBarLayout(INavigationMenuService navigationMenuService) : LayoutComponentBase
+public partial class SideBarLayout(
+    INavigationMenuService navigationMenuService,
+    IAsyncServicesFactory servicesFactory,
+    IJSRuntime jsRuntime) : LayoutComponentBase
 {
     private bool _isCollapsed;
 
@@ -15,5 +21,34 @@ public partial class SideBarLayout(INavigationMenuService navigationMenuService)
     {
         return Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()
             ?.InformationalVersion[..amountToSubstring] ?? "Unknown Version";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var themeService = await GetThemeService();
+        CurrentTheme = await themeService.GetCurrentThemeAsync();
+    }
+
+    private Task<IThemeService> GetThemeService() => servicesFactory.GetThemeService(jsRuntime);
+    private string? CurrentTheme { get; set; }
+
+    private async Task SetChosenThemeAsync(string? themeName)
+    {
+        if (string.IsNullOrEmpty(themeName) || string.IsNullOrEmpty(CurrentTheme))
+        {
+            themeName = "nord";
+        }
+
+        if (CurrentTheme!.Equals(themeName, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        CurrentTheme = themeName;
+
+        Console.WriteLine(CurrentTheme);
+
+        var themeService = await GetThemeService();
+        await themeService.SaveThemeAsync(themeName);
     }
 }

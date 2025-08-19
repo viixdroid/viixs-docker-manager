@@ -1,12 +1,12 @@
 ﻿using DockerManager.Auth.Models.Pages;
 
-namespace DockerManager.Services;
+namespace DockerManager.Services.Interfaces;
 
 public interface IRegisterService
 {
     /// <summary>
     /// Calls the Register api, to register a new user.
-    /// 
+    ///
     /// </summary>
     /// <param name="model">
     /// The registration model containing user details such as email and password.

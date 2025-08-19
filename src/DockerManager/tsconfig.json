@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    // --- Module Settings: The key to fixing the error ---
+    "module": "ESNext", // Compile to the latest ES Module format.
+    "target": "ES6",      // Compile to a widely supported JavaScript version.
+
+    // --- Output Location ---
+    "outDir": "wwwroot/js", // Place compiled .js files in this directory.
+    "removeComments": true,   // Clean up the output.
+    "sourceMap": true,        // Helpful for debugging in the browser.
+
+    // --- Strictness & Best Practices ---
+    "strict": true,                   // Enables all strict type-checking options.
+    "noImplicitAny": true,            // Require types on everything.
+    "verbatimModuleSyntax": true,     // Keeps module syntax consistent. Good to keep!
+    "esModuleInterop": true,          // Improves compatibility between module systems.
+    "lib": ["ESNext", "DOM", "DOM.Iterable"] // Include type definitions for browser APIs.
+  },
+  // --- Input Files ---
+  "include": [
+    "Services/Scripts/**/*.ts" // Tell TS to look for source files in your 'Scripts' folder.
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

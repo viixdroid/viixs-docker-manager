@@ -1,6 +1,7 @@
 ﻿using DockerManager.Auth.Models.Pages;
 using DockerManager.Auth.Models.Responses;
 using DockerManager.Providers;
+using DockerManager.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;

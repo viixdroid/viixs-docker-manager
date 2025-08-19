@@ -1,5 +1,6 @@
 ﻿using DockerManager.Auth.Models.Pages;
 using DockerManager.Auth.Models.Responses;
+using DockerManager.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace DockerManager.Services;
