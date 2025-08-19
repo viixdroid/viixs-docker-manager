@@ -1,7 +1,6 @@
-﻿using DockerManager.Shared.Constants;
-using static DockerManager.Shared.Constants.DockerConstants;
+﻿using static DockerManager.DockerControl.Constants.DockerConstants;
 
-namespace DockerManager.Shared.Models.Docker;
+namespace DockerManager.DockerControl.Models;
 
 internal record DockerCommunicationProtocol
 {
@@ -28,7 +27,6 @@ internal record DockerCommunicationProtocol
         return _protocol switch
         {
             Unix.Protocol => $"://{_address}",
-            Windows.Protocol => @$"\\.{_address}", //Add a dot to the beginning of the address to make it a valid npipe address.
             _ => throw new NotSupportedException($"The protocol '{_protocol}' is not supported.")
         };
     }
@@ -36,7 +34,7 @@ internal record DockerCommunicationProtocol
     /// <summary>
     /// Checks if a specific address exists as a file. When in a docker container
     /// the docker.sock (unix) and docker_engine npipe (windows) are mounted as
-    /// files. So we use this method to check if they exists. 
+    /// files. So we use this method to check if they exists.
     /// </summary>
     /// <returns>
     /// true if there is a file with the _address
@@ -50,10 +48,6 @@ internal record DockerCommunicationProtocol
                 // In a docker container, the unix socket is mounted as a file.
                 // So we check if the file exists.
                 File.Exists(_address),
-            Windows.Protocol =>
-                // In a docker container, the npipe is mounted as a directory.
-                // So we check if the directory exists.
-                Directory.Exists(_address),
             _ => false
         };
     }
@@ -61,8 +55,8 @@ internal record DockerCommunicationProtocol
     public static DockerCommunicationProtocol UnixCommunication() =>
         new DockerCommunicationProtocol(Unix.Protocol, Unix.Socket);
 
-    public static DockerCommunicationProtocol WindowsCommunication() =>
-        new DockerCommunicationProtocol(Windows.Protocol, Windows.Npipe);
+    // public static DockerCommunicationProtocol WindowsCommunication() =>
+    //     new DockerCommunicationProtocol(Windows.Protocol, Windows.Npipe);
 
     // public static DockerCommunicationProtocol NetworkCommunication(string address) =>
     //     NetworkCommunication(new Uri(address));

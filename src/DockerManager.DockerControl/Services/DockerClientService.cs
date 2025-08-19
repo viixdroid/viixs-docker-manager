@@ -1,11 +1,10 @@
 ﻿using Docker.DotNet;
-using DockerManager.Shared.Models.Docker;
-using DockerManager.Shared.Services.Docker.Interfaces;
+using DockerManager.DockerControl.Models;
+using DockerManager.DockerControl.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
+using static DockerManager.DockerControl.Constants.DockerConstants;
 
-using static DockerManager.Shared.Constants.DockerConstants;
-
-namespace DockerManager.Shared.Services.Docker;
+namespace DockerManager.DockerControl.Services;
 
 internal class DockerClientService(IConfiguration configuration) : IDockerClientService
 {
@@ -25,18 +24,11 @@ internal class DockerClientService(IConfiguration configuration) : IDockerClient
             return CreateDockerClient(unixProtocol.GetProtocolUri());
         }
 
-        var windowsProtocol = DockerCommunicationProtocol.WindowsCommunication();
-
-        if (windowsProtocol.AddressExists())
-        {
-            return CreateDockerClient(windowsProtocol.GetProtocolUri());
-        }
-
         return null;
     }
 
     //TODO: Add logging.
-    private static IDockerClient CreateDockerClient(Uri? dockerUri = null)
+    private static DockerClient CreateDockerClient(Uri? dockerUri = null)
     {
         var dockerClientConfig = new DockerClientConfiguration();
         if (dockerUri is not null)

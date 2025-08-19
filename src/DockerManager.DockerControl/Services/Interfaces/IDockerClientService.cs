@@ -1,6 +1,6 @@
 ﻿using Docker.DotNet;
 
-namespace DockerManager.Shared.Services.Docker.Interfaces;
+namespace DockerManager.DockerControl.Services.Interfaces;
 
 public interface IDockerClientService
 {
