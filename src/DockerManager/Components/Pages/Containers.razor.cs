@@ -1,5 +1,5 @@
-﻿using DockerManager.Shared.Models.Docker;
-using DockerManager.Shared.Services.Docker.Interfaces;
+﻿using DockerManager.DockerControl.Models;
+using DockerManager.DockerControl.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace DockerManager.Components.Pages;

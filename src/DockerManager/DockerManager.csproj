@@ -15,6 +15,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DockerManager.Auth\DockerManager.Auth.csproj" />
+      <ProjectReference Include="..\DockerManager.DockerControl\DockerManager.DockerControl.csproj" />
+      <ProjectReference Include="..\DockerManager.Shared.Views\DockerManager.Shared.Views.csproj" />
       <ProjectReference Include="..\DockerManager.Shared\DockerManager.Shared.csproj" />
     </ItemGroup>
 
@@ -24,6 +26,10 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\Pages\Account\" />
     </ItemGroup>
     
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

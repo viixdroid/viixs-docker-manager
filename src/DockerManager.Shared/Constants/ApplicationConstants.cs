@@ -1,6 +1,6 @@
-﻿namespace DockerManager.Constants;
+﻿namespace DockerManager.Shared.Constants;
 
-internal static class ApplicationConstants
+public static class ApplicationConstants
 {
     public const string ApplicationName = "Viix's Docker Manager";
 
@@ -20,6 +20,6 @@ internal static class ApplicationConstants
         public const string JsonWebTokenAuthenticationType = "JsonWebToken";
         public const string TokenStorageKey = "tokenStorage";
     }
-    
+
     public const string BackendApiHttpClientName = "BackendApiHttpClient";
 }

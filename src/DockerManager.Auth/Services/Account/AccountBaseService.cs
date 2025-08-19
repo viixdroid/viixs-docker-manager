@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using static DockerManager.Constants.ApplicationConstants;
 
-namespace DockerManager.Services;
+using static DockerManager.Shared.Constants.ApplicationConstants;
+
+namespace DockerManager.Auth.Services.Account;
 
 public abstract class AccountBaseService
 {

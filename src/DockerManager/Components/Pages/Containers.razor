@@ -30,8 +30,8 @@
                         <tr class="hover:bg-base-300">
                             <td><input type="checkbox"/></td>
                             <td>
-                                <a href="@($"/containers/{@containerSummary.Id}")"
-                                   class="underline">@containerSummary.Name</a></td>
+                                <a href="@($"/containers/{@containerSummary.CleanedName}")"
+                                   class="underline">@containerSummary.CleanedName</a></td>
                             <td><span class="text-green-500">@containerSummary.State</span></td>
                             <td><span class="inline-block">@containerSummary.Image</span></td>
                             <td>@($"{containerSummary.Created:g}")</td>

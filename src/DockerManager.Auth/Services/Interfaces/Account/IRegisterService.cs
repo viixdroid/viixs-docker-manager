@@ -1,6 +1,6 @@
 ﻿using DockerManager.Auth.Models.Pages;
 
-namespace DockerManager.Services.Interfaces;
+namespace DockerManager.Auth.Services.Interfaces.Account;
 
 public interface IRegisterService
 {

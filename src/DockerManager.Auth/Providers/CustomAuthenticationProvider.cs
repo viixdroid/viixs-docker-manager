@@ -3,10 +3,9 @@ using DockerManager.Auth.Models.Responses;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.IdentityModel.JsonWebTokens;
+using static DockerManager.Shared.Constants.ApplicationConstants.Authentication;
 
-using static DockerManager.Constants.ApplicationConstants.Authentication;
-
-namespace DockerManager.Providers;
+namespace DockerManager.Auth.Providers;
 
 public class CustomAuthenticationProvider(ProtectedLocalStorage protectedLocalStorage) : AuthenticationStateProvider
 {

@@ -1,8 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.DataProtection;
 
-using static DockerManager.Constants.ApplicationConstants;
-using static DockerManager.Constants.ApplicationConstants.DataProtection;
+using static DockerManager.Shared.Constants.ApplicationConstants;
+using static DockerManager.Shared.Constants.ApplicationConstants.DataProtection;
 
 namespace DockerManager.Extensions;
 
@@ -17,7 +17,7 @@ internal static class DataProtection
             //We are debugging on Windows, so we use the local app data folder
             keysFolder = GetWindowsKeysFolder();
         }
-        
+
         services.AddDataProtection()
             .PersistKeysToFileSystem(new DirectoryInfo(keysFolder))
             .SetApplicationName(ApplicationName);

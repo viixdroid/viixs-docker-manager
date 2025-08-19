@@ -1,8 +1,8 @@
 ﻿using DockerManager.Auth.Models.Pages;
-using DockerManager.Services.Interfaces;
+using DockerManager.Auth.Services.Interfaces.Account;
 using Microsoft.AspNetCore.Components;
 
-namespace DockerManager.Components.Pages.Account;
+namespace DockerManager.Auth.Frontend;
 
 public partial class Login(ILoginService loginService, NavigationManager navigationManager) : ComponentBase
 {

@@ -1,9 +1,9 @@
 ﻿using Docker.DotNet;
 using Docker.DotNet.Models;
-using DockerManager.Shared.Models.Docker;
-using DockerManager.Shared.Services.Docker.Interfaces;
+using DockerManager.DockerControl.Models;
+using DockerManager.DockerControl.Services.Interfaces;
 
-namespace DockerManager.Shared.Services.Docker;
+namespace DockerManager.DockerControl.Services;
 
 internal class DockerService(IDockerClientService dockerClientService) : IDockerService
 {
