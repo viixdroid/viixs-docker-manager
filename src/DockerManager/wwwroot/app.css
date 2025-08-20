@@ -1,6 +1,6 @@
 /*@import "vanilla-framework";*/
 
-@import "tailwindcss";
+@import "tailwindcss" source("../../"); /* Link to the src folder, but do leave the dockermanager project with Source*/
 @import "./nord.css";
 
 @plugin "daisyui"
