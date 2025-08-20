@@ -1,8 +1,7 @@
 {
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.11",
-    "tailwindcss": "^4.1.11",
-    "vanilla-framework": "^4.30.0"
+    "@tailwindcss/cli": "^4.1.12",
+    "tailwindcss": "^4.1.12"
   },
   "scripts": {
     "build:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/css/docker-manager.css",
