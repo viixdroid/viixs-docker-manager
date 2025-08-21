@@ -1,175 +1,116 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="flex flex-col h-screen w-screen">
-    <header class="flex-none navbar h-14 max-h-14 bg-base-200">
-        <div class="flex-1 w-64 max-w-64">
-            <a class="btn btn-ghost text-xl">@ApplicationName</a>
-        </div>
-        <div class="flex-1">
-            <a class="btn btn-ghost text-xl">Environment: nuc</a>
-        </div>
-        <div class="flex-none">
-            <ul class="menu menu-horizontal px-1">
-                <li>
-                    <div class="dropdown dropdown-end">
-                        <div tabindex="0" role="button" class="btn bg-transparent">
-                            Theme: @CurrentTheme
-                            <span class="icon-[mdi--chevron-down] text-2xl"></span>
+<div class="l-docs">
+    <div class="l-docs__header">
+        <header id="navigation" class="p-navigation is-dark">
+            <div class="l-docs__subgrid">
+                <div class="l-docs__sidebar">
+                    <div class="p-navigation__banner">
+                        <div class="p-navigation__tagged-logo">
+                            <a class="p-navigation__link" href="#">
+                                <div class="p-navigation__logo-tag">
+                                    <img class="p-navigation__logo-icon"
+                                         src="https://assets.ubuntu.com/v1/82818827-CoF_white.svg" alt="">
+                                </div>
+                                <span class="p-navigation__logo-title">@ApplicationName</span>
+                            </a>
                         </div>
-                        <ul tabindex="0" class="dropdown-content bg-base-300 z-1 w-52 p-2 shadow-2xl">
-                            <li>
-                                <input
-                                    type="radio"
-                                    name="theme-dropdown"
-                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-                                    aria-label="Light"
-                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
-                                    value="nord"/>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    name="theme-dropdown"
-                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
-                                    aria-label="Dark"
-                                    value="nord-dark"/>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    name="theme-dropdown"
-                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
-                                    aria-label="Dracula"
-                                    value="dracula"/>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    name="theme-dropdown"
-                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
-                                    aria-label="Dim"
-                                    value="dim"/>
-                            </li>
-
-                            <li>
-                                <input
-                                    type="radio"
-                                    name="theme-dropdown"
-                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
-                                    aria-label="Dark"
-                                    value="dark"/>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    name="theme-dropdown"
-                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
-                                    aria-label="Winter"
-                                    value="winter"/>
-                            </li>
-                            <li>
-                                <input
-                                    type="radio"
-                                    name="theme-dropdown"
-                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
-                                    aria-label="Wireframe"
-                                    value="wireframe"/>
-                            </li>
-
-                            <li>
-                                <input
-                                    type="radio"
-                                    name="theme-dropdown"
-                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
-                                    aria-label="Fantasy"
-                                    value="fantasy"/>
-                            </li>
-                        </ul>
+                        <a href="#navigation" class="p-navigation__toggle--open" title="menu">Menu</a>
+                        <a href="#navigation-closed" class="p-navigation__toggle--close" title="close menu">Close
+                            menu</a>
                     </div>
-                </li>
-                <li>
-                    <div class="dropdown dropdown-end">
-                        <div tabindex="1" role="button" class="btn btn-ghost">
-                            User
-                            <span class="icon-[mdi--chevron-down] text-2xl"></span>
-                        </div>
-                        <ul tabindex="1"
-                            class="dropdown-content bg-base-300 z-1 w-52 p-2 shadow-2xl">
-                            <li>
-                                <a class="justify-between">
-                                    Profile
-                                    <span class="badge">New</span>
-                                </a>
-                            </li>
-                            <li><a>Settings</a></li>
-                            <li><a>Logout</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </header>
-    <div class="flex-auto">
-        <div class="flex flex-row h-full">
-
-            <!-- Sidebar -->
-            <nav
-                class="@($"relative bg-base-200 flex flex-col transition-all duration-300 {(_isCollapsed ? "w-16" : "w-64")}")">
-                <div class="flex-none navbar static">
-                    <div class="flex-none pl-2 ml-2 absolute top-5 -right-3">
-                        <button class="btn btn-circle btn-outline btn-xs" @onclick="ToggleSidebar">
-                        <span
-                            class="@($"{(_isCollapsed ? "icon-[mdi--chevron-right]" : "icon-[mdi--chevron-left]")}")"></span>
-
-                        </button>
-                    </div>
-
                 </div>
-                <ul class="@($"menu grow {(_isCollapsed ? "w-16" : "w-64")}")">
+                <div class="l-docs__main">
+                    <div class="p-navigation__row u-fixed-width">
+                        <nav class="p-navigation__nav" aria-label="Example main">
+                            <ul class="p-navigation__items">
+                                <li class="p-navigation__item">
+                                    <a class="p-navigation__link" href="#">Products</a>
+                                </li>
+                                <li class="p-navigation__item">
+                                    <a class="p-navigation__link" href="#">Services</a>
+                                </li>
+                                <li class="p-navigation__item">
+                                    <a class="p-navigation__link" href="#">Partners</a>
+                                </li>
+                                <li class="p-navigation__item is-selected">
+                                    <a class="p-navigation__link" href="#">Docs</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <aside class="l-docs__sidebar is-dark">
+        <nav class="p-side-navigation--raw-html is-sticky" id="drawer" aria-label="Table of contents">
+            <div class="u-hide--large p-strip is-shallow">
+                <div class="u-fixed-width">
+                    <button class="p-side-navigation__toggle js-drawer-toggle" aria-controls="drawer">
+                        Toggle side navigation
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-side-navigation__overlay js-drawer-toggle" aria-controls="drawer"></div>
+
+            <div class="p-side-navigation__drawer">
+                <div class="p-side-navigation__drawer-header">
+                    <button class="p-side-navigation__toggle--in-drawer js-drawer-toggle" aria-controls="drawer">
+                        Toggle side navigation
+                    </button>
+                </div>
+                <h3>Environment: nuc</h3>
+                <ul>
                     @foreach (var item in navigationMenuService.GetNavigationMenuItems())
                     {
                         <li>
-                            <NavLink href="@item.Path" class="tooltip tooltip-right" data-tip=@item.Name>
-                                <span class="@($"{item.Icon.IconString} text-2xl")"></span>
-                                @if (!_isCollapsed)
-                                {
-                                    <label class="px-3 text-base font-medium">@item.Name</label>
-                                }
+                            <NavLink href="@item.Path" class="is-active" data-tip=@item.Name>
+                                <span class="@($"{item.Icon.IconString}") "></span>
+                                <label class="px-3 text-base font-medium">@item.Name</label>
                             </NavLink>
                         </li>
                     }
+
                 </ul>
 
-                <ul class="@($"menu flex-none {(_isCollapsed ? "w-16" : "w-64")}")">
+                <ul>
                     <li>
-                        <NavLink href="Account/Admin" class="tooltip tooltip-right" data-tip="Administration">
-                            <span class="@($"icon-[mdi--delete] text-2xl")"></span>
-                            @if (!_isCollapsed)
-                            {
-                                <label class="px-3 text-base font-medium">Administration</label>
-                            }
-                        </NavLink>
+                        <a href="#">Administration</a>
+                    </li>
+                    <li>
+                        <a href="#">Settings</a>
                     </li>
                 </ul>
-
-                <footer
-                    class="flex-none footer sm:footer-horizontal bg-base-300 duration-300 max-h-12 ease-in-out footer-center text-base-content p-4">
-                    <aside class="text-xs">
-                        <p>@(_isCollapsed ? string.Empty : "Version ")@GetVersionNumber(_isCollapsed ? 5 : 14)</p>
-                    </aside>
+            </div>
+            <div class="l-footer--sticky">
+                <footer class="p-strip is-dark">
+                    <div class="l-docs__sidebar">
+                        <p style="padding-left: 1.5rem">© 2020 Canonical Ltd.</p>
+                    </div>
                 </footer>
-            </nav>
-            <!-- Main content -->
-            <main class="flex-1 p-6 overflow-auto bg-base-100">
-                @Body
-            </main>
+            </div>
+        </nav>
+    </aside>
+
+    <div class="l-docs__title" id="main-content">
+        <div class="p-section--shallow">
+            <div class="row">
+                <div class="col-12">
+                    <h1>This is page title.</h1>
+                </div>
+            </div>
         </div>
     </div>
+
+    <main class="l-docs__main">
+        <div class="row">
+            <div class="col-12">
+                @Body
+
+            </div>
+        </div>
+    </main>
 </div>
