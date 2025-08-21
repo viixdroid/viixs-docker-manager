@@ -4,6 +4,8 @@
     "tailwindcss": "^4.1.12"
   },
   "scripts": {
+    "build:css2": "npx sass --load-path=node_modules Styles:wwwroot/css --style=compressed",
+    "watch:css2": "npx sass -w --load-path=node_modules Styles:wwwroot/css --style=compressed",
     "build:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/css/docker-manager.css",
     "watch:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/css/docker-manager.css --watch"
   },
@@ -11,6 +13,8 @@
     "@iconify/json": "^2.2.371",
     "@iconify/tailwind4": "^1.0.6",
     "daisyui": "^5.0.50",
-    "nord": "^0.2.1"
+    "nord": "^0.2.1",
+    "sass": "^1.90.0",
+    "vanilla-framework": "^4.30.0"
   }
 }
