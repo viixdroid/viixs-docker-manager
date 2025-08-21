@@ -1,1 +1,36 @@
-﻿
+﻿.c-terminal-textarea {
+    /*--- Core Terminal Look ---*/
+
+    /*// Use a monospace font for the classic terminal feel*/
+    font-family: "Ubuntu Mono", monospace;
+
+    /*// Set the background and text colors*/
+    background-color: #111;
+    color: #00FF41; /*// A classic green */
+
+    /*// --- Textarea-specific Adjustments ---*/
+
+    /*// Remove the default border and outline from the textarea*/
+    border: none;
+    outline: none;
+    box-shadow: none;
+
+    /*// Make it fill its container*/
+    width: 100%;
+    height: 100%;
+
+    /*// Remove resize handle if you want a fixed size*/
+    resize: none;
+
+    /*// Style the blinking cursor (caret)*/
+    caret-color: #00FF41;
+
+    /*// Ensure consistent padding*/
+    padding: 1rem;
+}
+
+.p-card__header {
+    background-color: #333;
+    color: #fff;
+    border-bottom: 1px solid #444;
+}

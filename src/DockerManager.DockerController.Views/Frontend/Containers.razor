@@ -14,19 +14,20 @@
         </div>
     </NotAuthorized>
     <Authorized>
-        <div class="pl-2 pr-2 pt-5">
-            <ul class="list bg-base-200 rounded-box shadow-md">
+        <div class="p-card">
+            <ul class="p-list p-list--divided">
                 @{
                     foreach (var containerSummary in _containerSummaries)
                     {
-                        <a href="@($"/containers/{@containerSummary.CleanedName}")">
-                            <li class="list-row hover:bg-base-300">
-                                <div class="list-col-grow">
-                                    <div class="text-lg font-semibold">@containerSummary.CleanedName</div>
-                                    <div class="text-sm italic opacity-80">
-                                        created at @($"{containerSummary.Created:g}") with image @containerSummary.Image
-                                    </div>
-                                    <div>
+                        <li class="p-list__item">
+                            <div class="grid">
+                                <div class="grid-row--75-25">
+                                    <div class="grid-col">
+                                        <a href="@($"/containers/{@containerSummary.CleanedName}")"><p
+                                                class="p-heading--3 u-no-margin--bottom">@containerSummary.CleanedName</p>
+                                        </a>
+                                        <p class="u-text--muted u-no-margin--bottom">created
+                                            at @($"{containerSummary.Created:g}") with image @containerSummary.Image</p>
                                         @foreach (var port in containerSummary.Ports)
                                         {
                                             if (port.IsIpV6())
@@ -34,83 +35,40 @@
                                                 continue;
                                             }
 
-                                            @* <a href=@($"{port.Ip}:{port.PublicPort}")> *@
-                                            <span
-                                                class="badge badge-outline badge-secondary">
-                                                @port.GetFormattedPort()
-                                            </span>
-                                            // </a>
+                                            <button class="p-chip">
+                                                <span class="p-chip__value">
+                                                    @port.GetFormattedPort()
+                                                </span>
+                                            </button>
                                         }
                                     </div>
-                                </div>
-                                <div class="pt-2">
-                                    @if (containerSummary.State == ContainerState.Running)
-                                    {
-                                        <button class="btn btn-square btn-ghost">
-                                            <span
-                                                class="@($"text-{GetColorForContainerStatus(@containerSummary.State)}-500") size-[1.2em] icon-[mdi--pause]">
-                                            </span>
+                                    <div class="grid-col u-align--right u-align--center">
+                                        @{
+                                            if (containerSummary.State == ContainerState.Running)
+                                            {
+                                                <button class="p-button--positive has-icon">
+                                                    <i class="p-icon--pause"></i>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="p-button--positive has-icon">
+                                                    <i class="p-icon--play"></i>
+                                                </button>
+                                            }
+                                        }
+                                        <button class="p-button has-icon"><i class="p-icon--stop"></i></button>
+                                        <button class="p-button--negative has-icon"><i class="p-icon--delete"></i>
                                         </button>
-                                    }
-                                    else
-                                    {
-                                        <button class="btn btn-square btn-ghost">
-                                            <span
-                                                class="@($"text-{GetColorForContainerStatus(@containerSummary.State)}-500") size-[1.2em] icon-[mdi--play]">
-                                            </span>
-                                        </button>
-                                    }
+                                    </div>
                                 </div>
-                                <div>
-                                    <button class="btn btn-square btn-ghost">
-                                        <span
-                                            class="size-[1.2em] icon-[mdi--stop]">
-                                        </span>
-                                    </button>
-                                </div>
-                                <div>
-                                    <button class="btn btn-square btn-ghost">
-                                        <span
-                                            class="size-[1.2em] icon-[raphael--cross]">
-                                        </span>
-                                    </button>
-                                </div>
-                            </li>
-                        </a>
+                            </div>
+                        </li>
                     }
                 }
             </ul>
         </div>
 
-        @* <div class="overflow-x-auto border border-base-content/5 bg-base-100"> *@
-        @*     <table class="table"> *@
-        @*         <thead class="bg-base-300 text-base-content"> *@
-        @*         <tr> *@
-        @*             <th></th> *@
-        @*             <th>Name</th> *@
-        @*             <th>State</th> *@
-        @*             <th>Image</th> *@
-        @*             <th>Created</th> *@
-        @*         </tr> *@
-        @*         </thead> *@
-        @*         <tbody> *@
-        @*         @{ *@
-        @*             foreach (var containerSummary in _containerSummaries) *@
-        @*             { *@
-        @*                 <tr class="hover:bg-base-300"> *@
-        @*                     <td><input type="checkbox"/></td> *@
-        @*                     <td> *@
-        @*                         <a href="@($"/containers/{@containerSummary.CleanedName}")" *@
-        @*                            class="underline">@containerSummary.CleanedName</a></td> *@
-        @*                     <td><span class="text-green-500">@containerSummary.State</span></td> *@
-        @*                     <td><span class="inline-block">@containerSummary.Image</span></td> *@
-        @*                     <td>@($"{containerSummary.Created:g}")</td> *@
-        @*                 </tr> *@
-        @*             } *@
-        @*         } *@
-        @* *@
-        @*         </tbody> *@
-        @*     </table> *@
-        @* </div> *@
+
     </Authorized>
 </AuthorizeView>

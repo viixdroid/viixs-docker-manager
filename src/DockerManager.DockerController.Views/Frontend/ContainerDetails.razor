@@ -4,47 +4,61 @@
 
 <div class="divider pb-5"></div>
 
-<div class="tabs tabs-border">
-    <input type="radio" name="my_tabs_2" class="tab" aria-label="Overview"/>
-    <div class="tab-content border-base-300 bg-base-200 p-5">
-        We should show some overview information here, like the container name, image, state, and other details.
-    </div>
-
-    <input type="radio" name="my_tabs_2" class="tab" aria-label="Configuration"/>
-    <div class="tab-content border-base-300 bg-base-200 p-5">
-        Show some configuration details here, like environment variables, ports, volumes, etc.
-    </div>
-
-    <input type="radio" name="my_tabs_2" class="tab" aria-label="Terminal" checked="checked"/>
-    <div class="tab-content border-base-300 bg-base-200 p-5">
-        <div class="mockup-code w-full border border-secondary">
-            <div class="flex">
-                <pre class="text-success font-bold flex-none"><code>user@viix-container-manager</code></pre>
-                <pre data-prefix="$" class="flex-initial -mr-2"><code>npm i daisyui</code></pre>
-            </div>
-            <div class="flex">
-                <pre class="text-success font-bold flex-none"><code>user@viix-container-manager</code></pre>
-                <pre data-prefix=">" class="text-warning flex-initial"><code>installing...</code></pre>
-            </div>
-            <div class="flex">
-                <pre class="text-success font-bold flex-none"><code>user@viix-container-manager</code></pre>
-                <pre data-prefix=">" class="text-success flex-initial"><code>Done!</code></pre>
-            </div>
-            <div class="flex">
-                <pre class="text-success font-bold flex-none"><code>user@viix-container-manager</code></pre>
-                <pre data-prefix=">" class="text-info flex-initial"><code><input type="text" class="input input-ghost"/></code></pre>
-            </div>
+<div class="p-tabs">
+    <div class="p-tabs__list" role="tablist">
+        <div class="p-tabs__item">
+            <button class="p-tabs__link" role="tab" aria-selected="true" aria-controls="overview-tab" id="overview">
+                Overview
+            </button>
+        </div>
+        <div class="p-tabs__item">
+            <button class="p-tabs__link" role="tab" aria-selected="false" aria-controls="configuration-tab"
+                    id="configuration">
+                Configuration
+            </button>
+        </div>
+        <div class="p-tabs__item">
+            <button class="p-tabs__link" role="tab" aria-selected="false" aria-controls="terminal-tab"
+                    id="terminal">
+                Terminal
+            </button>
+        </div>
+        <div class="p-tabs__item">
+            <button class="p-tabs__link" role="tab" aria-selected="false" aria-controls="logs-tab"
+                    id="logs">
+                Logs
+            </button>
+        </div>
+        <div class="p-tabs__item">
+            <button class="p-tabs__link" role="tab" aria-selected="false" aria-controls="stats-tab"
+                    id="stats">
+                Stats
+            </button>
         </div>
     </div>
 
-    <input type="radio" name="my_tabs_2" class="tab" aria-label="Logs"/>
-    <div class="tab-content border-base-300 bg-base-200  p-5">
+    <div tabindex="0" role="tabpanel" id="overview-tab" aria-labelledby="overview">
+        We should show some overview information here, like the container name, image, state, and other details.
+    </div>
+    <div tabindex="0" role="tabpanel" id="configuration-tab" aria-labelledby="configuration">
+        Show some configuration details here, like environment variables, ports, volumes, etc.
+    </div>
+    <div tabindex="0" role="tabpanel" id="terminal-tab" aria-labelledby="terminal">
+        <div class="p-card u-no-padding">
+            <div class="p-card__header">
+                <h5 class="p-card__title">my-terminal</h5>
+            </div>
+            <div class="p-card__content">
+                <textarea class="c-terminal-textarea" id="my-terminal-input" rows="10"></textarea>
+            </div>
+        </div>
+    </div>
+    <div tabindex="0" role="tabpanel" id="logs-tab" aria-labelledby="logs">
         Show table of logs here, with options to filter by date, level, etc.
     </div>
-
-    <input type="radio" name="my_tabs_2" class="tab" aria-label="Stats"/>
-    <div class="tab-content border-base-300 bg-base-200 p-5">
+    <div tabindex="0" role="tabpanel" id="stats-tab" aria-labelledby="stats">
         Live stats of the container, like CPU usage, memory usage, network I/O, etc.
     </div>
+
 </div>
 
