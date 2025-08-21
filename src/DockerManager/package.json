@@ -5,7 +5,7 @@
   },
   "scripts": {
     "build:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/css/docker-manager.css",
-    "watch:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/docker-manager.css --watch"
+    "watch:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/css/docker-manager.css --watch"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.371",

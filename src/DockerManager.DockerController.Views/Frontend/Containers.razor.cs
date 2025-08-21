@@ -12,4 +12,19 @@ public partial class Containers(IContainerService containerService) : ComponentB
     {
         _containerSummaries = await containerService.GetContainers();
     }
+
+    private static string GetColorForContainerStatus(ContainerState state)
+    {
+        return state switch
+        {
+            ContainerState.Running => "green",
+            ContainerState.Exited => "red",
+            ContainerState.Paused => "yellow",
+            ContainerState.Created => "blue",
+            ContainerState.Restarting => "orange",
+            ContainerState.Removing => "purple",
+            ContainerState.Dead => "black",
+            _ => "gray"
+        };
+    }
 }

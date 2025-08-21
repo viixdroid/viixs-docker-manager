@@ -1,8 +1,9 @@
-﻿using DockerManager.Helpers;
-using DockerManager.Services.Interfaces;
+﻿using DockerManager.Shared.Helpers;
+using DockerManager.Shared.Services.Interfaces;
+using DockerManager.Shared.Views.Services.Interfaces;
 using Microsoft.JSInterop;
 
-namespace DockerManager.Services;
+namespace DockerManager.Shared.Views.Services;
 
 public class ThemeService(IJSRuntime jsRuntime, ILocalStorageService localStorageService)
     : IThemeService, IAsyncInitialization

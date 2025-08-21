@@ -11,10 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\Docker\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Update="Layouts\MainLayout.razor">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </Content>

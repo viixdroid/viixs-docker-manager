@@ -1,7 +1,8 @@
-using DockerManager.Services.Interfaces;
+using DockerManager.Shared.Services.Interfaces;
+using DockerManager.Shared.Views.Services.Interfaces;
 using Microsoft.JSInterop;
 
-namespace DockerManager.Services;
+namespace DockerManager.Shared.Views.Services;
 
 public class AsyncServicesFactory //Should keep constructorless
     : IAsyncServicesFactory

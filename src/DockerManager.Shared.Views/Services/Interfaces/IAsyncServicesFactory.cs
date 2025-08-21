@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace DockerManager.Services.Interfaces;
+namespace DockerManager.Shared.Views.Services.Interfaces;
 
 public interface IAsyncServicesFactory
 {

@@ -50,6 +50,7 @@
     </deployment>
     <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
     <method v="2">
+      <option name="Build" default="false" projectName="DockerManager" projectPath="$PROJECT_DIR$/DockerManager/DockerManager.csproj" />
       <option name="Build Solution" enabled="true" />
     </method>
   </configuration>

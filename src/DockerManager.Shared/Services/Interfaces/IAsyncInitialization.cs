@@ -1,4 +1,4 @@
-namespace DockerManager.Services.Interfaces;
+namespace DockerManager.Shared.Services.Interfaces;
 
 public interface IAsyncInitialization
 {

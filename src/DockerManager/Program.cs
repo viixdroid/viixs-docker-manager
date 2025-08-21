@@ -5,6 +5,7 @@ using DockerManager.DockerControl.Extensions;
 using DockerManager.DockerController.Views.Extensions;
 using DockerManager.Extensions;
 using DockerManager.Shared.Extensions;
+using DockerManager.Shared.Views.Extensions;
 using static DockerManager.Shared.Constants.ApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,7 @@ builder.Services.AddHttpClient(BackendApiHttpClientName);
 builder.Services.AddDockerControlServices();
 builder.Services.AddDockerControllerViewsServices();
 builder.Services.AddDockerManagerAuthenticationViewServices();
+builder.Services.AddDockerManagerSharedViewServices();
 
 var app = builder.Build();
 

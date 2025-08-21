@@ -1,4 +1,4 @@
-namespace DockerManager.Helpers;
+namespace DockerManager.Shared.Helpers;
 
 public static class Guard
 {

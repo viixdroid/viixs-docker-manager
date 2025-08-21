@@ -1,5 +1,6 @@
 ﻿@page "/"
 @page "/Containers"
+@using DockerManager.DockerControl.Models
 
 <h3 class="font-bold text-3xl">Containers</h3>
 
@@ -8,40 +9,108 @@
         <div class="grid h-full place-items-center">
             <div class="flex flex-col w-2/5 text-center">
                 <p class="text-lg">Please log in to view the containers.</p>
-                <GoToLoginButton />
+                <GoToLoginButton/>
             </div>
         </div>
     </NotAuthorized>
     <Authorized>
-        <div class="overflow-x-auto border border-base-content/5 bg-base-100">
-            <table class="table">
-                <thead class="bg-base-300 text-base-content">
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>State</th>
-                    <th>Image</th>
-                    <th>Created</th>
-                </tr>
-                </thead>
-                <tbody>
+        <div class="pl-2 pr-2 pt-5">
+            <ul class="list bg-base-200 rounded-box shadow-md">
                 @{
                     foreach (var containerSummary in _containerSummaries)
                     {
-                        <tr class="hover:bg-base-300">
-                            <td><input type="checkbox"/></td>
-                            <td>
-                                <a href="@($"/containers/{@containerSummary.CleanedName}")"
-                                   class="underline">@containerSummary.CleanedName</a></td>
-                            <td><span class="text-green-500">@containerSummary.State</span></td>
-                            <td><span class="inline-block">@containerSummary.Image</span></td>
-                            <td>@($"{containerSummary.Created:g}")</td>
-                        </tr>
+                        <a href="@($"/containers/{@containerSummary.CleanedName}")">
+                            <li class="list-row hover:bg-base-300">
+                                <div class="list-col-grow">
+                                    <div class="text-lg font-semibold">@containerSummary.CleanedName</div>
+                                    <div class="text-sm italic opacity-80">
+                                        created at @($"{containerSummary.Created:g}") with image @containerSummary.Image
+                                    </div>
+                                    <div>
+                                        @foreach (var port in containerSummary.Ports)
+                                        {
+                                            if (port.IsIpV6())
+                                            {
+                                                continue;
+                                            }
+
+                                            @* <a href=@($"{port.Ip}:{port.PublicPort}")> *@
+                                            <span
+                                                class="badge badge-outline badge-secondary">
+                                                @port.GetFormattedPort()
+                                            </span>
+                                            // </a>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="pt-2">
+                                    @if (containerSummary.State == ContainerState.Running)
+                                    {
+                                        <button class="btn btn-square btn-ghost">
+                                            <span
+                                                class="@($"text-{GetColorForContainerStatus(@containerSummary.State)}-500") size-[1.2em] icon-[mdi--pause]">
+                                            </span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-square btn-ghost">
+                                            <span
+                                                class="@($"text-{GetColorForContainerStatus(@containerSummary.State)}-500") size-[1.2em] icon-[mdi--play]">
+                                            </span>
+                                        </button>
+                                    }
+                                </div>
+                                <div>
+                                    <button class="btn btn-square btn-ghost">
+                                        <span
+                                            class="size-[1.2em] icon-[mdi--stop]">
+                                        </span>
+                                    </button>
+                                </div>
+                                <div>
+                                    <button class="btn btn-square btn-ghost">
+                                        <span
+                                            class="size-[1.2em] icon-[raphael--cross]">
+                                        </span>
+                                    </button>
+                                </div>
+                            </li>
+                        </a>
                     }
                 }
-
-                </tbody>
-            </table>
+            </ul>
         </div>
+
+        @* <div class="overflow-x-auto border border-base-content/5 bg-base-100"> *@
+        @*     <table class="table"> *@
+        @*         <thead class="bg-base-300 text-base-content"> *@
+        @*         <tr> *@
+        @*             <th></th> *@
+        @*             <th>Name</th> *@
+        @*             <th>State</th> *@
+        @*             <th>Image</th> *@
+        @*             <th>Created</th> *@
+        @*         </tr> *@
+        @*         </thead> *@
+        @*         <tbody> *@
+        @*         @{ *@
+        @*             foreach (var containerSummary in _containerSummaries) *@
+        @*             { *@
+        @*                 <tr class="hover:bg-base-300"> *@
+        @*                     <td><input type="checkbox"/></td> *@
+        @*                     <td> *@
+        @*                         <a href="@($"/containers/{@containerSummary.CleanedName}")" *@
+        @*                            class="underline">@containerSummary.CleanedName</a></td> *@
+        @*                     <td><span class="text-green-500">@containerSummary.State</span></td> *@
+        @*                     <td><span class="inline-block">@containerSummary.Image</span></td> *@
+        @*                     <td>@($"{containerSummary.Created:g}")</td> *@
+        @*                 </tr> *@
+        @*             } *@
+        @*         } *@
+        @* *@
+        @*         </tbody> *@
+        @*     </table> *@
+        @* </div> *@
     </Authorized>
 </AuthorizeView>
