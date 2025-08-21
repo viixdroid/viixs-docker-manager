@@ -1,32 +1,31 @@
 using DockerManager.Auth.Extensions;
+using DockerManager.Auth.Views.Extensions;
 using DockerManager.Components;
+using DockerManager.DockerControl.Extensions;
+using DockerManager.DockerController.Views.Extensions;
 using DockerManager.Extensions;
-using DockerManager.Providers;
-using DockerManager.Services;
-using DockerManager.Services.Interfaces;
 using DockerManager.Shared.Extensions;
-using Microsoft.AspNetCore.Components.Authorization;
-using static DockerManager.Constants.ApplicationConstants;
+using DockerManager.Shared.Views.Extensions;
+using static DockerManager.Shared.Constants.ApplicationConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
     .AddDataProtectionServices()
-    .AddSharedServices()
-    .AddAuthenticationService(builder.Configuration)
     .AddRazorComponents()
     .AddInteractiveServerComponents()
     ;
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient(BackendApiHttpClientName);
 
-//TODO: move to a more appropriate place
-builder.Services.AddScoped<IRegisterService, RegisterService>();
-builder.Services.AddScoped<ILoginService, LoginService>();
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationProvider>();
-builder.Services.AddSingleton<IAsyncServicesFactory, AsyncServicesFactory>();
+builder.Services.AddSharedServices();
+builder.Services.AddAuthenticationService(builder.Configuration);
+builder.Services.AddHttpClient(BackendApiHttpClientName);
+builder.Services.AddDockerControlServices();
+builder.Services.AddDockerControllerViewsServices();
+builder.Services.AddDockerManagerAuthenticationViewServices();
+builder.Services.AddDockerManagerSharedViewServices();
 
 var app = builder.Build();
 
@@ -48,6 +47,11 @@ app.MapStaticAssets();
 
 app.MapControllers();
 app.MapRazorComponents<App>()
+    .AddAdditionalAssemblies(
+        typeof(ServicesExtensions).Assembly,
+        typeof(DockerControllerViewsServicesExtensions).Assembly,
+        typeof(DockerManagerAuthenticationViewServicesExtensions).Assembly
+    )
     .AddInteractiveServerRenderMode()
     ;
 

@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Areas\MyFeature\Pages\Page1.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Frontend\Login.razor" />
+      <None Include="Frontend\Register.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\Interfaces\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DockerManager.Auth\DockerManager.Auth.csproj" />
+      <ProjectReference Include="..\DockerManager.Shared.Views\DockerManager.Shared.Views.csproj" />
+    </ItemGroup>
+
+
+</Project>

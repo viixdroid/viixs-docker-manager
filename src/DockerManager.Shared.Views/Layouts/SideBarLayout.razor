@@ -1,0 +1,175 @@
+﻿@inherits LayoutComponentBase
+
+<div class="flex flex-col h-screen w-screen">
+    <header class="flex-none navbar h-14 max-h-14 bg-base-200">
+        <div class="flex-1 w-64 max-w-64">
+            <a class="btn btn-ghost text-xl">@ApplicationName</a>
+        </div>
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl">Environment: nuc</a>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal px-1">
+                <li>
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="0" role="button" class="btn bg-transparent">
+                            Theme: @CurrentTheme
+                            <span class="icon-[mdi--chevron-down] text-2xl"></span>
+                        </div>
+                        <ul tabindex="0" class="dropdown-content bg-base-300 z-1 w-52 p-2 shadow-2xl">
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    aria-label="Light"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    value="nord"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Dark"
+                                    value="nord-dark"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Dracula"
+                                    value="dracula"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Dim"
+                                    value="dim"/>
+                            </li>
+
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Dark"
+                                    value="dark"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Winter"
+                                    value="winter"/>
+                            </li>
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Wireframe"
+                                    value="wireframe"/>
+                            </li>
+
+                            <li>
+                                <input
+                                    type="radio"
+                                    name="theme-dropdown"
+                                    class="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                                    @onchange="args => SetChosenThemeAsync(args.Value!.ToString())"
+                                    aria-label="Fantasy"
+                                    value="fantasy"/>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="1" role="button" class="btn btn-ghost">
+                            User
+                            <span class="icon-[mdi--chevron-down] text-2xl"></span>
+                        </div>
+                        <ul tabindex="1"
+                            class="dropdown-content bg-base-300 z-1 w-52 p-2 shadow-2xl">
+                            <li>
+                                <a class="justify-between">
+                                    Profile
+                                    <span class="badge">New</span>
+                                </a>
+                            </li>
+                            <li><a>Settings</a></li>
+                            <li><a>Logout</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="flex-auto">
+        <div class="flex flex-row h-full">
+
+            <!-- Sidebar -->
+            <nav
+                class="@($"relative bg-base-200 flex flex-col transition-all duration-300 {(_isCollapsed ? "w-16" : "w-64")}")">
+                <div class="flex-none navbar static">
+                    <div class="flex-none pl-2 ml-2 absolute top-5 -right-3">
+                        <button class="btn btn-circle btn-outline btn-xs" @onclick="ToggleSidebar">
+                        <span
+                            class="@($"{(_isCollapsed ? "icon-[mdi--chevron-right]" : "icon-[mdi--chevron-left]")}")"></span>
+
+                        </button>
+                    </div>
+
+                </div>
+                <ul class="@($"menu grow {(_isCollapsed ? "w-16" : "w-64")}")">
+                    @foreach (var item in navigationMenuService.GetNavigationMenuItems())
+                    {
+                        <li>
+                            <NavLink href="@item.Path" class="tooltip tooltip-right" data-tip=@item.Name>
+                                <span class="@($"{item.Icon.IconString} text-2xl")"></span>
+                                @if (!_isCollapsed)
+                                {
+                                    <label class="px-3 text-base font-medium">@item.Name</label>
+                                }
+                            </NavLink>
+                        </li>
+                    }
+                </ul>
+
+                <ul class="@($"menu flex-none {(_isCollapsed ? "w-16" : "w-64")}")">
+                    <li>
+                        <NavLink href="Account/Admin" class="tooltip tooltip-right" data-tip="Administration">
+                            <span class="@($"icon-[mdi--delete] text-2xl")"></span>
+                            @if (!_isCollapsed)
+                            {
+                                <label class="px-3 text-base font-medium">Administration</label>
+                            }
+                        </NavLink>
+                    </li>
+                </ul>
+
+                <footer
+                    class="flex-none footer sm:footer-horizontal bg-base-300 duration-300 max-h-12 ease-in-out footer-center text-base-content p-4">
+                    <aside class="text-xs">
+                        <p>@(_isCollapsed ? string.Empty : "Version ")@GetVersionNumber(_isCollapsed ? 5 : 14)</p>
+                    </aside>
+                </footer>
+            </nav>
+            <!-- Main content -->
+            <main class="flex-1 p-6 overflow-auto bg-base-100">
+                @Body
+            </main>
+        </div>
+    </div>
+</div>

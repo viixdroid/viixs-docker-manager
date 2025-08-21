@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.11",
-    "tailwindcss": "^4.1.11"
+    "@tailwindcss/cli": "^4.1.12",
+    "tailwindcss": "^4.1.12"
   },
   "scripts": {
-    "build:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/docker-manager.css",
-    "watch:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/docker-manager.css --watch"
+    "build:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/css/docker-manager.css",
+    "watch:css": "npx @tailwindcss/cli -i wwwroot/app.css -o wwwroot/css/docker-manager.css --watch"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.371",

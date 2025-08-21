@@ -1,37 +1,64 @@
-@import "tailwindcss";
+/*@import "vanilla-framework";*/
+
+@import "tailwindcss" source("../../");
+/* Link to the src folder, but do leave the dockermanager project with Source*/
 @import "./nord.css";
 
-@plugin "@iconify/tailwind4";
 @plugin "daisyui" {
-    themes: nord --default, nord-dark --prefersdark;
+    themes: nord --default, dracula --prefers-dark, dim, nord-dark, winter;
+    /*themes: all;*/
 }
+
+@plugin "@iconify/tailwind4";
+
+/*@include vanilla;*/
 
 /* TODO: Add licenses for the fonts */
 @font-face {
     font-family: "Noto Sans Italic";
-    src: url("fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf") format("truetype");
+    src: url("../fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf") format("truetype");
     font-weight: 400 1000;
     font-display: swap;
 }
 
 @font-face {
     font-family: "Noto Sans";
-    src: url("fonts/NotoSans-VariableFont_wdth,wght.ttf") format("truetype");
+    src: url("../fonts/NotoSans-VariableFont_wdth,wght.ttf") format("truetype");
     font-weight: 400 1000;
     font-display: swap;
 }
 
 @font-face {
     font-family: "Ubuntu Sans Mono";
-    src: url("fonts/UbuntuSansMono-VariableFont_wght.ttf") format("truetype");
+    src: url("../fonts/UbuntuSansMono-VariableFont_wght.ttf") format("truetype");
     font-weight: 500 600;
     font-display: swap;
 }
 
 @font-face {
     font-family: "Ubuntu Sans Mono Italic";
-    src: url("fonts/UbuntuSansMono-Italic-VariableFont_wght.ttf") format("truetype");
+    src: url("../fonts/UbuntuSansMono-Italic-VariableFont_wght.ttf") format("truetype");
     font-weight: 500 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Ubuntu";
+    src: url("../fonts/Ubuntu-Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Ubuntu Bold";
+    src: url("../fonts/Ubuntu-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Ubuntu Italic";
+    src: url("../fonts/Ubuntu-Italic.ttf") format("truetype");
+    font-style: italic;
     font-display: swap;
 }
 
@@ -57,7 +84,7 @@
     --color-success: var(--nord14);
     --color-success-content: var(--nord1);
     --color-warning: var(--nord13);
-    --color-warning-content:var(--nord1);
+    --color-warning-content: var(--nord1);
     --color-error: var(--nord11);
     --color-error-content: var(--nord5);
     --radius-selector: 0.5rem;
@@ -72,11 +99,13 @@
 
 
 @theme{
-    --font-primary: "Noto Sans";
+    --font-primary: "Ubuntu";
+    --font-weight-semibold: "Ubuntu Bold";
+    --font-weight-bold: "Ubuntu Bold";
     --font-mono: "Ubuntu Sans Mono";
     --font-mono-italic: "Ubuntu Sans Mono Italic";
 }
 
 body {
-    font-family: "Noto Sans", sans-serif;
+    font-family: "Ubuntu", "Noto Sans", sans-serif;
 }

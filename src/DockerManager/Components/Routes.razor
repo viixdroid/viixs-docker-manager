@@ -1,6 +1,15 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
+﻿@using DockerManager.Auth.Views.Extensions
+@using DockerManager.DockerController.Views.Extensions
+@using DockerManager.Shared.Extensions
+
+<Router AppAssembly="typeof(Program).Assembly"
+        AdditionalAssemblies="[
+            typeof(ServicesExtensions).Assembly,
+            typeof(DockerControllerViewsServicesExtensions).Assembly,
+            typeof(DockerManagerAuthenticationViewServicesExtensions).Assembly
+        ]">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.SideBarLayout)">
+        <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(SideBarLayout)">
             <NotAuthorized>
                 Not Authorized. You do not have permission to view this page.
             </NotAuthorized>
@@ -9,7 +18,7 @@
     </Found>
     <NotFound>
         <CascadingAuthenticationState>
-            <LayoutView Layout="typeof(Layout.SideBarLayout)">
+            <LayoutView Layout="typeof(SideBarLayout)">
                 <p>Sorry, there's nothing at this address.</p>
             </LayoutView>
         </CascadingAuthenticationState>

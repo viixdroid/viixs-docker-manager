@@ -1,21 +1,21 @@
 ﻿<!DOCTYPE html>
-<html lang="en" data-theme="nord">
+<html lang="en">
 
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <base href="/"/>
-    <link rel="stylesheet" href="@Assets["docker-manager.css"]"/>
+    <link rel="stylesheet" href="@Assets["/css/docker-manager.css"]"/>
     <link rel="stylesheet" href="@Assets["DockerManager.styles.css"]"/>
     <ImportMap/>
     <HeadOutlet/>
-    <title>@Constants.ApplicationConstants.ApplicationName</title>
+    <title>@ApplicationName</title>
     <script src="js/ThemeService.OnPageLoad.js"></script>
 </head>
 
-<body>
+<body id="mainBody">
 <!-- No prerender because of localstorage -->
-<Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+<Routes @rendermode="new InteractiveServerRenderMode(prerender: false)"/>
 <script src="_framework/blazor.web.js"></script>
 </body>
 
