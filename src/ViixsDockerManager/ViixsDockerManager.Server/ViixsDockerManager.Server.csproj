@@ -17,7 +17,9 @@
     <ProjectReference Include="..\viixsdockermanager.client\viixsdockermanager.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\ViixsDockerManager.DockLight\ViixsDockerManager.DockLight.csproj" />
     <ProjectReference Include="..\ViixsDockerManager.ServiceDefaults\ViixsDockerManager.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
   </ItemGroup>
 
 </Project>
