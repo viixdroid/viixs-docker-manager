@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ViixsDockerManager.DockLight.Services.Interfaces;
 using ViixsDockerManager.Shared.Controllers;
+using ViixsDockerManager.Shared.Exceptions;
 
 namespace ViixsDockerManager.DockLight.Controllers;
 
@@ -10,7 +12,15 @@ public class ContainersController(IDockerContainersService dockerContainersServi
     [HttpGet]
     public async Task<IActionResult> GetContainers()
     {
-        var result = await dockerContainersService.GetContainerListAsync();
-        return Ok(result);
+        try
+        {
+            var result = await dockerContainersService.GetContainerListAsync();
+            return Ok(result);
+        }
+        catch (ViixsDockerManagerException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                System.Text.Json.JsonSerializer.Serialize("We could not return the expected object."));
+        }
     }
 }
