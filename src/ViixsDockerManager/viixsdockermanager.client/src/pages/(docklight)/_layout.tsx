@@ -96,7 +96,7 @@ const DockLightLayout = () => {
               paddingRight: '10px'
             }}
             alt={"Viixs Docker manager"}
-            src='../../../public/favicon.svg'
+            src='/favicon.svg'
           />
           <Typography variant="h6" noWrap component="div">
             Viixs Docker Manager
