@@ -1,31 +1,49 @@
-﻿import {Box, Chip, IconButton, List, ListItem, ListItemText, Typography} from "@mui/material";
+﻿import {Button, IconButton, List, ListItem, ListItemText, Typography} from "@mui/material";
 import type {ContainerSummary} from "./container-summary.ts";
 import {useEffect, useState} from "react";
-import React from "react";
 import {PlayArrow, Stop} from "@mui/icons-material";
 import ListItemButton from "@mui/material/ListItemButton";
 import {Link} from "react-router";
+import type {ApiObject} from "../../../models/api-object.ts";
 
 const Index = () => {
   const [containers, setContainers] = useState<ContainerSummary[]>()
+  const [isError, setIsError] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     getContainerData()
   }, []);
 
   const getContainerData = async () => {
+    console.log(
+      'We started'
+    )
     try {
+      setIsLoading(true)
       const response = await fetch('/api/containers')
-      console.log(response)
+
       if (!response.ok) {
         setContainers([])
+        setIsLoading(false)
+        return
       }
       // console.log(await response.text())
-      const data: ContainerSummary[] = await response.json()
-      console.log(data);
-      setContainers(data);
+      const data: ApiObject<ContainerSummary[]> = await response.json()
+      if (!data.isSuccess) {
+        setIsError(true)
+        setIsLoading(false)
+        return
+      }
+      if (data.result) {
+        setContainers(data.result);
+        setIsError(false)
+      }
+      setIsLoading(false)
     } catch (error) {
-      console.error('Error fetching container data:', error)
+      console.error(error)
+      setIsError(true)
+      setIsLoading(false)
     }
   }
 
@@ -59,7 +77,7 @@ const Index = () => {
                   >
                     created at {container.created.toLocaleString()} with image {container.image}
                   </Typography>
-                  { /* TODO: Fix this. */ }
+                  { /* TODO: Fix this. */}
                   {/*<Box*/}
                   {/*  component='div'*/}
                   {/*  sx={{*/}
@@ -83,7 +101,10 @@ const Index = () => {
 
   return (
     <>
-      {containerContent}
+      <Button onClick={getContainerData}>Refresh</Button>
+      {isLoading && !isError && <div><p>We loading data atm... pls wait..</p></div>}
+      {!isLoading && isError && <div><p>An error from the backend.</p></div>}
+      {containers && containerContent}
     </>
   )
     ;
