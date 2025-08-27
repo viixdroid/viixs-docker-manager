@@ -6,6 +6,7 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddDockLightServices();
+builder.Services.AddExceptionHandlerService();
 
 
 builder.Services.AddControllers();
@@ -14,6 +15,10 @@ builder.Services.AddOpenApi();
 
 
 var app = builder.Build();
+
+app.UseExceptionHandlerService();
+
+app.UseSerilogRequestLogging();
 
 app.MapDefaultEndpoints();
 
