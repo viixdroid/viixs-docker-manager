@@ -48,7 +48,9 @@ public class ViixsServiceExceptionHandler<TService> : DispatchProxy
             return targetMethod.AsAsyncWithResult(_service, args, WrapException);
         }
         catch (Exception exception)
-            when (exception is TargetInvocationException or AggregateException)
+            when (exception is TargetInvocationException
+                      or AggregateException
+                      or ViixDockerManagerWithHttpStatusCodeException)
         {
             WrapException(targetMethod, exception);
             return null; //Should have already thrown here.
@@ -57,12 +59,22 @@ public class ViixsServiceExceptionHandler<TService> : DispatchProxy
 
     private void WrapException(MethodInfo? methodInfo, Exception exception)
     {
+        if (exception is ViixDockerManagerWithHttpStatusCodeException viixDockerManagerWithHttpStatusCodeException)
+        {
+            throw viixDockerManagerWithHttpStatusCodeException;
+        }
+
         var innerException = exception.InnerException ?? exception;
+        //The inner exception can also be a custom exception.
+        if (innerException is ViixDockerManagerWithHttpStatusCodeException
+            viixDockerManagerWithHttpStatusCodeException1)
+        {
+            throw viixDockerManagerWithHttpStatusCodeException1;
+        }
 
-        _logger.LogError(innerException,
-            "The service method {Service}::{Method} threw and exception with message: {ExceptionMessage}",
-            typeof(TService).Name, methodInfo?.Name ?? "Unknown Method", exception.Message);
-
-        throw ViixsDockerManagerException.ServiceException(innerException.Message, innerException);
+        var serviceFaultedException = new ServiceFaultUnhandledException(typeof(TService).Name,
+            methodInfo?.Name ?? "Unknown Method", innerException);
+        serviceFaultedException.Log(_logger);
+        throw serviceFaultedException;
     }
 }

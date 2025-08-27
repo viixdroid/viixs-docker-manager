@@ -1,5 +1,6 @@
 ﻿using Docker.DotNet;
 using Docker.DotNet.Models;
+using ViixsDockerManager.DockLight.Exceptions;
 using ViixsDockerManager.DockLight.Models;
 using ViixsDockerManager.DockLight.Services.Interfaces;
 using ViixsDockerManager.Shared.Exceptions;
@@ -26,6 +27,10 @@ public class DockerContainersService : IDockerContainersService
             All = true
         };
         var containers = await _containerOperations.ListContainersAsync(containerListParameters);
+        if (containers.Count == 0)
+        {
+            throw new NoContainersFoundException();
+        }
         return containers.Select(c => (ContainerSummary)c);
     }
 }
