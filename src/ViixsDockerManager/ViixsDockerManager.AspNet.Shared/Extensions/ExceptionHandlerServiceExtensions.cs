@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using ViixsDockerManager.Shared.Middlewares;
+using ViixDockerManager.AspNet.Shared.Handlers;
 
-namespace ViixsDockerManager.Shared.Extensions;
+namespace ViixDockerManager.AspNet.Shared.Extensions;
 
 public static class ExceptionHandlerServiceExtensions
 {

@@ -1,11 +1,11 @@
 ﻿using System.Net;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using ViixsDockerManager.Shared.Exceptions;
 using ViixsDockerManager.Shared.Models;
 
-namespace ViixsDockerManager.Shared.Middlewares;
+namespace ViixDockerManager.AspNet.Shared.Handlers;
 
 public class ViixsDockerManagerExceptionHandler(ILogger<ViixsDockerManagerExceptionHandler> logger) : IExceptionHandler
 {

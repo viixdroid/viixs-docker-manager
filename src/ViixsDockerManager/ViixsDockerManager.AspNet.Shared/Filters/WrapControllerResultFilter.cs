@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using ViixsDockerManager.Shared.Models;
 
-namespace ViixsDockerManager.Shared.Filters;
+namespace ViixDockerManager.AspNet.Shared.Filters;
 
 public class WrapControllerResultFilter(ILogger<WrapControllerResultFilter> logger) : IResultFilter
 {
