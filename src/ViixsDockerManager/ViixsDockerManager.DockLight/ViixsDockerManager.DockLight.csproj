@@ -6,8 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>        
+        <PackageReference Include="Docker.DotNet.Enhanced" Version="3.128.5" />
+    </ItemGroup>
+    
     <ItemGroup>
-      <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
+        <ProjectReference Include="..\ViixDockerManager.AspNet.Shared\ViixDockerManager.AspNet.Shared.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
     </ItemGroup>
 
 </Project>

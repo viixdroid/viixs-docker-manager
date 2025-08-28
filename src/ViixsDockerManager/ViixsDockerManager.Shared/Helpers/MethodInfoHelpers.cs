@@ -1,10 +1,32 @@
 ﻿using System.Reflection;
+using ViixsDockerManager.Shared.Services;
 
 namespace ViixsDockerManager.Shared.Helpers;
 
 internal static class MethodInfoHelpers
 {
-    public static async Task AsAsync<TService>(this MethodInfo targetMethod, TService service, object?[]? arguments,
+    /// <summary>
+    /// Runs a given method on a service as a Task. This means we can await it, assuming the methodinfo returns a task.
+    ///
+    /// </summary>
+    /// <param name="targetMethod">
+    /// Which method to run async
+    /// </param>
+    /// <param name="service">
+    /// The service object which has the <see cref="targetMethod"/>
+    /// </param>
+    /// <param name="arguments">
+    /// An array of objects which represents the arguments needed for the method to run
+    /// </param>
+    /// <param name="onException">
+    /// A callback that happens when there is an exception while running the <see cref="targetMethod"/>.
+    ///
+    /// In this callback you can handle any of the exceptions thrown
+    /// </param>
+    /// <typeparam name="TService">
+    /// The service type which contains the <see cref="targetMethod"/>
+    /// </typeparam>
+    public static async Task InvokeAsAsync<TService>(this MethodInfo targetMethod, TService service, object?[]? arguments,
         Action<MethodInfo?, Exception>? onException = null)
     {
         targetMethod = Guard.ValueIsNotNull(targetMethod, nameof(targetMethod));
@@ -19,7 +41,32 @@ internal static class MethodInfoHelpers
         }
     }
 
-    public static object? AsAsyncWithResult<TService>(this MethodInfo targetMethod, TService service,
+    /// <summary>
+    /// Runs a given method on a service as a Task with a return value. This means we can await it, assuming the methodinfo returns a task with a return value.
+    ///
+    /// This method will also return the result.
+    /// </summary>
+    /// <param name="targetMethod">
+    /// Which method to run async
+    /// </param>
+    /// <param name="service">
+    /// The service object which has the <see cref="targetMethod"/>
+    /// </param>
+    /// <param name="arguments">
+    /// An array of objects which represents the arguments needed for the method to run
+    /// </param>
+    /// <param name="onException">
+    /// A callback that happens when there is an exception while running the <see cref="targetMethod"/>.
+    ///
+    /// In this callback you can handle any of the exceptions thrown
+    /// </param>
+    /// <typeparam name="TService">
+    /// The service type which contains the <see cref="targetMethod"/>
+    /// </typeparam>
+    /// <returns>
+    /// The result from running <see cref="targetMethod"/>, assuming there has been no exception.
+    /// </returns>
+    public static object? InvokeAsAsyncWithResult<TService>(this MethodInfo targetMethod, TService service,
         object?[]? arguments,
         Action<MethodInfo?, Exception>? onException = null)
     {

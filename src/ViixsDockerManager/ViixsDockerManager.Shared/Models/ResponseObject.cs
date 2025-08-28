@@ -1,19 +1,19 @@
 ﻿namespace ViixsDockerManager.Shared.Models;
 
-public record ResponseObject(bool IsSuccess, IEnumerable<string>? Errors = null)
+public record ResponseObject(bool IsSuccess, IEnumerable<string>? Errors = null) : IResponseObject
 {
-    public static ResponseObject Success() => new ResponseObject(true);
+    public static IResponseObject Success() => new ResponseObject(true);
 
-    public static ResponseObject Failure(string errorMessage) =>
+    public static IResponseObject Failure(string errorMessage) =>
         new ResponseObject(false, [errorMessage]);
 
-    public static ResponseObject Failure(IEnumerable<string> errorMessages) =>
+    public static IResponseObject Failure(IEnumerable<string> errorMessages) =>
         new ResponseObject(false, errorMessages);
 }
 
 public record ResponseObject<TResult>(TResult Result, bool IsSuccess, IEnumerable<string>? Errors = null)
-    : ResponseObject(IsSuccess, Errors)
+    : ResponseObject(IsSuccess, Errors), IResponseObject<TResult>
 {
-    public static ResponseObject<TResult> Success(TResult result) =>
+    public static IResponseObject<TResult> Success(TResult result) =>
         new ResponseObject<TResult>(result, true);
 }
