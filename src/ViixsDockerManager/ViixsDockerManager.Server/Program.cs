@@ -1,7 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using ViixDockerManager.AspNet.Shared.Extensions;
+using ViixDockerManager.AspNet.Shared.Filters;
+using ViixsDockerManager.DockLight.Environments.Extensions;
 using ViixsDockerManager.DockLight.Extensions;
+using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
-using ViixsDockerManager.Shared.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +25,11 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.AddServiceDefaults();
 
+builder.Configuration.AddEnvironmentVariables();
+
 // Add services to the container.
 builder.Services.AddDockLightServices();
+builder.Services.AddDocklightEnvironmentServices(builder.Configuration);
 builder.Services.AddExceptionHandlerService();
 
 
@@ -37,6 +44,8 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 app.UseExceptionHandlerService();
+
+await app.RunDocklightEnvironmentMigrations();
 
 app.UseSerilogRequestLogging();
 
