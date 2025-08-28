@@ -15,11 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.DockLigh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.Shared", "ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj", "{8686092F-EA5C-4434-A563-80AEDF27562F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixDockerManager.AspNet.Shared", "ViixDockerManager.AspNet.Shared\ViixDockerManager.AspNet.Shared.csproj", "{C7A05FFD-F3E3-49EF-8081-64AE0F3B325F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.AspNet.Shared", "ViixsDockerManager.AspNet.Shared\ViixsDockerManager.AspNet.Shared.csproj", "{C7A05FFD-F3E3-49EF-8081-64AE0F3B325F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.DockLight.Environments", "ViixsDockerManager.DockLight.Environments\ViixsDockerManager.DockLight.Environments.csproj", "{7D21702E-BCBD-4C2E-BFB4-04724AA57F3E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.Shared.Database", "ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj", "{0D49FE0C-CAD6-45F8-9498-B042B627C74E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.Shared.Database.Sqlite", "ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj", "{2283D1A8-6E08-4016-8EAA-9A7CFB12B000}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{0D49FE0C-CAD6-45F8-9498-B042B627C74E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D49FE0C-CAD6-45F8-9498-B042B627C74E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D49FE0C-CAD6-45F8-9498-B042B627C74E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2283D1A8-6E08-4016-8EAA-9A7CFB12B000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2283D1A8-6E08-4016-8EAA-9A7CFB12B000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2283D1A8-6E08-4016-8EAA-9A7CFB12B000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2283D1A8-6E08-4016-8EAA-9A7CFB12B000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
