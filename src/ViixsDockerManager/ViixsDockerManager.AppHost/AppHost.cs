@@ -1,10 +1,17 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var backend = builder.AddProject<Projects.ViixsDockerManager_Server>("viixsdockermanager-server");
+var folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "ViixsDockerManager");
+const string fileName = "viixsdockermanager.db";
+
+var sqlite = builder.AddSqlite("viixsdockermanager-db", folderPath, fileName).WithSqliteWeb();
+
+var backend = builder.AddProject<Projects.ViixsDockerManager_Server>("viixsdockermanager-server")
+    .WithReference(sqlite)
+    .WithEnvironment("ConnectionStrings__viixsdockermanager-db", $"DataSource={Path.Combine(folderPath, fileName)};Cache=Shared");
 
 builder.AddNpmApp("viixsdockermanager-client", "../viixsdockermanager.client", scriptName: "dev")
-       .WithReference(backend)
-       .WithEndpoint(targetPort: 55596, scheme: "https", isExternal: true)
-       .PublishAsDockerFile();
+    .WithReference(backend)
+    .WithEndpoint(targetPort: 55596, scheme: "https", isExternal: true)
+    .PublishAsDockerFile();
 
 builder.Build().Run();

@@ -7,6 +7,8 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
+ENV ConnectionStrings__viixsdockermanager-db = "DataSource=/app/data/viixsdockermanager.db;Cache=Shared"
+
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS with-node
