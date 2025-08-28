@@ -10,6 +10,11 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
         <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
@@ -20,10 +25,12 @@
         <ProjectReference Include="..\viixsdockermanager.client\viixsdockermanager.client.esproj">
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
+        <ProjectReference Include="..\ViixsDockerManager.DockLight.Environments\ViixsDockerManager.DockLight.Environments.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.DockLight\ViixsDockerManager.DockLight.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.ServiceDefaults\ViixsDockerManager.ServiceDefaults.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
-        <ProjectReference Include="..\ViixDockerManager.AspNet.Shared\ViixDockerManager.AspNet.Shared.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.AspNet.Shared.csproj" />
     </ItemGroup>
 
 </Project>
