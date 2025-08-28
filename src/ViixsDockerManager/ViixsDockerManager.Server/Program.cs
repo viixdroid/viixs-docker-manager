@@ -1,6 +1,7 @@
 using Serilog;
 using ViixsDockerManager.DockLight.Extensions;
 using ViixsDockerManager.Shared.Extensions;
+using ViixsDockerManager.Shared.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,10 @@ builder.Services.AddDockLightServices();
 builder.Services.AddExceptionHandlerService();
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<WrapControllerResultFilter>();
+});
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

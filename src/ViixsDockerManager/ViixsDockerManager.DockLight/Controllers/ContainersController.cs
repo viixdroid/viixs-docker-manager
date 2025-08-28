@@ -15,6 +15,6 @@ public class ContainersController(IDockerContainersService dockerContainersServi
     public async Task<IActionResult> GetContainers()
     {
         var result = await dockerContainersService.GetContainerListAsync();
-        return Ok(ResponseObject<IEnumerable<ContainerSummary>>.Success(result));
+        return Ok(result);
     }
 }
