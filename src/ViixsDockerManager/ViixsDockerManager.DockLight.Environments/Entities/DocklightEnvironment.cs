@@ -1,6 +1,8 @@
-﻿namespace ViixsDockerManager.DockLight.Environments.Entities;
+﻿using ViixsDockerManager.Shared.Database.Entities;
 
-public class DocklightEnvironment
+namespace ViixsDockerManager.DockLight.Environments.Entities;
+
+public class DocklightEnvironment : BaseEntity
 {
     /// <summary>
     /// The id of this database object
