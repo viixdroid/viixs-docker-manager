@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "viixsdockermanager.client", "viixsdockermanager.client\viixsdockermanager.client.esproj", "{AAAB3E7D-287C-71B1-77E1-6FF6C85D088A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.Server", "ViixsDockerManager.Server\ViixsDockerManager.Server.csproj", "{6C119EDB-A63B-8CC6-8364-EA4F44ED0EEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.AppHost", "ViixsDockerManager.AppHost\ViixsDockerManager.AppHost.csproj", "{988234E2-29F8-4B29-98AC-0B327F7A804A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.ServiceDefaults", "ViixsDockerManager.ServiceDefaults\ViixsDockerManager.ServiceDefaults.csproj", "{C6A272AF-0221-5CF2-34EB-9D5DAD18B758}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.DockLight", "ViixsDockerManager.DockLight\ViixsDockerManager.DockLight.csproj", "{B32704EF-390F-4F93-A3ED-862964954C40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.Shared", "ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj", "{8686092F-EA5C-4434-A563-80AEDF27562F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAAB3E7D-287C-71B1-77E1-6FF6C85D088A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAAB3E7D-287C-71B1-77E1-6FF6C85D088A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAAB3E7D-287C-71B1-77E1-6FF6C85D088A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAAB3E7D-287C-71B1-77E1-6FF6C85D088A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C119EDB-A63B-8CC6-8364-EA4F44ED0EEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C119EDB-A63B-8CC6-8364-EA4F44ED0EEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C119EDB-A63B-8CC6-8364-EA4F44ED0EEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C119EDB-A63B-8CC6-8364-EA4F44ED0EEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{988234E2-29F8-4B29-98AC-0B327F7A804A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{988234E2-29F8-4B29-98AC-0B327F7A804A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{988234E2-29F8-4B29-98AC-0B327F7A804A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{988234E2-29F8-4B29-98AC-0B327F7A804A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6A272AF-0221-5CF2-34EB-9D5DAD18B758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6A272AF-0221-5CF2-34EB-9D5DAD18B758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6A272AF-0221-5CF2-34EB-9D5DAD18B758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6A272AF-0221-5CF2-34EB-9D5DAD18B758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B32704EF-390F-4F93-A3ED-862964954C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B32704EF-390F-4F93-A3ED-862964954C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B32704EF-390F-4F93-A3ED-862964954C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B32704EF-390F-4F93-A3ED-862964954C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8686092F-EA5C-4434-A563-80AEDF27562F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8686092F-EA5C-4434-A563-80AEDF27562F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8686092F-EA5C-4434-A563-80AEDF27562F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8686092F-EA5C-4434-A563-80AEDF27562F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {368DAD05-B411-4878-A797-7D76A0AB68EC}
+	EndGlobalSection
+EndGlobal
