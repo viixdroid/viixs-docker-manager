@@ -42,10 +42,10 @@ public class ViixsServiceExceptionHandler<TService> : DispatchProxy
 
             if (returnType == typeof(Task))
             {
-                return targetMethod.AsAsync(_service, args, WrapException);
+                return targetMethod.InvokeAsAsync(_service, args, WrapException);
             }
 
-            return targetMethod.AsAsyncWithResult(_service, args, WrapException);
+            return targetMethod.InvokeAsAsyncWithResult(_service, args, WrapException);
         }
         catch (Exception exception)
             when (exception is TargetInvocationException
