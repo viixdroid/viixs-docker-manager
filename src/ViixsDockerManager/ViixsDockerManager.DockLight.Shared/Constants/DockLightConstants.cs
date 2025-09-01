@@ -1,4 +1,4 @@
-﻿namespace ViixsDockerManager.DockLight.Constants;
+﻿namespace ViixsDockerManager.DockLight.Shared.Constants;
 
 internal static class DockLightConstants
 {
@@ -12,5 +12,10 @@ internal static class DockLightConstants
     {
         public const string Protocol = "unix";
         public const string Socket = @"/var/run/docker.sock";
+    }
+
+    public static class Tcp
+    {
+        public const string Protocol = "tcp";
     }
 }

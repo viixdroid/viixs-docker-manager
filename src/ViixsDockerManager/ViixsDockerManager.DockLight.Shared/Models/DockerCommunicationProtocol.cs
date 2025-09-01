@@ -1,6 +1,7 @@
-﻿using static ViixsDockerManager.DockLight.Constants.DockLightConstants;
+﻿using System.Net;
+using static ViixsDockerManager.DockLight.Shared.Constants.DockLightConstants;
 
-namespace ViixsDockerManager.DockLight.Models;
+namespace ViixsDockerManager.DockLight.Shared.Models;
 
 internal record DockerCommunicationProtocol
 {
@@ -26,7 +27,7 @@ internal record DockerCommunicationProtocol
     {
         return _protocol switch
         {
-            Unix.Protocol => $"://{_address}",
+            Unix.Protocol or Tcp.Protocol => $"://{_address}",
             _ => throw new NotSupportedException($"The protocol '{_protocol}' is not supported.")
         };
     }
@@ -48,10 +49,32 @@ internal record DockerCommunicationProtocol
                 // In a docker container, the unix socket is mounted as a file.
                 // So we check if the file exists.
                 File.Exists(_address),
+            Tcp.Protocol => true, //Should ping it?
             _ => false
         };
     }
 
     public static DockerCommunicationProtocol UnixCommunication() =>
         new DockerCommunicationProtocol(Unix.Protocol, Unix.Socket);
+
+    public static DockerCommunicationProtocol Create(string? address)
+    {
+        if (string.IsNullOrEmpty(address))
+        {
+            throw new ArgumentNullException(nameof(address));
+        }
+
+        if (address.Equals(Unix.Socket, StringComparison.OrdinalIgnoreCase))
+        {
+            return new DockerCommunicationProtocol(Unix.Protocol, address);
+        }
+
+        if (IPAddress.TryParse(address, out var ipAddress))
+        {
+            return new DockerCommunicationProtocol(Tcp.Protocol, ipAddress.ToString());
+        }
+
+        throw new Exception("The given address is not a docker.sock file or an ip address. Cannot create a communication protocol.");
+
+    }
 }

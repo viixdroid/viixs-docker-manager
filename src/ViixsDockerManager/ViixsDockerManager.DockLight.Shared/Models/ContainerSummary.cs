@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Docker.DotNet.Models;
 
-namespace ViixsDockerManager.DockLight.Models;
+namespace ViixsDockerManager.DockLight.Shared.Models;
 
 public record ContainerSummary(
     string Id,
