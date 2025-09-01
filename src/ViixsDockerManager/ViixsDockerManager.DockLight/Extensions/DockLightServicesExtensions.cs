@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ViixsDockerManager.DockLight.Controllers;
 using ViixsDockerManager.DockLight.Services;
 using ViixsDockerManager.DockLight.Services.Interfaces;
 using ViixsDockerManager.Shared.Extensions;
@@ -14,5 +17,13 @@ public static class DockLightServicesExtensions
         services.AddDecoration<IDockerContainersService, DockerContainersService>();
 
         return services;
+    }
+
+    public static RouteGroupBuilder MapDocklightRoutes(this IEndpointRouteBuilder serviceHost)
+    {
+        var group = serviceHost.MapGroup("{environmentId}/containers");
+
+        group.MapDocklightRouteActions();
+        return group;
     }
 }

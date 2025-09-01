@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ViixsDockerManager.DockLight.Environments.Controllers;
 using ViixsDockerManager.DockLight.Environments.Entities;
 using ViixsDockerManager.Shared.Database.Extensions;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
@@ -21,5 +24,13 @@ public static class DocklightEnvironmentServiceExtensions
     public static Task RunDocklightEnvironmentMigrations(this IHost serviceHost)
     {
         return serviceHost.RunMigrations<DocklightEnvironmentReadDbContext>();
+    }
+
+    public static RouteGroupBuilder MapDocklightEnvironmentRoutes(this IEndpointRouteBuilder serviceHost)
+    {
+        var group = serviceHost.MapGroup("api/docklightenvironments2");
+
+        group.MapRouteActions();
+        return group;
     }
 }
