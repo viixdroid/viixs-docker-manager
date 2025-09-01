@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ViixDockerManager.AspNet.Shared.Controllers;
-using ViixsDockerManager.DockLight.Models;
 using ViixsDockerManager.DockLight.Services.Interfaces;
 using ViixsDockerManager.Shared.Exceptions;
 using ViixsDockerManager.Shared.Models;
@@ -14,7 +13,7 @@ public class ContainersController(IDockerContainersService dockerContainersServi
     [HttpGet]
     public async Task<IActionResult> GetContainers()
     {
-        var result = await dockerContainersService.GetContainerListAsync();
+        var result = await dockerContainersService.GetContainerListAsync(Guid.Empty);
         return Ok(result);
     }
 }

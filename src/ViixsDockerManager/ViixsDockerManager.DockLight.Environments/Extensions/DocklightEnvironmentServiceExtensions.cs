@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ViixsDockerManager.DockLight.Environments.Controllers;
-using ViixsDockerManager.DockLight.Environments.Entities;
+using ViixsDockerManager.DockLight.Shared.Entities;
 using ViixsDockerManager.Shared.Database.Extensions;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 

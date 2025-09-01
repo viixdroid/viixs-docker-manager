@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using ViixsDockerManager.DockLight.Environments.Entities;
+using ViixsDockerManager.DockLight.Shared.Entities;
 using ViixsDockerManager.Shared.Database.Repositories;
 
 namespace ViixsDockerManager.DockLight.Environments.Controllers;

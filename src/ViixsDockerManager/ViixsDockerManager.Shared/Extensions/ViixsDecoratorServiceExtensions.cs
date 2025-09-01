@@ -8,7 +8,10 @@ namespace ViixsDockerManager.Shared.Extensions;
 
 public static class ViixsDecoratorServiceExtensions
 {
-    public static IServiceCollection AddDecoration<TInterface, TImplementation>(this IServiceCollection services)
+    public static IServiceCollection AddDecoration<TInterface, TImplementation>(
+        this IServiceCollection services,
+        params Func<TInterface, IServiceProvider, TInterface>[] extraDecorations
+    )
         where TInterface : class, IViixsBaseService
         where TImplementation : class, TInterface
     {
@@ -16,10 +19,22 @@ public static class ViixsDecoratorServiceExtensions
         {
             var implementationConstructor = ConstructorCache.GetOrAddConstructorMetadata<TImplementation>();
 
-            var implementation = implementationConstructor.InvokeConstructor<TImplementation>(serviceProvider);
+            var initialObject = implementationConstructor.InvokeConstructor<TImplementation>(serviceProvider);
+
+            TInterface interfaceObject = initialObject;
+            if (extraDecorations.Length > 0)
+            {
+                foreach (var extraDecoration in extraDecorations.Reverse())
+                {
+                    interfaceObject = extraDecoration(interfaceObject, serviceProvider);
+                }
+                //
+                // initialObject = extraDecorations.Reverse().Aggregate(initialObject,
+                //     (current, decoration) => (TImplementation)decoration(current, serviceProvider));
+            }
 
             var logger = serviceProvider.GetRequiredService<ILogger<TInterface>>();
-            return ViixsServiceExceptionHandler<TInterface>.CreateService(implementation, logger);
+            return ViixsServiceExceptionHandler<TInterface>.CreateService(interfaceObject, logger);
         });
         return services;
     }

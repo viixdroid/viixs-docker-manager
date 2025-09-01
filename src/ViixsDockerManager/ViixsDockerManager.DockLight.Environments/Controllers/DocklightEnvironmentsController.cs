@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ViixDockerManager.AspNet.Shared.Controllers;
-using ViixsDockerManager.DockLight.Environments.Entities;
+using ViixsDockerManager.DockLight.Shared.Entities;
 using ViixsDockerManager.Shared.Database.Repositories;
 
 namespace ViixsDockerManager.DockLight.Environments.Controllers;

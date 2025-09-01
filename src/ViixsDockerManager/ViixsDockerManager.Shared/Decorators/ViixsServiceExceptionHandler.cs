@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using ViixsDockerManager.Shared.Exceptions;
 using ViixsDockerManager.Shared.Helpers;
+using ViixsDockerManager.Shared.Services;
 
 namespace ViixsDockerManager.Shared.Decorators;
 
@@ -37,15 +38,15 @@ public class ViixsServiceExceptionHandler<TService> : DispatchProxy
 
             if (!typeof(Task).IsAssignableFrom(returnType))
             {
-                return targetMethod.Invoke(_service, args);
+                return targetMethod.InvokeSync(_service, args, onException: WrapException);
             }
 
             if (returnType == typeof(Task))
             {
-                return targetMethod.InvokeAsAsync(_service, args, WrapException);
+                return targetMethod.InvokeAsAsync(_service, args, onException: WrapException);
             }
 
-            return targetMethod.InvokeAsAsyncWithResult(_service, args, WrapException);
+            return targetMethod.InvokeAsAsyncWithResult(_service, args, onException: WrapException);
         }
         catch (Exception exception)
             when (exception is TargetInvocationException

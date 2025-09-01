@@ -27,6 +27,13 @@ public class ReadRepository<TReadDbContext, TEntity>(
         return await ReadUnitOfWork.GetSingleOrDefaultForQueryAsync(queryBuilder);
     }
 
+    public async Task<TEntity?> GetByFilterAsync(IQueryFilter<TEntity> filter)
+    {
+        var queryBuilder = new DatabaseQueryBuilder<TEntity>(GetQueryable());
+        queryBuilder.ApplyFilter(filter);
+        return await ReadUnitOfWork.GetSingleOrDefaultForQueryAsync(queryBuilder);
+    }
+
     public async Task<IEnumerable<TEntity>> FindAsync(IQueryFilter<TEntity> filter)
     {
         var queryBuilder = new DatabaseQueryBuilder<TEntity>(GetQueryable());
