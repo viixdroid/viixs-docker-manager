@@ -14,7 +14,7 @@ public static class SharedDatabaseSqliteServiceExtensions
         services.AddPooledDbContextFactory<TReadDbContext>(options =>
         {
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            var connString = configuration.GetConnectionString("viixsdockermanager-db1");
+            var connString = configuration.GetConnectionString("viixsdockermanager-db");
             options.UseSqlite(connString); //Only when in Aspire.
             options.LogTo(Console.WriteLine);
         });
