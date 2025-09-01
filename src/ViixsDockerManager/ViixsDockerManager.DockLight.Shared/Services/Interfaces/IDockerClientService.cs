@@ -1,9 +1,9 @@
 ﻿using Docker.DotNet;
 using ViixsDockerManager.Shared.Services;
 
-namespace ViixsDockerManager.DockLight.Services.Interfaces;
+namespace ViixsDockerManager.DockLight.Shared.Services.Interfaces;
 
 public interface IDockerClientService : IViixsBaseService
 {
-    IDockerClient? GetDockerClient();
+    IDockerClient? GetDockerClient(string? address);
 }
