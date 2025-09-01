@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.AppHost"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.ServiceDefaults", "ViixsDockerManager.ServiceDefaults\ViixsDockerManager.ServiceDefaults.csproj", "{C6A272AF-0221-5CF2-34EB-9D5DAD18B758}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.DockLight", "ViixsDockerManager.DockLight\ViixsDockerManager.DockLight.csproj", "{B32704EF-390F-4F93-A3ED-862964954C40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.DockLight.Containers", "ViixsDockerManager.DockLight.Containers\ViixsDockerManager.DockLight.Containers.csproj", "{B32704EF-390F-4F93-A3ED-862964954C40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViixsDockerManager.Shared", "ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj", "{8686092F-EA5C-4434-A563-80AEDF27562F}"
 EndProject
