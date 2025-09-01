@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.AspNet.Shared.csproj" />
+      <ProjectReference Include="..\ViixsDockerManager.DockLight.Shared\ViixsDockerManager.DockLight.Shared.csproj" />
       <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
       <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
     </ItemGroup>

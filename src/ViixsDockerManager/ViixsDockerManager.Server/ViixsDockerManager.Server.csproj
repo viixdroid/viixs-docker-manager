@@ -26,7 +26,7 @@
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
         <ProjectReference Include="..\ViixsDockerManager.DockLight.Environments\ViixsDockerManager.DockLight.Environments.csproj" />
-        <ProjectReference Include="..\ViixsDockerManager.DockLight\ViixsDockerManager.DockLight.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.DockLight.Containers\ViixsDockerManager.DockLight.Containers.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.ServiceDefaults\ViixsDockerManager.ServiceDefaults.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />

@@ -6,13 +6,10 @@
         <Nullable>enable</Nullable>
         <RootNamespace>ViixsDockerManager.DockLight</RootNamespace>
     </PropertyGroup>
-
-    <ItemGroup>        
-        <PackageReference Include="Docker.DotNet.Enhanced" Version="3.128.5" />
-    </ItemGroup>
-    
+   
     <ItemGroup>
         <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.AspNet.Shared.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.DockLight.Shared\ViixsDockerManager.DockLight.Shared.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
     </ItemGroup>
 

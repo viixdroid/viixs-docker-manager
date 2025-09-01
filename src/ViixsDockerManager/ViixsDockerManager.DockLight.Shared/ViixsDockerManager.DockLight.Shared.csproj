@@ -7,13 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Docker.DotNet.Enhanced" Version="3.128.5" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.8" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
     </ItemGroup>
 
     <ItemGroup>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>ViixsDockerManager.DockLight.Shared</_Parameter1>
-        </AssemblyAttribute>
+        <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
     </ItemGroup>
+
 </Project>
