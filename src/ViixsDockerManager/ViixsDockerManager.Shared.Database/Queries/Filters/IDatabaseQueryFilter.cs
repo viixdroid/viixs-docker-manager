@@ -2,7 +2,7 @@
 
 namespace ViixsDockerManager.Shared.Database.Queries.Filters;
 
-public interface IQueryFilter<TEntity>
+public interface IDatabaseQueryFilter<TEntity>
 {
     Expression<Func<TEntity, bool>> GetPredicate();
 }

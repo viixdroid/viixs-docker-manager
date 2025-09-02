@@ -14,7 +14,7 @@ public interface IDatabaseQueryBuilder<TQueryResult> : IQuerySource<TQueryResult
     /// <returns>
     /// The filtered query
     /// </returns>
-    IDatabaseQueryBuilder<TQueryResult> ApplyFilter(IQueryFilter<TQueryResult>? filter = null);
+    IDatabaseQueryBuilder<TQueryResult> ApplyFilter(IDatabaseQueryFilter<TQueryResult>? filter = null);
 
     /// <summary>
     /// Applies ordering to the query
@@ -27,5 +27,5 @@ public interface IDatabaseQueryBuilder<TQueryResult> : IQuerySource<TQueryResult
     /// This method applies the filters as passed. If you have filter by name and a filter by id, and that is the order
     /// in which the filters are passed, the filters are executed as is.
     /// </remarks>
-    IDatabaseQueryBuilder<TQueryResult> ApplyOrdering(IEnumerable<IOrderStrategy<TQueryResult>>? orderStrategies);
+    IDatabaseQueryBuilder<TQueryResult> ApplyOrdering(IEnumerable<IDatabaseOrderStrategy<TQueryResult>>? orderStrategies);
 }

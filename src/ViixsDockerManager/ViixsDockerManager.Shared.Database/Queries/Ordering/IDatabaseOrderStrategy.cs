@@ -1,6 +1,6 @@
 ﻿namespace ViixsDockerManager.Shared.Database.Queries.Ordering;
 
-public interface IOrderStrategy<TEntity>
+public interface IDatabaseOrderStrategy<TEntity>
 {
     /// <summary>
     /// Applies orderning on a given query

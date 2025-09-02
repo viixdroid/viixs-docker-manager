@@ -1,8 +1,8 @@
 ﻿namespace ViixsDockerManager.Shared.Database.Queries.Ordering;
 
-public abstract class BaseOrderStrategy<TEntity> : IOrderStrategy<TEntity>
+public abstract class BaseDatabaseDatabaseOrderStrategy<TEntity> : IDatabaseOrderStrategy<TEntity>
 {
-    IQueryable<TEntity> IOrderStrategy<TEntity>.ApplyOrdering(IQueryable<TEntity> query, bool isFirstOrder)
+    IQueryable<TEntity> IDatabaseOrderStrategy<TEntity>.ApplyOrdering(IQueryable<TEntity> query, bool isFirstOrder)
         => ApplyOrdering(query, isFirstOrder);
 
     protected abstract IQueryable<TEntity> ApplyOrdering(IQueryable<TEntity> query, bool isFirstOrder);
