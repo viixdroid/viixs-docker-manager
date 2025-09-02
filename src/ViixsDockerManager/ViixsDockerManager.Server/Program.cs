@@ -1,7 +1,12 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using ViixDockerManager.AspNet.Shared.Extensions;
+using ViixDockerManager.AspNet.Shared.Filters;
+using ViixsDockerManager.DockLight.Environments.Extensions;
 using ViixsDockerManager.DockLight.Extensions;
+using ViixsDockerManager.DockLight.Shared.Extensions;
+using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
-using ViixsDockerManager.Shared.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +26,12 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.AddServiceDefaults();
 
+builder.Configuration.AddEnvironmentVariables();
+
 // Add services to the container.
 builder.Services.AddDockLightServices();
+builder.Services.AddDockLightEnvironmentServices(builder.Configuration);
+builder.Services.AddDockLightSharedServices();
 builder.Services.AddExceptionHandlerService();
 
 
@@ -38,7 +47,14 @@ var app = builder.Build();
 
 app.UseExceptionHandlerService();
 
+await app.RunDocklightEnvironmentMigrations();
+
 app.UseSerilogRequestLogging();
+
+var builderWithAppliedEndpointFilter = app.ApplyEndpointFilter();
+builderWithAppliedEndpointFilter
+    .MapDocklightEnvironmentRoutes()
+    .MapDocklightRoutes();
 
 app.MapDefaultEndpoints();
 

@@ -1,0 +1,1 @@
+﻿This project contains needed models, services etc. for communication between "docklight services"
