@@ -6,6 +6,7 @@ using ViixsDockerManager.DockLight.Controllers;
 using ViixsDockerManager.DockLight.Services;
 using ViixsDockerManager.DockLight.Services.Interfaces;
 using ViixsDockerManager.DockLight.Shared.Decorators;
+using ViixsDockerManager.DockLight.Shared.Decorators.Providers;
 using ViixsDockerManager.DockLight.Shared.Entities;
 using ViixsDockerManager.DockLight.Shared.Services;
 using ViixsDockerManager.DockLight.Shared.Services.Interfaces;
@@ -22,8 +23,7 @@ public static class DockLightServicesExtensions
         services.AddDecoration<IDockerContainersService, DockerContainersService>((serviceToDecorate, serviceProvider) => DockerClientDecorator<IDockerContainersService>
             .CreateService(
                 serviceToDecorate,
-                serviceProvider.GetRequiredService<IReadRepository<DocklightEnvironment>>(),
-                serviceProvider.GetRequiredService<IDockerClientService>())
+                serviceProvider.GetRequiredService<IDockerClientEndpointProvider>())
         );
 
         return services;

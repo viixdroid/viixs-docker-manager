@@ -13,7 +13,7 @@ namespace ViixsDockerManager.DockLight.Environments.Extensions;
 
 public static class DocklightEnvironmentServiceExtensions
 {
-    public static IServiceCollection AddDocklightEnvironmentServices(this IServiceCollection services,
+    public static IServiceCollection AddDockLightEnvironmentServices(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddReadDatabaseServices<DocklightEnvironmentReadDbContext>(configuration);

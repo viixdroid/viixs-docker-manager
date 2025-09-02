@@ -12,23 +12,19 @@ public class DockerClientService(IConfiguration configuration, ILogger<DockerCli
 {
     public IDockerClient? GetDockerClient(string? address)
     {
-        var isRunningInDocker = configuration.GetValue<bool>(DotnetRunningInContainer);
-        if (!isRunningInDocker)
-        {
-            //When not giving any information, the client itself can figure out the protocol.
-            return CreateDockerClient();
-        }
-
-        //Check if Ip.Parse is succesfull -> TCP connection
-        //Else if it is /var/docker/docker.sock -> unix
-
+        // var isRunningInDocker = configuration.GetValue<bool>(DotnetRunningInContainer);
+        // if (!isRunningInDocker)
+        // {
+        //When not giving any information, the client itself can figure out the protocol.
+        // return CreateDockerClient();
+        // }
 
         var communicationProtocol = DockerCommunicationProtocol.Create(address);
 
-        if (!communicationProtocol.AddressExists())
-        {
-            return null;
-        }
+        // if (!communicationProtocol.AddressExists())
+        // {
+        //     return null;
+        // }
 
         var client = CreateDockerClient(communicationProtocol.GetProtocolUri());
         logger.LogInformation("Created Docker client with endpoint {Endpoint}", client.Configuration.EndpointBaseUri);
