@@ -28,9 +28,6 @@ public static class ViixsDecoratorServiceExtensions
                 {
                     interfaceObject = extraDecoration(interfaceObject, serviceProvider);
                 }
-                //
-                // initialObject = extraDecorations.Reverse().Aggregate(initialObject,
-                //     (current, decoration) => (TImplementation)decoration(current, serviceProvider));
             }
 
             var logger = serviceProvider.GetRequiredService<ILogger<TInterface>>();
