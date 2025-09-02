@@ -28,6 +28,7 @@ internal record DockerCommunicationProtocol
         return _protocol switch
         {
             Unix.Protocol or Tcp.Protocol => $"://{_address}",
+            Windows.Protocol => @$"://.{_address}", //Add a dot to the beginning of the address to make it a valid npipe address.
             _ => throw new NotSupportedException($"The protocol '{_protocol}' is not supported.")
         };
     }
@@ -69,12 +70,16 @@ internal record DockerCommunicationProtocol
             return new DockerCommunicationProtocol(Unix.Protocol, address);
         }
 
+        if (address.Equals(Windows.Npipe, StringComparison.OrdinalIgnoreCase))
+        {
+            return new DockerCommunicationProtocol(Windows.Protocol, Windows.Npipe);
+        }
+
         if (IPAddress.TryParse(address, out var ipAddress))
         {
             return new DockerCommunicationProtocol(Tcp.Protocol, ipAddress.ToString());
         }
 
         throw new Exception("The given address is not a docker.sock file or an ip address. Cannot create a communication protocol.");
-
     }
 }

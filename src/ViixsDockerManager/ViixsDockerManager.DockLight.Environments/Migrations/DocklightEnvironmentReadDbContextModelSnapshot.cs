@@ -45,20 +45,27 @@ namespace ViixsDockerManager.DockLight.Environments.Migrations
                         new
                         {
                             Id = 1,
-                            ApiLocation = "/var/docker/docker.sock",
+                            ApiLocation = "/var/run/docker.sock",
                             EnvironmentId = new Guid("34805c86-9086-45e1-b264-241983acc044"),
                             Name = "Local"
                         },
                         new
                         {
                             Id = 2,
+                            ApiLocation = "/pipe/docker_engine",
+                            EnvironmentId = new Guid("65670bc8-fb6e-413a-9492-3ba24fd4f8ff"),
+                            Name = "LocalWindows"
+                        },
+                        new
+                        {
+                            Id = 3,
                             ApiLocation = "http://nas",
                             EnvironmentId = new Guid("1acf8e3c-495a-4258-a280-cc7acf504c0e"),
                             Name = "Nas"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 4,
                             ApiLocation = "http://nuc",
                             EnvironmentId = new Guid("4d9e6256-d601-41f4-abe6-a42f40100008"),
                             Name = "Nuc"

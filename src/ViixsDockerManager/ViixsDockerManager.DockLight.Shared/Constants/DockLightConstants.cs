@@ -1,6 +1,6 @@
 ﻿namespace ViixsDockerManager.DockLight.Shared.Constants;
 
-internal static class DockLightConstants
+public static class DockLightConstants
 {
     /// <summary>
     /// According to several internet sources, when dotnet builds, it adds this variable. With this we can now see if
@@ -12,6 +12,12 @@ internal static class DockLightConstants
     {
         public const string Protocol = "unix";
         public const string Socket = @"/var/run/docker.sock";
+    }
+
+    public static class Windows
+    {
+        public const string Protocol = "npipe";
+        public const string Npipe = @"/pipe/docker_engine";
     }
 
     public static class Tcp
