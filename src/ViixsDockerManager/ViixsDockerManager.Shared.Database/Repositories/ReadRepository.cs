@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using ViixsDockerManager.Shared.Database.Contexts;
 using ViixsDockerManager.Shared.Database.Entities;
 using ViixsDockerManager.Shared.Database.Queries;
 using ViixsDockerManager.Shared.Database.Queries.Filters;
@@ -11,7 +12,7 @@ public class ReadRepository<TReadDbContext, TEntity>(
     IDbContextFactory<TReadDbContext> dbContextFactory,
     IReadUnitOfWork<TEntity> readUnitOfWork)
     : BaseReadRepository<TReadDbContext, TEntity>(dbContextFactory, readUnitOfWork), IReadRepository<TEntity>
-    where TReadDbContext : DbContext
+    where TReadDbContext : DbContext, IReadDbContext
     where TEntity : class, IEntity
 {
     public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -27,21 +28,21 @@ public class ReadRepository<TReadDbContext, TEntity>(
         return await ReadUnitOfWork.GetSingleOrDefaultForQueryAsync(queryBuilder);
     }
 
-    public async Task<TEntity?> GetByFilterAsync(IQueryFilter<TEntity> filter)
+    public async Task<TEntity?> GetByFilterAsync(IDatabaseQueryFilter<TEntity> filter)
     {
         var queryBuilder = new DatabaseQueryBuilder<TEntity>(GetQueryable());
         queryBuilder.ApplyFilter(filter);
         return await ReadUnitOfWork.GetSingleOrDefaultForQueryAsync(queryBuilder);
     }
 
-    public async Task<IEnumerable<TEntity>> FindAsync(IQueryFilter<TEntity> filter)
+    public async Task<IEnumerable<TEntity>> FindAsync(IDatabaseQueryFilter<TEntity> filter)
     {
         var queryBuilder = new DatabaseQueryBuilder<TEntity>(GetQueryable());
         queryBuilder.ApplyFilter(filter);
         return await ReadUnitOfWork.GetAllForQueryAsync(queryBuilder);
     }
 
-    public async Task<int> CountAsync(IQueryFilter<TEntity>? filter = null)
+    public async Task<int> CountAsync(IDatabaseQueryFilter<TEntity>? filter = null)
     {
         var queryBuilder = new DatabaseQueryBuilder<TEntity>(GetQueryable());
         if (filter != null)
