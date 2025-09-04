@@ -18,7 +18,6 @@ public static class SharedDatabaseSqliteServiceExtensions
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             //TODO: move to helper or smth
             var connString = configuration.GetSection("ViixsDockerManager").GetValue<string>("viixsdockermanager-db");
-            // var connString = configuration.GetConnectionString("viixsdockermanager-db");
             var builder = new SqliteConnectionStringBuilder()
             {
                 DataSource = connString,

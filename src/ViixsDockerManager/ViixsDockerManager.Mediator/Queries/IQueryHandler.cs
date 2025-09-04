@@ -8,8 +8,7 @@ namespace ViixsDockerManager.Mediator.Queries;
 /// <typeparam name="TQuery">The request for data</typeparam>
 /// <typeparam name="TResult">The result of the request</typeparam>
 public interface IQueryHandler<in TQuery, TResult> : IHandler
-    where TQuery : IQuery//<TResult>
-// <in TQuery, TResult>
+    where TQuery : IQuery
 {
     /// <summary>
     /// Executes the request for data.
