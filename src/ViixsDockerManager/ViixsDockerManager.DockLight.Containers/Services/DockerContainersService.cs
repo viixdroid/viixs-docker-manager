@@ -14,11 +14,11 @@ namespace ViixsDockerManager.DockLight.Services;
 
 public class DockerContainersService : IDockerContainersService
 {
-    private readonly IReadRepository<DocklightEnvironment> _dockLightEnvironmentRepository;
-    private readonly IContainerOperations _containerOperations;
+    private readonly IReadRepository<DockLightEnvironment> _dockLightEnvironmentRepository;
+    // private readonly IContainerOperations _containerOperations;
 
     public DockerContainersService(IDockerClientService dockerClientService,
-        IReadRepository<DocklightEnvironment> dockLightEnvironmentRepository)
+        IReadRepository<DockLightEnvironment> dockLightEnvironmentRepository)
     {
         _dockLightEnvironmentRepository = dockLightEnvironmentRepository;
         // var dockerClient = dockerClientService.GetDockerClient() ??
