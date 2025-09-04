@@ -5,6 +5,7 @@ using ViixDockerManager.AspNet.Shared.Filters;
 using ViixsDockerManager.DockLight.Environments.Extensions;
 using ViixsDockerManager.DockLight.Extensions;
 using ViixsDockerManager.DockLight.Shared.Extensions;
+using ViixsDockerManager.Mediator.Extensions;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
 
@@ -29,6 +30,7 @@ builder.AddServiceDefaults();
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
+builder.Services.AddMediatorServices();
 builder.Services.AddDockLightServices();
 builder.Services.AddDockLightEnvironmentServices(builder.Configuration);
 builder.Services.AddDockLightSharedServices();
