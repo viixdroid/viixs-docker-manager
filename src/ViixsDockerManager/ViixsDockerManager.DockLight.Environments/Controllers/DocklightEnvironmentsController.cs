@@ -5,7 +5,7 @@ using ViixsDockerManager.Shared.Database.Repositories;
 
 namespace ViixsDockerManager.DockLight.Environments.Controllers;
 
-public class DocklightEnvironmentsController(IReadRepository<DocklightEnvironment> readRepository)
+public class DocklightEnvironmentsController(IReadRepository<DockLightEnvironment> readRepository)
     : ViixsBaseController
 {
     [HttpGet]

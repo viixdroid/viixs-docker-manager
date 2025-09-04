@@ -4,8 +4,8 @@ using ViixsDockerManager.Shared.Database.Queries.Filters;
 
 namespace ViixsDockerManager.DockLight.Shared.Queries.Filters;
 
-public class DockLightEnvironmentByEnvironmentIdFilter(Guid environmentId) : IQueryFilter<DocklightEnvironment>
+public class DockLightEnvironmentByEnvironmentIdFilter(Guid environmentId) : IDatabaseQueryFilter<DockLightEnvironment>
 {
-    public Expression<Func<DocklightEnvironment, bool>> GetPredicate()
+    public Expression<Func<DockLightEnvironment, bool>> GetPredicate()
         => dle => dle.EnvironmentId == environmentId;
 }
