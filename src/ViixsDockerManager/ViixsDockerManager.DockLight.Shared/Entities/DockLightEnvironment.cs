@@ -2,13 +2,8 @@
 
 namespace ViixsDockerManager.DockLight.Shared.Entities;
 
-public class DocklightEnvironment : BaseEntity
+public class DockLightEnvironment : BaseEntity
 {
-    /// <summary>
-    /// The databaseid of this database object
-    /// </summary>
-    public int Id { get; set; }
-
     /// <summary>
     /// A unique Id for getting the environment
     /// </summary>
@@ -20,7 +15,9 @@ public class DocklightEnvironment : BaseEntity
     /// <summary>
     /// The location where the Environment can be found.
     ///
-    /// For local connections this will /var/docker/docker.sock
+    /// For local docker (Linux image) and or Linux connections this will /var/docker/docker.sock
+    ///
+    /// For local Windows connections, this will be /pipe/docker_engine
     ///
     /// for external connections, this can be an ip address.
     /// </summary>
