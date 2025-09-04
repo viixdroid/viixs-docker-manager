@@ -1,0 +1,14 @@
+﻿### Post new DockLight environment
+
+POST {{host}}/api/docklightenvironments2/mediator
+Content-Type: application/json
+
+{
+  "name": "Local Windows Environment",
+  "apiLocation": "/pipe/docker_engine"
+}
+
+### Get all dock light environments
+
+GET {{host}}/api/docklightenvironments2/mediator
+

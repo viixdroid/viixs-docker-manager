@@ -1,0 +1,3 @@
+﻿### Get all containers
+
+GET {{host}}/api/docklightenvironments2/18fe86bd-a631-4690-a315-4f1f85fc0e64/containers
