@@ -3,7 +3,7 @@ using ViixsDockerManager.Shared.Database.Entities;
 
 namespace ViixsDockerManager.Shared.Database.Queries.Filters;
 
-public class EntityByIdFilter<TEntity>(int id) : BaseDatabaseDatabaseQueryFilter<TEntity>
+public class EntityByIdFilter<TEntity>(int id) : BaseDatabaseQueryFilter<TEntity>
     where TEntity : class, IEntity
 {
     protected override Expression<Func<TEntity, bool>> GetPredicateExpression()
