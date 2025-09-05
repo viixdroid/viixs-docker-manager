@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using ViixsDockerManager.DockLight.Environments.Models.Commands;
 using ViixsDockerManager.DockLight.Shared.Entities;
-using ViixsDockerManager.DockLight.Shared.Models.Commands;
 using ViixsDockerManager.Mediator.Commands;
 using ViixsDockerManager.Shared.Database.Repositories;
 
-namespace ViixsDockerManager.DockLight.Shared.Handlers;
+namespace ViixsDockerManager.DockLight.Environments.Handlers;
 
 public class CreateDockLightEnvironmentHandler(ILogger<CreateDockLightEnvironmentHandler> logger, IDatabaseWriteRepository<DockLightEnvironment> databaseWriteRepository) : ICommandHandler<CreateDockLightEnvironmentCommand>
 {
