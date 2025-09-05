@@ -54,9 +54,9 @@ await app.RunDocklightEnvironmentMigrations();
 app.UseSerilogRequestLogging();
 
 var builderWithAppliedEndpointFilter = app.ApplyEndpointFilter();
-builderWithAppliedEndpointFilter
-    .MapDocklightEnvironmentRoutes()
-    .MapDocklightRoutes();
+var environmentRoot = builderWithAppliedEndpointFilter.MapDocklightEnvironmentRoutes();
+environmentRoot.MapDockLightEnvironmentSetupRoutes();
+environmentRoot.MapDocklightRoutes();
 
 app.MapDefaultEndpoints();
 

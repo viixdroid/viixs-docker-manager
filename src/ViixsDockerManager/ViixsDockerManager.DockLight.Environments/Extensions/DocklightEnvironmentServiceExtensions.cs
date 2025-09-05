@@ -6,10 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ViixsDockerManager.DockLight.Environments.Controllers;
 using ViixsDockerManager.DockLight.Environments.DbContexts;
+using ViixsDockerManager.DockLight.Environments.Handlers;
+using ViixsDockerManager.DockLight.Environments.Models.Commands;
+using ViixsDockerManager.DockLight.Environments.Models.Queries;
 using ViixsDockerManager.DockLight.Shared.Entities;
-using ViixsDockerManager.DockLight.Shared.Handlers;
-using ViixsDockerManager.DockLight.Shared.Models.Commands;
-using ViixsDockerManager.DockLight.Shared.Models.Queries;
 using ViixsDockerManager.Mediator.Extensions;
 using ViixsDockerManager.Shared.Database.Extensions;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
@@ -32,6 +32,7 @@ public static class DocklightEnvironmentServiceExtensions
         //TODO: Place in correct place.
         services.RegisterCommandHandler<CreateDockLightEnvironmentHandler, CreateDockLightEnvironmentCommand>();
         services.RegisterQueryHandler<GetAllDockLightEnvironmentsHandler, GetAllDockLightEnvironmentsQuery>();
+        services.RegisterQueryHandler<GetAllPossibleDockerProtocolsHandler, GetPossibleDockerProtocolsQuery>();
 
         // services.RegisterQueryHandler<GetAllDockLightEnvironmentsHandler>(typeof(GetAllDockLightEnvironmentsQuery));
 
@@ -46,9 +47,17 @@ public static class DocklightEnvironmentServiceExtensions
 
     public static RouteGroupBuilder MapDocklightEnvironmentRoutes(this IEndpointRouteBuilder serviceHost)
     {
-        var group = serviceHost.MapGroup("api/docklightenvironments2");
+        var group = serviceHost.MapGroup("api/docklightenvironments");
 
         group.MapRouteActions();
+        return group;
+    }
+
+    public static RouteGroupBuilder MapDockLightEnvironmentSetupRoutes(this IEndpointRouteBuilder serviceHost)
+    {
+        var group = serviceHost.MapGroup("setup");
+
+        group.MapDockLightEnvironmentSetupRouteActions();
         return group;
     }
 }

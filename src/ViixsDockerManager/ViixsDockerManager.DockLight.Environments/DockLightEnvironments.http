@@ -1,6 +1,6 @@
 ﻿### Post new DockLight environment
 
-POST {{host}}/api/docklightenvironments2/mediator
+POST {{host}}/api/docklightenvironments
 Content-Type: application/json
 
 {
@@ -10,5 +10,8 @@ Content-Type: application/json
 
 ### Get all dock light environments
 
-GET {{host}}/api/docklightenvironments2/mediator
+GET {{host}}/api/docklightenvironments
 
+### Get all Docker protocols for setup
+
+GET {{host}}/api/docklightenvironments/setup/protocols
