@@ -1,7 +1,8 @@
-﻿import {Button, IconButton, List, ListItem, ListItemText, Typography} from "@mui/material";
+﻿import {Button, Grid, IconButton, List, ListItem, ListItemText, Typography} from "@mui/material";
 import type {ContainerSummary} from "./container-summary.ts";
 import {useEffect, useState} from "react";
 import {PlayArrow, Stop} from "@mui/icons-material";
+import ButtonGroup from '@mui/material/ButtonGroup';
 import ListItemButton from "@mui/material/ListItemButton";
 import {Link} from "react-router";
 import type {ApiObject} from "../../../models/api-object.ts";
@@ -101,7 +102,16 @@ const Index = () => {
 
   return (
     <>
-      <Button onClick={getContainerData}>Refresh</Button>
+      <Grid container justifyContent="space-between">
+        <Button onClick={getContainerData}>Refresh</Button>
+
+
+        <ButtonGroup variant="outlined" aria-label="Basic button group">
+          <Button>Only Be</Button>
+          <Button>Visible</Button>
+          <Button>with mutlitple selections?</Button>
+        </ButtonGroup>
+      </Grid>
       {isLoading && !isError && <div><p>We loading data atm... pls wait..</p></div>}
       {!isLoading && isError && <div><p>An error from the backend.</p></div>}
       {containers && containerContent}
