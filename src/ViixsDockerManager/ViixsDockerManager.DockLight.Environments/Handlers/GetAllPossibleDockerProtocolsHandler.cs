@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
+using ViixsDockerManager.DockLight.Environments.Factories;
 using ViixsDockerManager.DockLight.Environments.Models.Dtos;
 using ViixsDockerManager.DockLight.Environments.Models.Queries;
 using ViixsDockerManager.DockLight.Shared.Factories;
@@ -16,8 +17,7 @@ public class GetAllPossibleDockerProtocolsHandler(IConfiguration configuration) 
         var isRunningInDocker = configuration.GetValue<bool>(DotnetRunningInContainer);
         var runningOsDescription = RuntimeInformation.OSDescription;
 
-        var communicationProtocol = DockerCommunicationProtocolFactory.GetCommunicationProtocol();
-        var dockerProtocol = DockerProtocol.FromDockerCommunicationProtocol(communicationProtocol);
+        var dockerProtocol = DockerProtocolFactory.GetDockerProtocol();
 
         var initialDockerEnvironment = new InitialDockerEnvironment(runningOsDescription, isRunningInDocker, dockerProtocol);
         return Task.FromResult(initialDockerEnvironment);
