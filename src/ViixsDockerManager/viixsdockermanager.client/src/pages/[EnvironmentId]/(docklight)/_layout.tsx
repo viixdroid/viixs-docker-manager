@@ -2,26 +2,24 @@
 import {Outlet, Link as RouterLink, useLocation} from 'react-router';
 
 // MUI Imports
-import {styled, type Theme, type CSSObject, useTheme} from '@mui/material/styles';
+import {styled, type Theme, type CSSObject} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import CssBaseline from '@mui/material/CssBaseline'; // Helps normalize styles
 
 
 // Icon Imports
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import StorageIcon from '@mui/icons-material/Storage';
-import DrawerToggleButton from "../../components/DrawerToggleButton.tsx";
+import DrawerToggleButton from "../../../components/DrawerToggleButton.tsx";
 
 const drawerWidth = 240;
 
@@ -82,10 +80,12 @@ const DockLightLayout = () => {
 
   return (
     <Box sx={{display: 'flex'}}>
-      <CssBaseline/>
-      <MuiAppBar position='fixed' open={open} sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+      <MuiAppBar position='fixed'
+                 color="primary"
+                 elevation={0}
+                 open={open}
+                 sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
         <Toolbar>
-
           <Box
             component='img'
             sx={{
@@ -106,7 +106,6 @@ const DockLightLayout = () => {
 
       <Drawer variant="permanent" open={open}>
         <Toolbar/>
-        <Divider/>
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
