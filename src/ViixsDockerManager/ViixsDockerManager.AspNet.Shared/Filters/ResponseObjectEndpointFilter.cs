@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Http.Metadata;
 using ViixsDockerManager.Shared.Models;
 
@@ -21,6 +22,11 @@ public class ResponseObjectEndpointFilter : IEndpointFilter
 
         if (result is not IStatusCodeHttpResult { StatusCode: not null } statusCodeResult)
         {
+            if (result is EmptyHttpResult)
+            {
+                return Results.Json(ResponseObject.Success(), statusCode: StatusCodes.Status200OK);
+            }
+
             var wrappedValue = WrapResultInResponseObject(result);
             return Results.Json(wrappedValue, statusCode: StatusCodes.Status200OK);
         }

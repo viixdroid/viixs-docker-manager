@@ -7,7 +7,7 @@ using ViixsDockerManager.Shared.Models;
 
 namespace ViixDockerManager.AspNet.Shared.Handlers;
 
-public class ViixsDockerManagerExceptionHandler(ILogger<ViixsDockerManagerExceptionHandler> logger) : IExceptionHandler
+public class ViixsDockerManagerExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
         CancellationToken cancellationToken)

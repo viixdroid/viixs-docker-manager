@@ -8,8 +8,8 @@ namespace ViixsDockerManager.Shared.Decorators;
 
 public class ViixsServiceExceptionHandler<TService> : DispatchProxy
 {
-    private TService _service;
-    private ILogger<TService> _logger;
+    private TService? _service;
+    private ILogger<TService>? _logger;
 
     public static TService CreateService(TService service, ILogger<TService> logger)
     {
@@ -75,7 +75,7 @@ public class ViixsServiceExceptionHandler<TService> : DispatchProxy
 
         var serviceFaultedException = new ServiceFaultUnhandledException(typeof(TService).Name,
             methodInfo?.Name ?? "Unknown Method", innerException);
-        serviceFaultedException.Log(_logger);
+        serviceFaultedException.Log(_logger!);
         throw serviceFaultedException;
     }
 }

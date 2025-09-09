@@ -7,7 +7,7 @@ var sqlite = builder.AddSqlite("viixsdockermanager-db", folderPath, fileName).Wi
 
 var backend = builder.AddProject<Projects.ViixsDockerManager_Server>("viixsdockermanager-server")
     .WithReference(sqlite)
-    .WithEnvironment("ConnectionStrings__viixsdockermanager-db", $"DataSource={Path.Combine(folderPath, fileName)};Cache=Shared");
+    .WithEnvironment("ViixsDockerManager__viixsdockermanager-db", $"{Path.Combine(folderPath, fileName)}");
 
 builder.AddNpmApp("viixsdockermanager-client", "../viixsdockermanager.client", scriptName: "dev")
     .WithReference(backend)

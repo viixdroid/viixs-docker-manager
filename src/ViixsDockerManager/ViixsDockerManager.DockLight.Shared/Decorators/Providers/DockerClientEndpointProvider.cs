@@ -11,11 +11,11 @@ using ViixsDockerManager.Shared.Helpers;
 namespace ViixsDockerManager.DockLight.Shared.Decorators.Providers;
 
 public class DockerClientEndpointProvider(
-    IReadRepository<DocklightEnvironment> docklightEnvironmentRepository,
+    IReadRepository<DockLightEnvironment> docklightEnvironmentRepository,
     IDockerClientService dockerClientService)
     : IDockerClientEndpointProvider
 {
-    private readonly IReadRepository<DocklightEnvironment> _docklightEnvironmentRepository = Guard.ValueIsNotNull(docklightEnvironmentRepository, nameof(docklightEnvironmentRepository));
+    private readonly IReadRepository<DockLightEnvironment> _docklightEnvironmentRepository = Guard.ValueIsNotNull(docklightEnvironmentRepository, nameof(docklightEnvironmentRepository));
     private readonly IDockerClientService _dockerClientService = Guard.ValueIsNotNull(dockerClientService, nameof(dockerClientService));
 
     private static readonly ConcurrentDictionary<Type, PropertyInfo[]> _dockerClientTypeCache = new ConcurrentDictionary<Type, PropertyInfo[]>();

@@ -8,7 +8,7 @@ public static class DockLightConstants
     /// </summary>
     public const string DotnetRunningInContainer = "DOTNET_RUNNING_IN_CONTAINER";
 
-    public static class Unix
+    public static class Linux
     {
         public const string Protocol = "unix";
         public const string Socket = @"/var/run/docker.sock";

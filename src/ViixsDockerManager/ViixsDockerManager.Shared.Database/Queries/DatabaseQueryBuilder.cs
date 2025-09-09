@@ -29,7 +29,7 @@ public sealed class DatabaseQueryBuilder<TEntity>(IQueryable<TEntity> queryObjec
     /// <returns>
     /// The filtered query
     /// </returns>
-    public IDatabaseQueryBuilder<TEntity> ApplyFilter(IQueryFilter<TEntity>? filter = null)
+    public IDatabaseQueryBuilder<TEntity> ApplyFilter(IDatabaseQueryFilter<TEntity>? filter = null)
     {
         if (filter is null)
         {
@@ -51,7 +51,7 @@ public sealed class DatabaseQueryBuilder<TEntity>(IQueryable<TEntity> queryObjec
     /// This method applies the filters as passed. If you have filter by name and a filter by id, and that is the order
     /// in which the filters are passed, the filters are executed as is.
     /// </remarks>
-    public IDatabaseQueryBuilder<TEntity> ApplyOrdering(IEnumerable<IOrderStrategy<TEntity>>? orderStrategies)
+    public IDatabaseQueryBuilder<TEntity> ApplyOrdering(IEnumerable<IDatabaseOrderStrategy<TEntity>>? orderStrategies)
     {
         if (orderStrategies is null)
         {

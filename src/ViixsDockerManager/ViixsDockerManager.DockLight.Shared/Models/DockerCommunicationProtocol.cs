@@ -3,10 +3,12 @@ using static ViixsDockerManager.DockLight.Shared.Constants.DockLightConstants;
 
 namespace ViixsDockerManager.DockLight.Shared.Models;
 
-internal record DockerCommunicationProtocol
+internal record DockerCommunicationProtocol : IDockerCommunicationProtocol
 {
     private readonly string _protocol;
     private readonly string _address;
+
+    public string Protocol => _protocol;
 
     private DockerCommunicationProtocol(string protocol, string address)
     {
@@ -27,7 +29,7 @@ internal record DockerCommunicationProtocol
     {
         return _protocol switch
         {
-            Unix.Protocol or Tcp.Protocol => $"://{_address}",
+            Linux.Protocol or Tcp.Protocol => $"://{_address}",
             Windows.Protocol => @$"://.{_address}", //Add a dot to the beginning of the address to make it a valid npipe address.
             _ => throw new NotSupportedException($"The protocol '{_protocol}' is not supported.")
         };
@@ -46,7 +48,7 @@ internal record DockerCommunicationProtocol
     {
         return _protocol switch
         {
-            Unix.Protocol =>
+            Linux.Protocol =>
                 // In a docker container, the unix socket is mounted as a file.
                 // So we check if the file exists.
                 File.Exists(_address),
@@ -55,8 +57,12 @@ internal record DockerCommunicationProtocol
         };
     }
 
-    public static DockerCommunicationProtocol UnixCommunication() =>
-        new DockerCommunicationProtocol(Unix.Protocol, Unix.Socket);
+    public static DockerCommunicationProtocol LinuxCommunication()
+        => new DockerCommunicationProtocol(Linux.Protocol, Linux.Socket);
+
+    public static DockerCommunicationProtocol WindowsCommunication()
+        => new DockerCommunicationProtocol(Windows.Protocol, Windows.Npipe);
+
 
     public static DockerCommunicationProtocol Create(string? address)
     {
@@ -65,9 +71,9 @@ internal record DockerCommunicationProtocol
             throw new ArgumentNullException(nameof(address));
         }
 
-        if (address.Equals(Unix.Socket, StringComparison.OrdinalIgnoreCase))
+        if (address.Equals(Linux.Socket, StringComparison.OrdinalIgnoreCase))
         {
-            return new DockerCommunicationProtocol(Unix.Protocol, address);
+            return new DockerCommunicationProtocol(Linux.Protocol, address);
         }
 
         if (address.Equals(Windows.Npipe, StringComparison.OrdinalIgnoreCase))

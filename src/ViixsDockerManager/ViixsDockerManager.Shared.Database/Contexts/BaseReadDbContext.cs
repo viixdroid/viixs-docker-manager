@@ -3,7 +3,7 @@ using ViixsDockerManager.Shared.Database.Exceptions;
 
 namespace ViixsDockerManager.Shared.Database.Contexts;
 
-public abstract class BaseReadDbContext(DbContextOptions options) : DbContext(options)
+public abstract class BaseReadDbContext(DbContextOptions options) : DbContext(options), IReadDbContext
 {
     public sealed override int SaveChanges()
         => throw new CannotWriteInAReadContextException();

@@ -12,6 +12,7 @@ public class DockerClientService(IConfiguration configuration, ILogger<DockerCli
 {
     public IDockerClient? GetDockerClient(string? address)
     {
+        ArgumentException.ThrowIfNullOrEmpty(address);
         // var isRunningInDocker = configuration.GetValue<bool>(DotnetRunningInContainer);
         // if (!isRunningInDocker)
         // {
@@ -19,14 +20,14 @@ public class DockerClientService(IConfiguration configuration, ILogger<DockerCli
         // return CreateDockerClient();
         // }
 
-        var communicationProtocol = DockerCommunicationProtocol.Create(address);
+        //var communicationProtocol = DockerCommunicationProtocol.Create(address);
 
         // if (!communicationProtocol.AddressExists())
         // {
         //     return null;
         // }
 
-        var client = CreateDockerClient(communicationProtocol.GetProtocolUri());
+        var client = CreateDockerClient(new Uri(address));
         logger.LogInformation("Created Docker client with endpoint {Endpoint}", client.Configuration.EndpointBaseUri);
         return client;
     }

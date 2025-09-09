@@ -1,6 +1,8 @@
-﻿namespace ViixsDockerManager.Shared.Database.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class BaseWriteDbContext
+namespace ViixsDockerManager.Shared.Database.Contexts;
+
+public class BaseWriteDbContext(DbContextOptions options) : DbContext(options), IWriteDbContext
 {
-    
+
 }
