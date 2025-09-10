@@ -1,4 +1,4 @@
-﻿export interface DockerProtocol {
+export interface DockerProtocol {
   protocolUri: string
 }
 

@@ -1,29 +1,26 @@
-﻿import { useState, useEffect } from "react";
-import { Navigate } from "../router.ts";
-import { ListItemText, ListItem, List, Link, ListItemButton } from "@mui/material";
-import type { DockLightEnvironment } from "./dock-light-environment.ts";
-import type { ApiObject } from "../models/api-object.ts";
-import { useNavigate } from 'react-router';
+import type { FC } from 'react'
+import type { ApiObject } from '../models/api-object.ts'
+import type { DockLightEnvironment } from './dock-light-environment.ts'
+import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 
-const IndexRedirectPage = () => {
+const IndexRedirectPage: FC = () => {
   const navigate = useNavigate()
-  const [environments, setEnvironments] = useState<DockLightEnvironment[]>([])
-
-  useEffect(() => {
-    getEnvironments()
-  }, [])
+  const [
+    environments,
+    setEnvironments,
+  ] = useState<DockLightEnvironment[]>([])
 
   const getEnvironments = async () => {
-    console.log('start fetching data')
     const response = await fetch('/api/docklightenvironments')
 
-    console.log('fetched data')
     if (!response.ok) {
       navigate('/setup')
     }
 
     const data: ApiObject<DockLightEnvironment[]> = await response.json()
-    console.log(data)
+
     if (!data.isSuccess) {
       navigate('/setup')
     }
@@ -33,25 +30,35 @@ const IndexRedirectPage = () => {
     }
   }
 
-  const environmentList =
-    <List sx={{ width: '100%' }}>
-      {environments?.map(environment => (
-        <>
-          <ListItem
-            disablePadding
-            alignItems='flex-start'
-            key={environment.environmentId}
-          >
-            <ListItemButton component={Link} to={`${environment.environmentId}/containers`} divider={true}>
-              <ListItemText
-                primary={environment.name}
-                secondary={environment.apiLocation}
-              />
-            </ListItemButton>
-          </ListItem>
-        </>
-      ))}
-    </List>
+  useEffect(() => {
+    void getEnvironments()
+  }, [])
+
+  const environmentList
+    = (
+      <List sx={{ width: '100%' }}>
+        {environments?.map(environment => (
+          <>
+            <ListItem
+              disablePadding
+              alignItems="flex-start"
+              key={environment.environmentId}
+            >
+              <ListItemButton
+                component="a"
+                href={`${environment.environmentId}/containers`}
+                divider={true}
+              >
+                <ListItemText
+                  primary={environment.name}
+                  secondary={environment.apiLocation}
+                />
+              </ListItemButton>
+            </ListItem>
+          </>
+        ))}
+      </List>
+    )
 
   return (
     <>

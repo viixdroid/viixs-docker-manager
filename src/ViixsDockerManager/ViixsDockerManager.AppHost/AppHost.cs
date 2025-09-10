@@ -3,7 +3,8 @@ var builder = DistributedApplication.CreateBuilder(args);
 var folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "ViixsDockerManager");
 const string fileName = "viixsdockermanager.db";
 
-var sqlite = builder.AddSqlite("viixsdockermanager-db", folderPath, fileName).WithSqliteWeb();
+var sqlite = builder.AddSqlite("viixsdockermanager-db", folderPath, fileName)
+    .WithSqliteWeb();
 
 var backend = builder.AddProject<Projects.ViixsDockerManager_Server>("viixsdockermanager-server")
     .WithReference(sqlite)
