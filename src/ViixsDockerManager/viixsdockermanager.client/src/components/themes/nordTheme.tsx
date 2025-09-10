@@ -1,5 +1,5 @@
-﻿// nordThemeV7.ts
-import {createTheme} from '@mui/material/styles';
+// nordThemeV7.ts
+import { createTheme } from '@mui/material/styles'
 
 // Nord kleuren
 const nordColors = {
@@ -19,7 +19,7 @@ const nordColors = {
   auroraYellow: '#EBCB8B',
   auroraGreen: '#A3BE8C',
   auroraPurple: '#B48EAD',
-};
+}
 
 const nordTheme = createTheme({
   palette: {
@@ -45,31 +45,31 @@ const nordTheme = createTheme({
       secondary: nordColors.snowStorm0,
       disabled: nordColors.polarNight3,
     },
-    error: {main: nordColors.auroraRed},
-    warning: {main: nordColors.auroraOrange},
-    info: {main: nordColors.frost1},
-    success: {main: nordColors.auroraGreen},
+    error: { main: nordColors.auroraRed },
+    warning: { main: nordColors.auroraOrange },
+    info: { main: nordColors.frost1 },
+    success: { main: nordColors.auroraGreen },
   },
   typography: {
     fontFamily: 'Roboto, Arial, sans-serif',
-    h1: {color: nordColors.snowStorm2},
-    h2: {color: nordColors.snowStorm2},
-    h3: {color: nordColors.snowStorm2},
-    h4: {color: nordColors.snowStorm2},
-    h5: {color: nordColors.snowStorm2},
-    h6: {color: nordColors.snowStorm2},
-    body1: {color: nordColors.snowStorm1},
-    body2: {color: nordColors.snowStorm0},
-    button: {color: nordColors.snowStorm2},
+    h1: { color: nordColors.snowStorm2 },
+    h2: { color: nordColors.snowStorm2 },
+    h3: { color: nordColors.snowStorm2 },
+    h4: { color: nordColors.snowStorm2 },
+    h5: { color: nordColors.snowStorm2 },
+    h6: { color: nordColors.snowStorm2 },
+    body1: { color: nordColors.snowStorm1 },
+    body2: { color: nordColors.snowStorm0 },
+    button: { color: nordColors.snowStorm2 },
     fontWeightBold: '700',
     fontWeightMedium: '500',
     fontWeightLight: '300',
-    fontWeightRegular: '400'
+    fontWeightRegular: '400',
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        body: {backgroundColor: nordColors.polarNight0, color: nordColors.snowStorm1},
+        body: { backgroundColor: nordColors.polarNight0, color: nordColors.snowStorm1 },
       },
     },
     MuiAppBar: {
@@ -97,27 +97,29 @@ const nordTheme = createTheme({
         contained: {},
         colorPrimary: {
           '&.MuiButton-contained': {
-            backgroundColor: nordColors.frost2,
-            color: nordColors.snowStorm2,
-            '&:hover': {backgroundColor: nordColors.frost3},
+            'backgroundColor': nordColors.frost2,
+            'color': nordColors.snowStorm2,
+            '&:hover': { backgroundColor: nordColors.frost3 },
           },
         },
         colorSecondary: {
           '&.MuiButton-contained': {
-            backgroundColor: nordColors.auroraGreen,
-            color: nordColors.snowStorm2,
-            '&:hover': {backgroundColor: nordColors.auroraYellow},
+            'backgroundColor': nordColors.auroraGreen,
+            'color': nordColors.snowStorm2,
+            '&:hover': { backgroundColor: nordColors.auroraYellow },
           },
         },
       },
     },
     MuiCard: {
       styleOverrides: {
-        root: {backgroundColor: nordColors.polarNight1, color: nordColors.snowStorm1},
+        root: {
+          backgroundColor: nordColors.polarNight1,
+          color: nordColors.snowStorm1,
+        },
       },
     },
   },
-});
+})
 
-export default nordTheme;
-
+export default nordTheme
