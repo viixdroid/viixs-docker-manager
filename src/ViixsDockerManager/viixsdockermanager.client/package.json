@@ -1,12 +1,13 @@
 {
   "name": "viixsdockermanager.client",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,16 +22,20 @@
     "react-router": "^7.8.2"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^5.3.0",
     "@eslint/js": "^9.33.0",
     "@stylistic/eslint-plugin": "^5.3.1",
     "@types/node": "^22",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
-    "eslint": "^9.33.0",
+    "eslint": "^9.35.0",
+    "eslint-plugin-react-dom": "^1.53.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-react-x": "^1.53.0",
     "globals": "^16.3.0",
+    "jiti": "^2.5.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.2"
