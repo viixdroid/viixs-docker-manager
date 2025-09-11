@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/Aspire/">
+    <Project Path="ViixsDockerManager.AppHost/ViixsDockerManager.AppHost.csproj" />
+    <Project Path="ViixsDockerManager.ServiceDefaults/ViixsDockerManager.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/DockLight/">
+    <Project Path="ViixsDockerManager.DockLight.Containers/ViixsDockerManager.DockLight.Containers.csproj" />
+    <Project Path="ViixsDockerManager.DockLight.Environments/ViixsDockerManager.DockLight.Environments.csproj" />
+    <Project Path="ViixsDockerManager.DockLight.Shared/ViixsDockerManager.DockLight.Shared.csproj" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="ViixsDockerManager.AspNet.Shared/ViixsDockerManager.AspNet.Shared.csproj" />
+    <Project Path="ViixsDockerManager.Mediator/ViixsDockerManager.Mediator.csproj" />
+    <Project Path="ViixsDockerManager.Shared.Database.Sqlite/ViixsDockerManager.Shared.Database.Sqlite.csproj" />
+    <Project Path="ViixsDockerManager.Shared.Database/ViixsDockerManager.Shared.Database.csproj" />
+    <Project Path="ViixsDockerManager.Shared/ViixsDockerManager.Shared.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="viixsdockermanager.client/viixsdockermanager.client.esproj">
+    <Build />
+  </Project>
+  <Project Path="ViixsDockerManager.Server/ViixsDockerManager.Server.csproj" />
+</Solution>
