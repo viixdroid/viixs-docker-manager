@@ -6,7 +6,7 @@ import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import { Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useLocation, useParams } from 'react-router'
+import { useParams } from 'react-router'
 
 const ContainerDetailsPage: FC = () => {
   const { environmentid, containername } = useParams()
