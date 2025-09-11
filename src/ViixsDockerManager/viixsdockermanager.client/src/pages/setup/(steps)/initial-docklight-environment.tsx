@@ -49,42 +49,23 @@ const AddInitialDockLightStep: FC = () => {
       <Stack spacing={1}>
         <Typography variant="body1">
           To setup Viix's Docker Manager, we need to create an environment.
-          {' '}
           <br />
           This environment will communicate with your local docker engine.
-          {' '}
           <br />
-
           Based upon your OS, the protocol is predefined.
           <br />
-
-          You are running
+          You are running on
           {' '}
 
-          <Box
-            component="span"
-            sx={{ fontWeight: 'bold' }}
-          >
+          <Box component="span" sx={{ fontWeight: 'bold' }}>
             {initialEnvironment?.environment}
           </Box>
-
           {initialEnvironment?.isRunningInDocker ? ' in docker.' : '.'}
         </Typography>
 
-        <Stack
-          spacing={1}
-          direction="column"
-          alignItems="start"
-        >
-          <Typography
-            variant="body1"
-            component="div"
-            sx={{ textAlign: 'start' }}
-          >
-            <Box
-              component="span"
-              sx={{ fontStyle: 'oblique' }}
-            >
+        <Stack spacing={1} direction="column" alignItems="start">
+          <Typography variant="body1" component="div" sx={{ textAlign: 'start' }}>
+            <Box component="span" sx={{ fontStyle: 'oblique' }}>
               Environment name
             </Box>
           </Typography>
