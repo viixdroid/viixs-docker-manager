@@ -3,7 +3,7 @@ import type { ApiObject } from '../models/api-object.ts'
 import type { DockLightEnvironment } from './dock-light-environment.ts'
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 const IndexRedirectPage: FC = () => {
   const navigate = useNavigate()
@@ -45,8 +45,8 @@ const IndexRedirectPage: FC = () => {
               key={environment.environmentId}
             >
               <ListItemButton
-                component="a"
-                href={`${environment.environmentId}/containers`}
+                component={Link}
+                to={`${environment.environmentId}/containers`}
                 divider={true}
               >
                 <ListItemText

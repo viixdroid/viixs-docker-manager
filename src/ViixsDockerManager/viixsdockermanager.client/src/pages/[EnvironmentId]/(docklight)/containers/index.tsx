@@ -1,6 +1,7 @@
 import type { FC } from 'react'
+import type { To } from 'react-router'
 import type { ApiObject } from '../../../../models/api-object.ts'
-import type { ContainerSummary } from './container-summary.ts'
+import type { ContainerSummary } from './container-models.ts'
 import { PlayArrow, Stop } from '@mui/icons-material'
 import { Button, Grid, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material'
 import ButtonGroup from '@mui/material/ButtonGroup'
@@ -9,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 
 const Index: FC = () => {
-  const { EnvironmentId } = useParams()
+  const { environmentid } = useParams()
   const [containers, setContainers] = useState<ContainerSummary[]>()
   const [isError, setIsError] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -17,7 +18,7 @@ const Index: FC = () => {
   const getContainerData = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch(`/api/docklightenvironments/${EnvironmentId}/containers`)
+      const response = await fetch(`/api/docklightenvironments/${environmentid}/containers`)
 
       if (!response.ok) {
         setContainers([])
@@ -72,7 +73,7 @@ const Index: FC = () => {
             >
               <ListItemButton
                 component={Link}
-                to={`${container.name}`}
+                to={{ pathname: `${container.id}`, state: container.id } as To}
                 divider={true}
               >
                 <ListItemText
@@ -122,7 +123,7 @@ const Index: FC = () => {
   return (
     <>
       <Typography variant="h5">
-        {EnvironmentId}
+        {environmentid}
       </Typography>
 
       <Grid
