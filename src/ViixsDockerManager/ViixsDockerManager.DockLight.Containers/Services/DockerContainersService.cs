@@ -1,5 +1,6 @@
 ﻿using Docker.DotNet;
 using Docker.DotNet.Models;
+using Microsoft.Extensions.Logging;
 using ViixsDockerManager.DockLight.Services.Interfaces;
 using ViixsDockerManager.DockLight.Shared.Entities;
 using ViixsDockerManager.DockLight.Shared.Exceptions;
@@ -12,40 +13,34 @@ using ViixsDockerManager.Shared.Helpers;
 
 namespace ViixsDockerManager.DockLight.Services;
 
-public class DockerContainersService : IDockerContainersService
+public class DockerContainersService(ILogger<DockerContainersService> logger) : IDockerContainersService
 {
-    private readonly IReadRepository<DockLightEnvironment> _dockLightEnvironmentRepository;
-    // private readonly IContainerOperations _containerOperations;
-
-    public DockerContainersService(IDockerClientService dockerClientService,
-        IReadRepository<DockLightEnvironment> dockLightEnvironmentRepository)
-    {
-        _dockLightEnvironmentRepository = dockLightEnvironmentRepository;
-        // var dockerClient = dockerClientService.GetDockerClient() ??
-        //                    throw ViixsDockerManagerException.InvalidOperation(
-        //                        "Could not find a correct communication protocol for docker");
-        // _containerOperations = dockerClient.Containers;
-    }
 
     public async Task<IEnumerable<ContainerSummary>> GetContainerListAsync(Guid environmentId, IContainerOperations? containerOperations = null)
     {
         containerOperations = Guard.ValueIsNotNull(containerOperations, nameof(containerOperations));
 
-        // var environment = await _dockLightEnvironmentRepository.GetByFilterAsync(new DockLightEnvironmentByEnvironmentIdFilter(environmentId));
-        //
-        // if (environment is null)
-        // {
-        //     throw new InvalidOperationException("No environments found.");
-        // }
-
         //TODO: Actually add some filters.
         var containerListParameters = new ContainersListParameters { All = true };
-        var containers = await containerOperations.ListContainersAsync(containerListParameters);
-        if (containers.Count == 0)
+        logger.LogInformation("Getting Containers");
+        try
         {
-            throw new NoContainersFoundException();
-        }
 
-        return containers.Select(c => (ContainerSummary)c);
+            var containers = await containerOperations.ListContainersAsync(containerListParameters);
+            logger.LogInformation("We gotten containers? {Containers}", string.Join(',', containers.Select(c => c.Names[0])));
+            if (containers.Count == 0)
+            {
+                logger.LogInformation("We have not containers");
+                throw new NoContainersFoundException();
+            }
+
+
+            return containers.Select(c => (ContainerSummary)c);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error getting containers");
+            throw;
+        }
     }
 }

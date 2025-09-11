@@ -1,6 +1,4 @@
 import type { FC } from 'react'
-// src/pages/index.tsx
-import { React } from 'react'
 import { useParams } from 'react-router'
 
 const ContainerName: FC = () => {
