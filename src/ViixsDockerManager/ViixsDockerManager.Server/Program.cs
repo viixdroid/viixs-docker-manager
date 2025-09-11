@@ -11,10 +11,18 @@ using ViixsDockerManager.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
+
+var logFileLocation = builder.Configuration.GetSection("ViixsDockerManager").GetValue<string>("logfilelocation") ?? throw ViixsDockerManager.Shared.Exceptions.ViixsDockerManagerException.InvalidOperation("No log file locations");
+const string logTemplate = "[{Timestamp:HH:mm:ss}] [{Level:u4}] [{SourceContext}] {Message:j}{NewLine}{Exception}";
+
+
 builder.Host.UseSerilog((context, services, configuration) => configuration
     .ReadFrom.Configuration(context.Configuration)
     .ReadFrom.Services(services)
     .Enrich.FromLogContext()
+    .WriteTo.Console(outputTemplate: logTemplate)
+    .WriteTo.File(logFileLocation!, rollingInterval: RollingInterval.Day, outputTemplate: logTemplate)
     .WriteTo.OpenTelemetry(
         // The endpoint below needs to be accessible from your service.
         // Aspire automatically sets up environment variables for the OTLP endpoint.
@@ -27,7 +35,6 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.AddServiceDefaults();
 
-builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
 builder.Services.AddMediatorServices();
