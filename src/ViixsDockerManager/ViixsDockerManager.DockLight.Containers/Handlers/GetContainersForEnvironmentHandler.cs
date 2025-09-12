@@ -10,7 +10,7 @@ internal class GetContainersForEnvironmentHandler(IDockerServiceFactory dockerSe
 {
     public async Task<IEnumerable<ContainerSummary>> Execute(GetContainersForEnvironmentQuery query, CancellationToken cancellationToken = default)
     {
-        var service = await GetDockerContainerService(query.EnvironmentId, cancellationToken).ConfigureAwait(false);
+        var service = await GetDockerContainerService(query, cancellationToken).ConfigureAwait(false);
         return await service.GetContainerListAsync().ConfigureAwait(false);
     }
 }

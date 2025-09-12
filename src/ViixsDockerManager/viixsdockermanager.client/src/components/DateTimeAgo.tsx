@@ -4,7 +4,7 @@ import { Typography } from '@mui/material'
 import { formatDistance } from 'date-fns'
 
 interface DateTimeAgoProps {
-  dateTime: string | number | Date // | undefined
+  dateTime: string | number | Date
   variant?: TypographyVariant
 }
 

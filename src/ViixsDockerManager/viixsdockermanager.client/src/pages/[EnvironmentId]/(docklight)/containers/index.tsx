@@ -100,14 +100,13 @@ const Index: FC = () => {
                       </Stack>
                     </Typography>
 
-                    { /* TODO: Fix this. */}
                     <Box
                       component="div"
                       sx={{
-                        mt: 1, // Margin top to create space
+                        mt: 1,
                         display: 'flex',
                         flexWrap: 'wrap',
-                        gap: 0.5, // Space between chips
+                        gap: 0.5,
                       }}
                     >
                       {container.ports.map(port => (

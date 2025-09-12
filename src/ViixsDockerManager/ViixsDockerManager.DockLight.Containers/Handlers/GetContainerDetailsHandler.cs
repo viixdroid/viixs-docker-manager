@@ -10,7 +10,7 @@ internal class GetContainerDetailsHandler(IDockerServiceFactory dockerServiceFac
 {
     public async Task<ContainerDetails> Execute(GetContainerDetailsQuery query, CancellationToken cancellationToken = default)
     {
-        var service = await GetDockerContainerService(query.EnvironmentId, cancellationToken).ConfigureAwait(false);
+        var service = await GetDockerContainerService(query, cancellationToken).ConfigureAwait(false);
         return await service.GetContainerDetailAsync(query.ContainerId).ConfigureAwait(false);
     }
 }
