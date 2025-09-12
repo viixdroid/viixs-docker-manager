@@ -18,7 +18,7 @@ public static class DockLightServicesExtensions
     public static IServiceCollection AddDockLightContainerServices(this IServiceCollection services)
     {
         services.AddDecoration<IDockerClientService, DockerClientService>();
-        services.AddScoped<IDockerServiceRunner, DockLightServiceRunner>();
+        services.AddScoped<IDockerServiceFactory, DockerServiceFactory>();
 
         services.RegisterQueryHandler<GetContainersForEnvironmentHandler, GetContainersForEnvironmentQuery>();
         services.RegisterQueryHandler<GetContainerDetailsHandler, GetContainerDetailsQuery>();
