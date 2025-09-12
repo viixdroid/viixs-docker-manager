@@ -1,5 +1,8 @@
 // nordThemeV7.ts
 import { createTheme } from '@mui/material/styles'
+import '@fontsource-variable/outfit'
+import '@fontsource-variable/lexend-deca'
+import '@fontsource-variable/noto-sans'
 
 // Nord kleuren
 const nordColors = {
@@ -21,7 +24,7 @@ const nordColors = {
   auroraPurple: '#B48EAD',
 }
 
-const nordTheme = createTheme({
+const NordTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
@@ -51,12 +54,12 @@ const nordTheme = createTheme({
     success: { main: nordColors.auroraGreen },
   },
   typography: {
-    fontFamily: 'Roboto, Arial, sans-serif',
+    fontFamily: ['Noto Sans Variable', 'Roboto', 'Arial', 'sans-serif'].join(','),
     h1: { color: nordColors.snowStorm2 },
     h2: { color: nordColors.snowStorm2 },
     h3: { color: nordColors.snowStorm2 },
     h4: { color: nordColors.snowStorm2 },
-    h5: { color: nordColors.snowStorm2 },
+    h5: { color: nordColors.snowStorm2, fontFamily: 'Lexend Deca Variable', fontWeight: 'bold' },
     h6: { color: nordColors.snowStorm2 },
     body1: { color: nordColors.snowStorm1 },
     body2: { color: nordColors.snowStorm0 },
@@ -95,6 +98,9 @@ const nordTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         contained: {},
+        root: {
+          textTransform: 'none',
+        },
         colorPrimary: {
           '&.MuiButton-contained': {
             'backgroundColor': nordColors.frost2,
@@ -119,7 +125,16 @@ const nordTheme = createTheme({
         },
       },
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontFamily: 'Outfit Variable',
+          fontSize: '0.99em',
+        },
+      },
+    },
   },
 })
 
-export default nordTheme
+export default NordTheme
