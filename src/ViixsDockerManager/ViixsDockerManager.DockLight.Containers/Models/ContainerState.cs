@@ -1,4 +1,4 @@
-﻿namespace ViixsDockerManager.DockLight.Shared.Models;
+﻿namespace ViixsDockerManager.DockLight.Models;
 
 public enum ContainerState
 {

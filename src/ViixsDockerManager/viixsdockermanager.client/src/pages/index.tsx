@@ -1,9 +1,10 @@
 import type { FC } from 'react'
+import type { To } from 'react-router'
 import type { ApiObject } from '../models/api-object.ts'
 import type { DockLightEnvironment } from './dock-light-environment.ts'
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 const IndexRedirectPage: FC = () => {
   const navigate = useNavigate()
@@ -38,24 +39,23 @@ const IndexRedirectPage: FC = () => {
     = (
       <List sx={{ width: '100%' }}>
         {environments?.map(environment => (
-          <>
-            <ListItem
-              disablePadding
-              alignItems="flex-start"
-              key={environment.environmentId}
+          <ListItem
+            disablePadding
+            alignItems="flex-start"
+            key={environment.id}
+          >
+            <ListItemButton
+              component={Link}
+              to={{ pathname: `${environment.environmentId}/containers` }}
+              state={{ environment }}
+              divider={true}
             >
-              <ListItemButton
-                component="a"
-                href={`${environment.environmentId}/containers`}
-                divider={true}
-              >
-                <ListItemText
-                  primary={environment.name}
-                  secondary={environment.apiLocation}
-                />
-              </ListItemButton>
-            </ListItem>
-          </>
+              <ListItemText
+                primary={environment.name}
+                secondary={environment.apiLocation}
+              />
+            </ListItemButton>
+          </ListItem>
         ))}
       </List>
     )

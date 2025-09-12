@@ -7,25 +7,12 @@ using static ViixsDockerManager.DockLight.Shared.Constants.DockLightConstants;
 
 namespace ViixsDockerManager.DockLight.Shared.Services;
 
-public class DockerClientService(IConfiguration configuration, ILogger<DockerClientService> logger)
+public class DockerClientService(ILogger<DockerClientService> logger)
     : IDockerClientService
 {
     public IDockerClient? GetDockerClient(string? address)
     {
         ArgumentException.ThrowIfNullOrEmpty(address);
-        // var isRunningInDocker = configuration.GetValue<bool>(DotnetRunningInContainer);
-        // if (!isRunningInDocker)
-        // {
-        //When not giving any information, the client itself can figure out the protocol.
-        // return CreateDockerClient();
-        // }
-
-        //var communicationProtocol = DockerCommunicationProtocol.Create(address);
-
-        // if (!communicationProtocol.AddressExists())
-        // {
-        //     return null;
-        // }
 
         var client = CreateDockerClient(new Uri(address));
         logger.LogInformation("Created Docker client with endpoint {Endpoint}", client.Configuration.EndpointBaseUri);

@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using ViixDockerManager.AspNet.Shared.Extensions;
@@ -38,7 +40,7 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddMediatorServices();
-builder.Services.AddDockLightServices();
+builder.Services.AddDockLightContainerServices();
 builder.Services.AddDockLightEnvironmentServices(builder.Configuration);
 builder.Services.AddDockLightSharedServices();
 builder.Services.AddExceptionHandlerService();
@@ -50,7 +52,11 @@ builder.Services.AddControllers(options =>
 });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.SnakeCaseLower));
+});
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

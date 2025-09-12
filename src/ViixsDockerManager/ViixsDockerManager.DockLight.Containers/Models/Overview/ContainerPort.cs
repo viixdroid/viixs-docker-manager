@@ -2,7 +2,7 @@
 using Docker.DotNet.Models;
 using static System.Net.Sockets.AddressFamily;
 
-namespace ViixsDockerManager.DockLight.Shared.Models;
+namespace ViixsDockerManager.DockLight.Models.Overview;
 
 public record ContainerPort(string Ip, ushort PrivatePort, ushort PublicPort, string Type)
 {
