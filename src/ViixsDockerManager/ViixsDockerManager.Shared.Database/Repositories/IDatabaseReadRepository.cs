@@ -4,10 +4,9 @@ using ViixsDockerManager.Shared.Repositories;
 
 namespace ViixsDockerManager.Shared.Database.Repositories;
 
-public interface IReadRepository<TEntity> : IRepository<TEntity>
+public interface IDatabaseReadRepository<TEntity> : IReadRepository<TEntity>
     where TEntity : class, IEntity
 {
-    Task<IEnumerable<TEntity>> GetAllAsync();
     Task<TEntity?> GetByIdAsync(int id);
     Task<TEntity?> GetByFilterAsync(IDatabaseQueryFilter<TEntity> filter);
     Task<IEnumerable<TEntity>> FindAsync(IDatabaseQueryFilter<TEntity> filter);

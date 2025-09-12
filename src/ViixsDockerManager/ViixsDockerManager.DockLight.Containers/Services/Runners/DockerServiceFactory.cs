@@ -17,10 +17,10 @@ internal class DockerServiceFactory : IDockerServiceFactory
 
     private readonly IMemoryCache _memoryCache;
 
-    private readonly IReadRepository<DockLightEnvironment> _docklightEnvironmentRepository;
+    private readonly IDatabaseReadRepository<DockLightEnvironment> _docklightEnvironmentRepository;
     private readonly IDockerClientService _dockerClientService;
 
-    public DockerServiceFactory(IReadRepository<DockLightEnvironment> docklightEnvironmentRepository, IDockerClientService dockerClientService, IMemoryCache memoryCache)
+    public DockerServiceFactory(IDatabaseReadRepository<DockLightEnvironment> docklightEnvironmentRepository, IDockerClientService dockerClientService, IMemoryCache memoryCache)
     {
         _memoryCache = Guard.ValueIsNotNull(memoryCache, nameof(memoryCache));
         _docklightEnvironmentRepository = docklightEnvironmentRepository;

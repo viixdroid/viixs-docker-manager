@@ -15,7 +15,7 @@ public static class SharedDatabaseServiceExtensions
     {
         services
             .AddScoped<IReadUnitOfWork<TEntity>, ReadUnitOfWork<TEntity>>()
-            .AddScoped<IReadRepository<TEntity>, ReadRepository<TReadDbContext, TEntity>>();
+            .AddScoped<IDatabaseReadRepository<TEntity>, DatabaseReadRepository<TReadDbContext, TEntity>>();
         return services;
     }
 

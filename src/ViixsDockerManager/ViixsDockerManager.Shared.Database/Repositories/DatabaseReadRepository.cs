@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ViixsDockerManager.Shared.Database.Contexts;
 using ViixsDockerManager.Shared.Database.Entities;
 using ViixsDockerManager.Shared.Database.Queries;
@@ -8,10 +7,10 @@ using ViixsDockerManager.Shared.Database.UnitOfWorks;
 
 namespace ViixsDockerManager.Shared.Database.Repositories;
 
-public class ReadRepository<TReadDbContext, TEntity>(
+public class DatabaseReadRepository<TReadDbContext, TEntity>(
     IDbContextFactory<TReadDbContext> dbContextFactory,
     IReadUnitOfWork<TEntity> readUnitOfWork)
-    : BaseReadRepository<TReadDbContext, TEntity>(dbContextFactory, readUnitOfWork), IReadRepository<TEntity>
+    : BaseReadRepository<TReadDbContext, TEntity>(dbContextFactory, readUnitOfWork), IDatabaseReadRepository<TEntity>
     where TReadDbContext : DbContext, IReadDbContext
     where TEntity : class, IEntity
 {
@@ -51,4 +50,5 @@ public class ReadRepository<TReadDbContext, TEntity>(
         }
         return await ReadUnitOfWork.GetCountForQueryAsync(queryBuilder);
     }
+
 }
