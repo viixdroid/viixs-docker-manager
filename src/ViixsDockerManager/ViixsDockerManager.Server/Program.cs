@@ -56,6 +56,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.SnakeCaseLower));
 });
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
