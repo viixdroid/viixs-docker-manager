@@ -5,7 +5,7 @@ using ViixsDockerManager.Shared.Database.Repositories;
 
 namespace ViixsDockerManager.DockLight.Environments.Handlers;
 
-public class GetAllDockLightEnvironmentsHandler(IReadRepository<DockLightEnvironment> readRepository)
+public class GetAllDockLightEnvironmentsHandler(IDatabaseReadRepository<DockLightEnvironment> readRepository)
     : IQueryHandler<GetAllDockLightEnvironmentsQuery, IEnumerable<DockLightEnvironment>>
 {
     public Task<IEnumerable<DockLightEnvironment>> Execute(GetAllDockLightEnvironmentsQuery query, CancellationToken cancellationToken = default)
