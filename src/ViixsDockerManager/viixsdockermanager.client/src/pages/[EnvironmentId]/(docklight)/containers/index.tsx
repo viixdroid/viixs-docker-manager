@@ -1,16 +1,17 @@
 import type { FC } from 'react'
-import type { To } from 'react-router'
 import type { ApiObject } from '../../../../models/api-object.ts'
 import type { ContainerSummary } from './container-models.ts'
 import { PlayArrow, Stop } from '@mui/icons-material'
-import { Button, Grid, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material'
+import { Box, Button, Chip, Grid, IconButton, List, ListItem, ListItemText, Stack, Typography } from '@mui/material'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import ListItemButton from '@mui/material/ListItemButton'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router'
+import { Link, useLocation, useParams } from 'react-router'
+import DateTimeAgo from '../../../../components/DateTimeAgo.tsx'
 
 const Index: FC = () => {
   const { environmentid } = useParams()
+  const { state } = useLocation()
   const [containers, setContainers] = useState<ContainerSummary[]>()
   const [isError, setIsError] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -54,68 +55,70 @@ const Index: FC = () => {
     = (
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
         {containers?.map(container => (
-          <>
-            <ListItem
-              disablePadding
-              alignItems="flex-start"
-              key={container.id}
-              secondaryAction={(
-                <>
-                  <IconButton>
-                    <PlayArrow />
-                  </IconButton>
+          <ListItem
+            disablePadding
+            alignItems="flex-start"
+            key={container.id}
+            secondaryAction={(
+              <>
+                <IconButton>
+                  <PlayArrow />
+                </IconButton>
 
-                  <IconButton>
-                    <Stop />
-                  </IconButton>
-                </>
-              )}
+                <IconButton>
+                  <Stop />
+                </IconButton>
+              </>
+            )}
+          >
+            <ListItemButton
+              component={Link}
+              to={{ pathname: `${container.name}` }}
+              state={{ container }}
+              divider={true}
             >
-              <ListItemButton
-                component={Link}
-                to={{ pathname: `${container.id}`, state: container.id } as To}
-                divider={true}
-              >
-                <ListItemText
-                  primary={container.name}
-                  secondary={(
-                    <>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        sx={{ color: 'text.secondary' }}
+              <ListItemText
+                primary={container.name}
+                slotProps={{ secondary: { component: 'div' } }}
+                secondary={(
+                  <>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      <Stack
+                        direction="row"
+                        spacing={0.5}
+                        alignItems="center"
+                        sx={{ display: 'inline-flex' }}
                       >
-                        created at
-                        {' '}
-                        {container.created.toLocaleString()}
-                        {' '}
-                        with image
-                        {' '}
-                        {container.image}
-                      </Typography>
+                        <span>created at</span>
+                        <DateTimeAgo dateTime={container.created} variant="body2" />
+                        <span>with image</span>
+                        <span>{container.image}</span>
+                      </Stack>
+                    </Typography>
 
-                      { /* TODO: Fix this. */}
-                      {/* <Box */}
-                      {/*  component='div' */}
-                      {/*  sx={{ */}
-                      {/*    mt: 1, // Margin top to create space */}
-                      {/*    display: 'flex', */}
-                      {/*    flexWrap: 'wrap', */}
-                      {/*    gap: 0.5, // Space between chips */}
-                      {/*  }} */}
-                      {/* > */}
-                      {/*  {container.ports.map(port => ( */}
-                      {/*    <Chip label={`${port.privatePort}:${port.publicPort}`} variant='filled' size='small'/> */}
-                      {/*  ))} */}
-                      {/* </Box> */}
-                    </>
-                  )}
-                />
-              </ListItemButton>
-            </ListItem>
-
-            {/* <Divider/> */}
-          </>
+                    { /* TODO: Fix this. */}
+                    <Box
+                      component="div"
+                      sx={{
+                        mt: 1, // Margin top to create space
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: 0.5, // Space between chips
+                      }}
+                    >
+                      {container.ports.map(port => (
+                        <Chip key={`${port.ip}:${port.privatePort}:${port.publicPort}:${port.type}`} label={`${port.privatePort}:${port.publicPort}`} variant="filled" size="small" />
+                      ))}
+                    </Box>
+                  </>
+                )}
+              />
+            </ListItemButton>
+          </ListItem>
         ))}
       </List>
     )
@@ -123,7 +126,9 @@ const Index: FC = () => {
   return (
     <>
       <Typography variant="h5">
-        {environmentid}
+        Environment:
+        {' '}
+        {`${state.environment.name}`}
       </Typography>
 
       <Grid

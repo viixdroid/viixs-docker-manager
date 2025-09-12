@@ -6,17 +6,18 @@ import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import { Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useLocation, useParams } from 'react-router'
+import ContainerDetailTableRow from '../../../../../components/containers/ContainerDetailTableRow'
+import DateTimeAgo from '../../../../../components/DateTimeAgo'
 
 const ContainerDetailsPage: FC = () => {
-  const { environmentid, containername } = useParams()
-  // const location = useLocation()
+  const { environmentid } = useParams()
+  const { state } = useLocation()
   const [currentTabIndex, setCurrentTabIndex] = useState<number>(1)
   const [containerDetails, setContainerDetails] = useState<ContainerDetails1 | null>()
 
   const getContainerDetails = async () => {
-    // console.log(location)
-    const response = await fetch(`/api/docklightenvironments/${environmentid}/containers/${containername}`)
+    const response = await fetch(`/api/docklightenvironments/${environmentid}/containers/${state.container.id}`)
 
     if (!response.ok) {
       console.error('not a good response from backend')
@@ -53,7 +54,7 @@ const ContainerDetailsPage: FC = () => {
         <TabContext value={currentTabIndex}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleTabChange} aria-label="Container Details tabs">
-              <Tab label="Status" value={1} />
+              <Tab label="Overview" value={1} />
               <Tab label="Configuration" value={2} />
               {/* <Tab label="Terminal" value="3" />
               <Tab label="Logs" value="4" />
@@ -64,36 +65,20 @@ const ContainerDetailsPage: FC = () => {
             <TableContainer component={Paper}>
               <Table>
                 <TableBody>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Container id
-                    </TableCell>
-                    <TableCell>{containerDetails?.id}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Status
-                    </TableCell>
-                    <TableCell>{containerDetails?.status.state}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Health
-                    </TableCell>
-                    <TableCell>{containerDetails?.status.health}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Created
-                    </TableCell>
-                    <TableCell>{containerDetails?.createdTime.toLocaleString()}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      Started
-                    </TableCell>
-                    <TableCell>{containerDetails?.status.startedTime.toLocaleString()}</TableCell>
-                  </TableRow>
+                  <ContainerDetailTableRow title="Container id" content={containerDetails?.id} />
+                  <ContainerDetailTableRow title="Status" content={containerDetails?.status.state} />
+                  {containerDetails != null && containerDetails.status != null && containerDetails?.status?.health !== 'unknown'
+                    && (
+                      <ContainerDetailTableRow title="Health" content={containerDetails?.status.health} />
+                    )}
+                  {containerDetails?.createdTime
+                    && (
+                      <ContainerDetailTableRow title="Created" content={<DateTimeAgo dateTime={containerDetails.createdTime} variant="body2" />} />
+                    )}
+                  {containerDetails?.status.startedTime
+                    && (
+                      <ContainerDetailTableRow title="Started" content={<DateTimeAgo dateTime={containerDetails?.status.startedTime} variant="body2" />} />
+                    )}
                 </TableBody>
               </Table>
             </TableContainer>
