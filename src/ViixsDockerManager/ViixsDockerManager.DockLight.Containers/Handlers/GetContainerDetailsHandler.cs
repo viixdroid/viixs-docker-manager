@@ -6,7 +6,7 @@ using ViixsDockerManager.Mediator.Queries;
 
 namespace ViixsDockerManager.DockLight.Handlers;
 
-internal class GetContainerDetailsHandler(IDockerServiceRunner dockerServiceRunner)
+internal class GetContainerDetailsHandler(IDockerServiceFactory dockerServiceRunner)
     : IQueryHandler<GetContainerDetailsQuery, ContainerDetails>
 {
     public async Task<ContainerDetails> Execute(GetContainerDetailsQuery query, CancellationToken cancellationToken = default)

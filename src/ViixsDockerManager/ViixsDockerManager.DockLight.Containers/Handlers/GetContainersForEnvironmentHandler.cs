@@ -1,17 +1,17 @@
-﻿using ViixsDockerManager.DockLight.Models.Overview;
+﻿using ViixsDockerManager.DockLight.Helpers;
+using ViixsDockerManager.DockLight.Models.Overview;
 using ViixsDockerManager.DockLight.Models.Queries;
 using ViixsDockerManager.DockLight.Services.Interfaces;
 using ViixsDockerManager.Mediator.Queries;
 
 namespace ViixsDockerManager.DockLight.Handlers;
 
-internal class GetContainersForEnvironmentHandler(IDockerServiceRunner serviceRunner)
+internal class GetContainersForEnvironmentHandler(IDockerServiceFactory dockerServiceFactory)
     : IQueryHandler<GetContainersForEnvironmentQuery, IEnumerable<ContainerSummary>>
 {
     public async Task<IEnumerable<ContainerSummary>> Execute(GetContainersForEnvironmentQuery query, CancellationToken cancellationToken = default)
     {
-        var service = await serviceRunner.GetServiceAsync<IDockerContainerService>(query.EnvironmentId).ConfigureAwait(false);
-
+        var service = await dockerServiceFactory.GetDockerContainerService(query.EnvironmentId, cancellationToken).ConfigureAwait(false);
         return await service.GetContainerListAsync().ConfigureAwait(false);
     }
 }
