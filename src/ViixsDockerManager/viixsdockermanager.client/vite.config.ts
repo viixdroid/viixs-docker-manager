@@ -54,6 +54,7 @@ export default defineConfig({
       },
       '^/ws': {
         target,
+        ws: true,
         secure: false,
       },
     },
