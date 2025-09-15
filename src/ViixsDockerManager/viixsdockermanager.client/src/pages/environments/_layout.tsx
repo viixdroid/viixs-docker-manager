@@ -20,7 +20,8 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { useState } from 'react'
 import { Outlet, Link as RouterLink, useLocation } from 'react-router'
-import DrawerToggleButton from '../../../components/DrawerToggleButton.tsx'
+import DrawerToggleButton from '../../components/DrawerToggleButton'
+import { DockLightHubProvider } from '../../components/signalr/DockLightHubProvider'
 
 const drawerWidth = 240
 
@@ -75,6 +76,7 @@ const DockLightLayout: FC = () => {
   const [open, setOpen] = useState(true) // State to control the drawer
   const { pathname } = useLocation()
 
+  // TODO: pass menuitems
   const menuItems = [
     { text: 'Containers', path: '/containers', icon: <StorageIcon /> },
     { text: 'Profile', path: '/account/profile', icon: <AccountCircleIcon /> },
@@ -172,9 +174,9 @@ const DockLightLayout: FC = () => {
         sx={{ flexGrow: 1, p: 3 }}
       >
         <Toolbar />
-        {' '}
-        {/* This empty Toolbar provides the necessary vertical space below the AppBar */}
-        <Outlet />
+        <DockLightHubProvider>
+          <Outlet />
+        </DockLightHubProvider>
       </Box>
 
       <DrawerToggleButton

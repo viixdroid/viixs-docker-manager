@@ -1,5 +1,5 @@
 import type { FC, SetStateAction } from 'react'
-import type { ApiObject } from '../../../../../models/api-object'
+import type { ApiObject } from '../../../../../../models/api-object'
 import type { ContainerDetails1 } from '../container-models'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
@@ -7,8 +7,8 @@ import TabPanel from '@mui/lab/TabPanel'
 import { Box, Paper, Tab, Table, TableBody, TableContainer, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
-import ContainerDetailTableRow from '../../../../../components/containers/ContainerDetailTableRow'
-import DateTimeAgo from '../../../../../components/DateTimeAgo'
+import ContainerDetailTableRow from '../../../../../../components/containers/ContainerDetailTableRow'
+import DateTimeAgo from '../../../../../../components/DateTimeAgo'
 
 const ContainerDetailsPage: FC = () => {
   const { environmentid } = useParams()

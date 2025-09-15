@@ -14,7 +14,7 @@ export interface ContainerSummary {
   image: string
   ports: ContainerPort[]
   created: Date
-  status: ContainerState
+  state: ContainerState
 }
 
 export interface ContainerStatus {

@@ -1,17 +1,19 @@
 import type { FC } from 'react'
-import type { ApiObject } from '../../../../models/api-object.ts'
+import type { ApiObject } from '../../../../../models/api-object.ts'
 import type { ContainerSummary } from './container-models.ts'
-import { PlayArrow, Stop } from '@mui/icons-material'
-import { Box, Button, Chip, Grid, IconButton, List, ListItem, ListItemText, Stack, Typography } from '@mui/material'
+import { DeleteForeverOutlined, PlayArrow, RestartAlt, RestartAltOutlined, Stop } from '@mui/icons-material'
+import { Box, Button, Chip, Grid, IconButton, List, ListItem, ListItemText, Stack, Tooltip, Typography } from '@mui/material'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import ListItemButton from '@mui/material/ListItemButton'
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
-import DateTimeAgo from '../../../../components/DateTimeAgo.tsx'
+import ContainerActionResultToast from '../../../../../components/containers/ContainerActionResultToast.tsx'
+import DateTimeAgo from '../../../../../components/DateTimeAgo.tsx'
 
 const Index: FC = () => {
   const { environmentid } = useParams()
   const { state } = useLocation()
+
   const [containers, setContainers] = useState<ContainerSummary[]>()
   const [isError, setIsError] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -35,6 +37,7 @@ const Index: FC = () => {
         return
       }
       if (data.result) {
+        // console.log(data.result)
         setContainers(data.result)
         setIsError(false)
       }
@@ -45,6 +48,23 @@ const Index: FC = () => {
       setIsError(true)
       setIsLoading(false)
     }
+  }
+
+  const startContainer = async (containerSummary: ContainerSummary) => {
+    const containerId = containerSummary.id
+    const startContainerCommand = {
+      environmentId: environmentid,
+      containerId,
+      containerName: containerSummary.name,
+    }
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(startContainerCommand),
+    }
+
+    await fetch(`/api/docklightenvironments/${environmentid}/containers/${containerId}/start`, requestOptions)
   }
 
   useEffect(() => {
@@ -61,13 +81,44 @@ const Index: FC = () => {
             key={container.id}
             secondaryAction={(
               <>
-                <IconButton>
-                  <PlayArrow />
-                </IconButton>
-
-                <IconButton>
-                  <Stop />
-                </IconButton>
+                {container.state !== 'running'
+                  && (
+                    <Tooltip
+                      children={(
+                        <IconButton color="success" onClick={_ => startContainer(container)}>
+                          <PlayArrow />
+                        </IconButton>
+                      )}
+                      title={`Start container ${container.name}`}
+                    />
+                  )}
+                {container.state === 'running'
+                  && (
+                    <Tooltip
+                      children={(
+                        <IconButton color="warning">
+                          <RestartAlt />
+                        </IconButton>
+                      )}
+                      title={`Start container ${container.name}`}
+                    />
+                  )}
+                <Tooltip
+                  children={(
+                    <IconButton color="secondary">
+                      <Stop />
+                    </IconButton>
+                  )}
+                  title={`Start container ${container.name}`}
+                />
+                <Tooltip
+                  children={(
+                    <IconButton color="error">
+                      <DeleteForeverOutlined />
+                    </IconButton>
+                  )}
+                  title={`Start container ${container.name}`}
+                />
               </>
             )}
           >
@@ -124,6 +175,9 @@ const Index: FC = () => {
 
   return (
     <>
+      <ContainerActionResultToast
+        handleOnContainerStarted={getContainerData}
+      />
       <Typography variant="h5">
         Environment:
         {' '}
@@ -140,9 +194,15 @@ const Index: FC = () => {
           variant="outlined"
           aria-label="Basic button group"
         >
-          <Button>Only Be</Button>
-          <Button>Visible</Button>
-          <Button>with mutlitple selections?</Button>
+          <Button variant="outlined" color="success" startIcon={<PlayArrow />}>
+            Start
+          </Button>
+          <Button variant="outlined" color="warning" startIcon={<RestartAltOutlined />}>
+            Restart
+          </Button>
+          <Button variant="outlined" color="secondary" startIcon={<Stop />}>
+            Stop
+          </Button>
         </ButtonGroup>
       </Grid>
 
