@@ -46,6 +46,11 @@ builder.Services.AddDockLightSharedServices();
 builder.Services.AddExceptionHandlerService();
 
 
+builder.Services.AddSignalR()
+    .AddJsonProtocol(options =>
+{
+    options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.SnakeCaseLower));
+});
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<WrapControllerResultFilter>();
@@ -66,10 +71,14 @@ await app.RunDocklightEnvironmentMigrations();
 
 app.UseSerilogRequestLogging();
 
+var webSocketGroup = app.MapGroup("ws");
+webSocketGroup.MapDockLightSignalRHubs();
+
 var builderWithAppliedEndpointFilter = app.ApplyEndpointFilter();
 var environmentRoot = builderWithAppliedEndpointFilter.MapDocklightEnvironmentRoutes();
 environmentRoot.MapDockLightEnvironmentSetupRoutes();
 environmentRoot.MapDocklightRoutes();
+
 
 app.MapDefaultEndpoints();
 
