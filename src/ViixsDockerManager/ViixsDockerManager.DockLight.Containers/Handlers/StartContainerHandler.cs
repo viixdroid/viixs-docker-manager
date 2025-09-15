@@ -17,11 +17,11 @@ internal class StartContainerHandler(IDockerServiceFactory dockerServiceFactory,
         try
         {
             var startResult = await service.StartContainerAsync(command.ContainerId, cancellationToken).ConfigureAwait(false);
-            await sendContainerNotifications.SendContainerStarted(command.EnvironmentId, command.ContainerName, startResult);
+            await sendContainerNotifications.SendContainerStarted(command.EnvironmentId, command.ContainerId, command.ContainerName, startResult);
         }
         catch (ViixDockerManagerWithHttpStatusCodeException)
         {
-            await sendContainerNotifications.SendContainerStarted(command.EnvironmentId, command.ContainerName, false);
+            await sendContainerNotifications.SendContainerStarted(command.EnvironmentId, command.ContainerId, command.ContainerName, false);
         }
     }
 }

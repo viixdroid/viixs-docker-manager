@@ -4,5 +4,5 @@ namespace ViixsDockerManager.DockLight.Services.Interfaces;
 
 internal interface ISendContainerNotifications : IViixsBaseService
 {
-    Task SendContainerStarted(Guid environmentId, string containerName, bool isSuccessfullyStarted);
+    Task SendContainerStarted(Guid environmentId, string containerId, string containerName, bool isSuccessfullyStarted);
 }
