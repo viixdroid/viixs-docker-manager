@@ -4,4 +4,4 @@ using ViixsDockerManager.Mediator.Queries;
 namespace ViixsDockerManager.DockLight.Models.Queries;
 
 internal record GetContainersForEnvironmentQuery(Guid EnvironmentId)
-    : DockerBaseQuery(EnvironmentId), IQuery<IEnumerable<ContainerSummary>>;
+    : IQuery<IEnumerable<ContainerSummary>>, IEnvironmentContext;
