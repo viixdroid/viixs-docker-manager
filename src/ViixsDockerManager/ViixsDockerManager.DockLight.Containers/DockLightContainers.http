@@ -1,3 +1,21 @@
 ﻿### Get all containers
 
-GET {{host}}/api/docklightenvironments2/18fe86bd-a631-4690-a315-4f1f85fc0e64/containers
+GET {{host}}/api/docklightenvironments/fc6f325f-16f8-48a6-9893-09b4a526e9e6/containers
+
+### Get Single Container
+
+GET {{host}}/api/docklightenvironments/fc6f325f-16f8-48a6-9893-09b4a526e9e6/containers/e78112d470f2df812b527bb1fd08880f7267a18bf7130f5306c9500f45ed9f49
+
+### Test negioate SignalR Endpoints (Websocket)
+POST {{host}}/ws/docklight/negotiate?environmentId=18fe86bd-a631-4690-a315-4f1f85fc0e64
+
+Content-Type application/json
+
+### Send request for starting containers
+POST {{host}}/api/docklightenvironments/fc6f325f-16f8-48a6-9893-09b4a526e9e6/containers/e78112d470f2df812b527bb1fd08880f7267a18bf7130f5306c9500f45ed9f49/start
+Content-Type: application/json
+
+{
+  "containerId": "e78112d470f2df812b527bb1fd08880f7267a18bf7130f5306c9500f45ed9f49",
+  "environmentId": "fc6f325f-16f8-48a6-9893-09b4a526e9e6"
+}
