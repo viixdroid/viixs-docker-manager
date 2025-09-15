@@ -15,43 +15,48 @@ const Index: FC = () => {
   const { state } = useLocation()
 
   const [containers, setContainers] = useState<ContainerSummary[]>()
-  const [isError, setIsError] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const [disabledItemIds, setDisabledItemIds] = useState(new Set())
 
   const getContainerData = async () => {
     try {
-      setIsLoading(true)
       const response = await fetch(`/api/docklightenvironments/${environmentid}/containers`)
 
       if (!response.ok) {
         setContainers([])
-        setIsLoading(false)
         return
       }
       // console.log(await response.text())
       const data: ApiObject<ContainerSummary[]> = await response.json()
 
       if (!data.isSuccess) {
-        setIsError(true)
-        setIsLoading(false)
         return
       }
       if (data.result) {
-        // console.log(data.result)
         setContainers(data.result)
-        setIsError(false)
       }
-      setIsLoading(false)
     }
     catch (error) {
       console.error(error)
-      setIsError(true)
-      setIsLoading(false)
     }
+  }
+
+  const enableRow = async (containerId: string) => {
+    await getContainerData()
+    setDisabledItemIds((previous) => {
+      const newDisabledItemsSet = new Set(previous)
+      newDisabledItemsSet.delete(containerId)
+      return newDisabledItemsSet
+    })
+  }
+
+  const disableRow = (containerId: string) => {
+    setDisabledItemIds(previous => new Set(previous).add(containerId))
   }
 
   const startContainer = async (containerSummary: ContainerSummary) => {
     const containerId = containerSummary.id
+    disableRow(containerId)
     const startContainerCommand = {
       environmentId: environmentid,
       containerId,
@@ -85,7 +90,7 @@ const Index: FC = () => {
                   && (
                     <Tooltip
                       children={(
-                        <IconButton color="success" onClick={_ => startContainer(container)}>
+                        <IconButton color="success" onClick={_ => startContainer(container)} disabled={disabledItemIds.has(container.id)}>
                           <PlayArrow />
                         </IconButton>
                       )}
@@ -96,7 +101,7 @@ const Index: FC = () => {
                   && (
                     <Tooltip
                       children={(
-                        <IconButton color="warning">
+                        <IconButton color="warning" disabled={disabledItemIds.has(container.id)}>
                           <RestartAlt />
                         </IconButton>
                       )}
@@ -105,7 +110,7 @@ const Index: FC = () => {
                   )}
                 <Tooltip
                   children={(
-                    <IconButton color="secondary">
+                    <IconButton color="secondary" disabled={disabledItemIds.has(container.id)}>
                       <Stop />
                     </IconButton>
                   )}
@@ -113,7 +118,7 @@ const Index: FC = () => {
                 />
                 <Tooltip
                   children={(
-                    <IconButton color="error">
+                    <IconButton color="error" disabled={disabledItemIds.has(container.id)}>
                       <DeleteForeverOutlined />
                     </IconButton>
                   )}
@@ -124,6 +129,7 @@ const Index: FC = () => {
           >
             <ListItemButton
               component={Link}
+              disabled={disabledItemIds.has(container.id)}
               to={{ pathname: `${container.name}` }}
               state={{ container }}
               divider={true}
@@ -176,7 +182,7 @@ const Index: FC = () => {
   return (
     <>
       <ContainerActionResultToast
-        handleOnContainerStarted={getContainerData}
+        handleOnContainerStarted={containerid => enableRow(containerid)}
       />
       <Typography variant="h5">
         Environment:
@@ -205,9 +211,6 @@ const Index: FC = () => {
           </Button>
         </ButtonGroup>
       </Grid>
-
-      {isLoading && !isError && <div><p>We loading data atm... pls wait..</p></div>}
-      {!isLoading && isError && <div><p>An error from the backend.</p></div>}
       {containers && containerContent}
     </>
   )

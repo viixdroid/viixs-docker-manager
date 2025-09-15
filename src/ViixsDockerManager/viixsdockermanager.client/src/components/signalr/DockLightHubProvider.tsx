@@ -17,16 +17,21 @@ export const DockLightHubProvider: FC<DockLightHubProviderProps> = ({ children }
   const [connection, setConnection] = useState<signalr.HubConnection | null>(null)
 
   const connect = async (environmentId: string) => {
-    if (connection) {
-      void connection.stop()
-    }
+    // if (connection) {
+    //   void connection.stop()
+    // }
 
     const newConnection = new signalr.HubConnectionBuilder()
       .withUrl(`/ws/docklight?environmentId=${environmentId}`)
       .withAutomaticReconnect()
       .build()
 
-    await newConnection?.start()
+    try {
+      await newConnection?.start()
+    }
+    catch {
+      setTimeout(() => connect(environmentId), 500)
+    }
 
     setConnection(newConnection)
   }

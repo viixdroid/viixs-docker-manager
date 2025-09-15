@@ -5,6 +5,7 @@ import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { DockLightHubProvider, useDockLightHub } from '../../components/signalr/DockLightHubProvider'
+import ViixsDockerManagerList from '../../components/ViixsDockerManagerList'
 
 const EnvironmentListPage: FC = () => {
   const navigate = useNavigate()
@@ -44,30 +45,30 @@ const EnvironmentListPage: FC = () => {
   }, [])
 
   return (
-    <DockLightHubProvider>
-      <List sx={{ width: '100%' }}>
-        {environments?.map(environment => (
-          <ListItem
-            disablePadding
-            alignItems="flex-start"
-            key={environment.id}
+  // <DockLightHubProvider>
+    <List sx={{ width: '100%' }}>
+      {environments?.map(environment => (
+        <ListItem
+          disablePadding
+          alignItems="flex-start"
+          key={environment.id}
+        >
+          <ListItemButton
+            // component={Link}
+            onClick={_e => navigateToContainers(environment)}
+            // to={{ pathname: `${environment.environmentId}/containers` }}
+            // state={{ environment }}
+            divider={true}
           >
-            <ListItemButton
-              // component={Link}
-              onClick={_e => navigateToContainers(environment)}
-              // to={{ pathname: `${environment.environmentId}/containers` }}
-              // state={{ environment }}
-              divider={true}
-            >
-              <ListItemText
-                primary={environment.name}
-                secondary={environment.apiLocation}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </DockLightHubProvider>
+            <ListItemText
+              primary={environment.name}
+              secondary={environment.apiLocation}
+            />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  // </DockLightHubProvider>
   )
 }
 

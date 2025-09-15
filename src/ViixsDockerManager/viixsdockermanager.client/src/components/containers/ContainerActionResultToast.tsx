@@ -6,7 +6,7 @@ import { useDockLightHub } from '../signalr/DockLightHubProvider'
 import { OnContainerStarted } from './ContainerActions'
 
 interface ContainerActionResultToastProps {
-  handleOnContainerStarted: () => Promise<void>
+  handleOnContainerStarted: (containerId: string) => void
   // handleOnContainerStopped: () => Promise<void>
 }
 
@@ -23,7 +23,7 @@ const ContainerActionResultToast: FC<ContainerActionResultToastProps> = ({
       return
     }
 
-    connection.on(OnContainerStarted, (containerName: string, isSuccesfullyStarted: boolean) => {
+    connection.on(OnContainerStarted, (containerId: string, containerName: string, isSuccesfullyStarted: boolean) => {
       let message: string = 'was started successfully'
       let severity: AlertColor = 'success'
       if (!isSuccesfullyStarted) {
@@ -34,18 +34,14 @@ const ContainerActionResultToast: FC<ContainerActionResultToastProps> = ({
       setMessage(`Container ${containerName} ${message}`)
       setSeverity(severity)
       setOpenSnackBar(true)
-      handleOnContainerStarted()
+      handleOnContainerStarted(containerId)
     })
   }, [connection])
 
   const handleClose = (
     _event?: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
+    _reason?: SnackbarCloseReason,
   ) => {
-    if (reason === 'clickaway') {
-      return
-    }
-
     setOpenSnackBar(false)
   }
 
