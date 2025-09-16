@@ -4,13 +4,14 @@ using ViixsDockerManager.Mediator.Commands;
 
 namespace ViixsDockerManager.DockLight.Handlers;
 
-internal class KillContainerHandler(IDockerServiceFactory dockerServiceFactory, ISendContainerNotifications sendContainerNotifications) : DockLightHandlerBase(dockerServiceFactory), ICommandHandler<StartContainerCommand>
+internal class KillContainerHandler(IDockerServiceFactory dockerServiceFactory, ISendContainerNotifications sendContainerNotifications)
+    : DockLightActionHandlerBase<KillContainerCommand>(dockerServiceFactory, sendContainerNotifications)
 {
-    public async Task Handle(StartContainerCommand command, CancellationToken cancellationToken = default)
+    protected override async Task<bool> ExecuteContainerActionAsync(IDockerContainerService dockerContainerService, KillContainerCommand command, CancellationToken cancellationToken = default)
     {
-        var service = await GetDockerContainerService(command, cancellationToken).ConfigureAwait(false);
-
-        await service.KillContainerAsync(command.ContainerId, cancellationToken: cancellationToken).ConfigureAwait(false);
-        await sendContainerNotifications.SendContainerKilled(command).ConfigureAwait(false);
+        await dockerContainerService.KillContainerAsync(command.ContainerId, cancellationToken: cancellationToken);
+        return true;
     }
+    protected override Task SendContainerNotificationAsync(ISendContainerNotifications sendContainerNotificationsService, KillContainerCommand command, bool containerActionResult)
+        => sendContainerNotificationsService.SendContainerKilled(command);
 }

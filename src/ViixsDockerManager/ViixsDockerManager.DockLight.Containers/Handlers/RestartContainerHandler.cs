@@ -4,13 +4,14 @@ using ViixsDockerManager.Mediator.Commands;
 
 namespace ViixsDockerManager.DockLight.Handlers;
 
-internal class RestartContainerHandler(IDockerServiceFactory dockerServiceFactory, ISendContainerNotifications sendContainerNotifications) : DockLightHandlerBase(dockerServiceFactory), ICommandHandler<StartContainerCommand>
+internal class RestartContainerHandler(IDockerServiceFactory dockerServiceFactory, ISendContainerNotifications sendContainerNotifications)
+    : DockLightActionHandlerBase<RestartContainerCommand>(dockerServiceFactory, sendContainerNotifications)
 {
-    public async Task Handle(StartContainerCommand command, CancellationToken cancellationToken = default)
+    protected override async Task<bool> ExecuteContainerActionAsync(IDockerContainerService dockerContainerService, RestartContainerCommand command, CancellationToken cancellationToken = default)
     {
-        var service = await GetDockerContainerService(command, cancellationToken).ConfigureAwait(false);
-
-        await service.RestartContainerAsync(command.ContainerId, cancellationToken: cancellationToken).ConfigureAwait(false);
-        await sendContainerNotifications.SendContainerRestarted(command).ConfigureAwait(false);
+        await dockerContainerService.RestartContainerAsync(command.ContainerId, cancellationToken: cancellationToken);
+        return true;
     }
+    protected override Task SendContainerNotificationAsync(ISendContainerNotifications sendContainerNotificationsService, RestartContainerCommand command, bool containerActionResult)
+        => sendContainerNotificationsService.SendContainerRestarted(command);
 }

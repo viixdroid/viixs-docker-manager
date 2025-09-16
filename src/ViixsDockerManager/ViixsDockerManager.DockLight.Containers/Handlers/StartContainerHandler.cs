@@ -5,20 +5,13 @@ using ViixsDockerManager.Shared.Exceptions;
 
 namespace ViixsDockerManager.DockLight.Handlers;
 
-internal class StartContainerHandler(IDockerServiceFactory dockerServiceFactory, ISendContainerNotifications sendContainerNotifications) : DockLightHandlerBase(dockerServiceFactory), ICommandHandler<StartContainerCommand>
+internal class StartContainerHandler(IDockerServiceFactory dockerServiceFactory, ISendContainerNotifications sendContainerNotifications)
+    : DockLightActionHandlerBase<StartContainerCommand>(dockerServiceFactory, sendContainerNotifications)
 {
-    public async Task Handle(StartContainerCommand command, CancellationToken cancellationToken = default)
+    protected override Task<bool> ExecuteContainerActionAsync(IDockerContainerService dockerContainerService, StartContainerCommand command, CancellationToken cancellationToken = default)
     {
-        var service = await GetDockerContainerService(command, cancellationToken).ConfigureAwait(false);
-
-        try
-        {
-            var startResult = await service.StartContainerAsync(command.ContainerId, cancellationToken).ConfigureAwait(false);
-            await sendContainerNotifications.SendContainerStarted(command, startResult).ConfigureAwait(false);
-        }
-        catch (ViixDockerManagerWithHttpStatusCodeException)
-        {
-            await sendContainerNotifications.SendContainerStarted(command, false).ConfigureAwait(false);
-        }
+        return dockerContainerService.StartContainerAsync(command.ContainerId, cancellationToken: cancellationToken);
     }
+    protected override Task SendContainerNotificationAsync(ISendContainerNotifications sendContainerNotificationsService, StartContainerCommand command, bool containerActionResult)
+        => sendContainerNotificationsService.SendContainerStarted(command, containerActionResult);
 }

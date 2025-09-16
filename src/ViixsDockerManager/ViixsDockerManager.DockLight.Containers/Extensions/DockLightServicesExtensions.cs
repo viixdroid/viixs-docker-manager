@@ -28,7 +28,7 @@ public static class DockLightServicesExtensions
         services.RegisterQueryHandler<GetContainerDetailsHandler, GetContainerDetailsQuery>();
         services.RegisterCommandHandler<StartContainerHandler, StartContainerCommand>();
         services.RegisterCommandHandler<StopContainerHandler, StopContainerCommand>();
-        services.RegisterCommandHandler<RestartContainerHandler, StartContainerCommand>();
+        services.RegisterCommandHandler<RestartContainerHandler, RestartContainerCommand>();
         services.RegisterCommandHandler<KillContainerHandler, KillContainerCommand>();
 
         return services;
