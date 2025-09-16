@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using ViixsDockerManager.DockLight.Controllers.Hubs;
-using ViixsDockerManager.DockLight.Models.Commands;
-using ViixsDockerManager.DockLight.Services;
+﻿using ViixsDockerManager.DockLight.Models.Commands;
 using ViixsDockerManager.DockLight.Services.Interfaces;
 using ViixsDockerManager.Mediator.Commands;
 using ViixsDockerManager.Shared.Exceptions;
@@ -17,11 +14,11 @@ internal class StartContainerHandler(IDockerServiceFactory dockerServiceFactory,
         try
         {
             var startResult = await service.StartContainerAsync(command.ContainerId, cancellationToken).ConfigureAwait(false);
-            await sendContainerNotifications.SendContainerStarted(command.EnvironmentId, command.ContainerId, command.ContainerName, startResult);
+            await sendContainerNotifications.SendContainerStarted(command, startResult).ConfigureAwait(false);
         }
         catch (ViixDockerManagerWithHttpStatusCodeException)
         {
-            await sendContainerNotifications.SendContainerStarted(command.EnvironmentId, command.ContainerId, command.ContainerName, false);
+            await sendContainerNotifications.SendContainerStarted(command, false).ConfigureAwait(false);
         }
     }
 }

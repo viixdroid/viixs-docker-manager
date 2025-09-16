@@ -14,16 +14,13 @@ internal static class DockLightContainerRouteActions
     {
         builder.MapGet("/", GetContainerDetails);
         builder.MapPost("/start", StartContainer);
-        //builder.MapPost("/stop", StartContainer);
-        //builder.MapPost("/restart", StartContainer);
-        //builder.MapPost("/kill", StartContainer);
+        builder.MapPost("/stop", StopContainer);
+        builder.MapPost("/restart", RestartContainer);
+        builder.MapPost("/kill", KillContainer);
         return builder;
     }
 
-    private static Task<ContainerDetails> GetContainerDetails(
-    Guid environmentId,
-    string containerId,
-    IMediator mediator)
+    private static Task<ContainerDetails> GetContainerDetails(Guid environmentId, string containerId, IMediator mediator)
     {
         return mediator.Send(new GetContainerDetailsQuery(environmentId, containerId));
     }
@@ -31,5 +28,20 @@ internal static class DockLightContainerRouteActions
     private static Task StartContainer([FromBody] StartContainerCommand startContainerCommand, IMediator mediator)
     {
         return mediator.Send(startContainerCommand);
+    }
+
+    private static Task StopContainer([FromBody] StopContainerCommand stopContainerCommand, IMediator mediator)
+    {
+        return mediator.Send(stopContainerCommand);
+    }
+
+    private static Task RestartContainer([FromBody] RestartContainerCommand restartContainerCommand, IMediator mediator)
+    {
+        return mediator.Send(restartContainerCommand);
+    }
+
+    private static Task KillContainer([FromBody] KillContainerCommand killContainerCommand, IMediator mediator)
+    {
+        return mediator.Send(killContainerCommand);
     }
 }

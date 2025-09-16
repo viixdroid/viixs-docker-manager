@@ -1,8 +1,12 @@
-﻿using ViixsDockerManager.Shared.Services;
+﻿using ViixsDockerManager.DockLight.Models.Commands;
+using ViixsDockerManager.Shared.Services;
 
 namespace ViixsDockerManager.DockLight.Services.Interfaces;
 
 internal interface ISendContainerNotifications : IViixsBaseService
 {
-    Task SendContainerStarted(Guid environmentId, string containerId, string containerName, bool isSuccessfullyStarted);
+    Task SendContainerKilled(BaseContainerActionCommand containerActionCommand);
+    Task SendContainerRestarted(BaseContainerActionCommand containerActionCommand);
+    Task SendContainerStarted(BaseContainerActionCommand containerActionCommand, bool isSuccessfullyStarted);
+    Task SendContainerStopped(BaseContainerActionCommand containerActionCommand);
 }
