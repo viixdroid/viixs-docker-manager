@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react'
-import type { DockLightEnvironment } from '../../pages/dock-light-environment'
+import type { DockLightEnvironment } from '../../models/dock-light-environment'
 import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router'
 
