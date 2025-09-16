@@ -5,6 +5,7 @@ import { Button, Stack, TextField, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
+import DockLightEnvironmentService from '../../../services/DockLightEnvironmentService.ts'
 
 const AddInitialDockLightStep: FC = () => {
   const navigate = useNavigate()
@@ -16,7 +17,7 @@ const AddInitialDockLightStep: FC = () => {
     const response = await fetch('/api/docklightenvironments/setup/protocols')
     const result: ApiObject<InitialDockLightEnvironment> = await response.json() // TODO: Do not assume this is always goes right and such. use service or hooks or smth.
     if (!result.isSuccess) {
-      throw new Error(result.errors.toString())
+      throw new Error(result.errors?.toString())
     }
     if (result.result) {
       setInitialEnvironment(result.result)
@@ -29,16 +30,25 @@ const AddInitialDockLightStep: FC = () => {
       apiLocation: initialEnvironment?.protocol.protocolUri,
     }
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(command),
-    }
-
-    const response = await fetch('/api/docklightenvironments', requestOptions)
-    if (response.ok) {
+    // console.log(command)
+    try {
+      await DockLightEnvironmentService.createDockLightEnvironment(command)
       navigate('/')
     }
+    catch (err) {
+      console.error(err)
+    }
+
+    // const requestOptions = {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(command),
+    // }
+
+    // const response = await fetch('/api/docklightenvironments', requestOptions)
+    // if (response.ok) {
+    //   navigate('/')
+    // }
   }
   useEffect(() => {
     void getPossibleDockerProtocols()

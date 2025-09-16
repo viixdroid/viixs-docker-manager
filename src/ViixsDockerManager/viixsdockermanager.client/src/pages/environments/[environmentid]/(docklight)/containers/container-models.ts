@@ -23,7 +23,7 @@ export interface ContainerStatus {
   startedTime: Date
 }
 
-export interface ContainerDetails1 {
+export interface ContainerDetails {
   id: string
   name: string
   createdTime: Date

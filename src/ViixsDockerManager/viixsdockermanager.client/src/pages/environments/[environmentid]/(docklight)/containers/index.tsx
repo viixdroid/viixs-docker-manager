@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { ApiObject } from '../../../../../models/api-object.ts'
+import type { BaseContainerActionCommand } from '../../../../../models/container-action-models.ts'
 import type { ContainerSummary } from './container-models.ts'
 import { DeleteForeverOutlined, PlayArrow, RestartAlt, RestartAltOutlined, Stop } from '@mui/icons-material'
 import { Box, Button, Chip, Grid, IconButton, List, ListItem, ListItemText, Stack, Tooltip, Typography } from '@mui/material'
@@ -10,6 +10,8 @@ import { Link } from 'react-router'
 import ContainerActionResultToast from '../../../../../components/containers/ContainerActionResultToast.tsx'
 import DateTimeAgo from '../../../../../components/DateTimeAgo.tsx'
 import { useEnvironment } from '../../../../../components/providers/EnvironmentProvider.tsx'
+import { KillContainerCommand, RestartContainerCommand, StartContainerCommand, StopContainerCommand } from '../../../../../models/container-action-models.ts'
+import DockLightService from '../../../../../services/DockLightServices.ts'
 
 const Index: FC = () => {
   const { environment } = useEnvironment()
@@ -20,20 +22,9 @@ const Index: FC = () => {
 
   const getContainerData = async () => {
     try {
-      const response = await fetch(`/api/docklightenvironments/${environment?.environmentId}/containers`)
-
-      if (!response.ok) {
-        setContainers([])
-        return
-      }
-      // console.log(await response.text())
-      const data: ApiObject<ContainerSummary[]> = await response.json()
-
-      if (!data.isSuccess) {
-        return
-      }
-      if (data.result) {
-        setContainers(data.result)
+      if (environment?.environmentId) {
+        const response = await DockLightService.getAllContainers(environment?.environmentId)
+        setContainers(response)
       }
     }
     catch (error) {
@@ -54,22 +45,9 @@ const Index: FC = () => {
     setDisabledItemIds(previous => new Set(previous).add(containerId))
   }
 
-  const startContainer = async (containerSummary: ContainerSummary) => {
-    const containerId = containerSummary.id
-    disableRow(containerId)
-    const startContainerCommand = {
-      environmentId: environment?.environmentId,
-      containerId,
-      containerName: containerSummary.name,
-    }
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(startContainerCommand),
-    }
-
-    await fetch(`/api/docklightenvironments/${environment?.environmentId}/containers/${containerId}/start`, requestOptions)
+  const performAction = async (actionCommand: BaseContainerActionCommand) => {
+    disableRow(actionCommand.containerId)
+    await actionCommand.execute()
   }
 
   useEffect(() => {
@@ -90,7 +68,7 @@ const Index: FC = () => {
                   && (
                     <Tooltip
                       children={(
-                        <IconButton color="success" onClick={_ => startContainer(container)} disabled={disabledItemIds.has(container.id)}>
+                        <IconButton color="success" onClick={_ => performAction(new StartContainerCommand(environment?.environmentId, container.id, container.name))} disabled={disabledItemIds.has(container.id)}>
                           <PlayArrow />
                         </IconButton>
                       )}
@@ -101,16 +79,16 @@ const Index: FC = () => {
                   && (
                     <Tooltip
                       children={(
-                        <IconButton color="warning" disabled={disabledItemIds.has(container.id)}>
+                        <IconButton color="warning" onClick={_ => performAction(new RestartContainerCommand(environment?.environmentId, container.id, container.name))} disabled={disabledItemIds.has(container.id)}>
                           <RestartAlt />
                         </IconButton>
                       )}
-                      title={`Start container ${container.name}`}
+                      title={`Restart container ${container.name}`}
                     />
                   )}
                 <Tooltip
                   children={(
-                    <IconButton color="secondary" disabled={disabledItemIds.has(container.id)}>
+                    <IconButton color="secondary" onClick={_ => performAction(new StopContainerCommand(environment?.environmentId, container.id, container.name))}disabled={disabledItemIds.has(container.id)}>
                       <Stop />
                     </IconButton>
                   )}
@@ -118,7 +96,7 @@ const Index: FC = () => {
                 />
                 <Tooltip
                   children={(
-                    <IconButton color="error" disabled={disabledItemIds.has(container.id)}>
+                    <IconButton color="error" onClick={_ => performAction(new KillContainerCommand(environment?.environmentId, container.id, container.name))} disabled={disabledItemIds.has(container.id)}>
                       <DeleteForeverOutlined />
                     </IconButton>
                   )}
@@ -182,7 +160,7 @@ const Index: FC = () => {
   return (
     <>
       <ContainerActionResultToast
-        handleOnContainerStarted={containerid => enableRow(containerid)}
+        afterToastShown={containerid => enableRow(containerid)}
       />
       <Typography variant="h5">
         Environment:

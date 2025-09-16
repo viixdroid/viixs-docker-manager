@@ -1,11 +1,11 @@
 import type { FC } from 'react'
-import type { ApiObject } from '../../models/api-object'
-import type { DockLightEnvironment } from '../dock-light-environment'
+import type { DockLightEnvironment } from '../../models/dock-light-environment'
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useDockLightHub } from '../../components/providers/DockLightHubProvider'
 import { useEnvironment } from '../../components/providers/EnvironmentProvider'
+import DockLightEnvironmentService from '../../services/DockLightEnvironmentService'
 
 const EnvironmentListPage: FC = () => {
   const { chooseEnvironment } = useEnvironment()
@@ -24,20 +24,16 @@ const EnvironmentListPage: FC = () => {
   }
 
   const getEnvironments = async () => {
-    const response = await fetch('/api/docklightenvironments')
-
-    if (!response.ok) {
+    try {
+      const response = await DockLightEnvironmentService.getAllDockLightEnvironments()
+      if (response) {
+        setEnvironments(response)
+        return
+      }
       navigate('/setup')
     }
-
-    const data: ApiObject<DockLightEnvironment[]> = await response.json()
-
-    if (!data.isSuccess) {
+    catch {
       navigate('/setup')
-    }
-
-    if (data.result) {
-      setEnvironments(data.result)
     }
   }
 
