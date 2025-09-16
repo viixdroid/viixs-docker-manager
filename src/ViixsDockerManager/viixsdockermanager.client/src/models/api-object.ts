@@ -1,5 +1,5 @@
 export interface ApiObject<TApiObject> {
   isSuccess: boolean
-  errors: string[]
+  errors?: string[]
   result?: TApiObject
 }
