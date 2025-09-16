@@ -2,7 +2,7 @@ import type { AlertColor, SnackbarCloseReason } from '@mui/material'
 import type { FC } from 'react'
 import { Alert, Snackbar } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useDockLightHub } from '../signalr/DockLightHubProvider'
+import { useDockLightHub } from '../providers/DockLightHubProvider'
 import { OnContainerStarted } from './ContainerActions'
 
 interface ContainerActionResultToastProps {

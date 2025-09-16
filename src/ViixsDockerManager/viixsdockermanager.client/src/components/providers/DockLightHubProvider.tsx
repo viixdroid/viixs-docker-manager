@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from 'react'
 import * as signalr from '@microsoft/signalr'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { useEnvironment } from './EnvironmentProvider'
 
 interface DockLightHubContextType {
   connection: signalr.HubConnection | null
@@ -13,13 +14,14 @@ interface DockLightHubProviderProps {
   children: ReactNode
 }
 
-export const DockLightHubProvider: FC<DockLightHubProviderProps> = ({ children }: DockLightHubProviderProps) => {
+const DockLightHubProvider: FC<DockLightHubProviderProps> = ({ children }: DockLightHubProviderProps) => {
+  const { environment } = useEnvironment()
   const [connection, setConnection] = useState<signalr.HubConnection | null>(null)
 
   const connect = async (environmentId: string) => {
-    // if (connection) {
-    //   void connection.stop()
-    // }
+    if (connection) {
+      void connection.stop()
+    }
 
     const newConnection = new signalr.HubConnectionBuilder()
       .withUrl(`/ws/docklight?environmentId=${environmentId}`)
@@ -29,12 +31,25 @@ export const DockLightHubProvider: FC<DockLightHubProviderProps> = ({ children }
     try {
       await newConnection?.start()
     }
-    catch {
+    catch (err) {
+      console.error(err)
       setTimeout(() => connect(environmentId), 500)
     }
 
     setConnection(newConnection)
   }
+
+  useEffect(() => {
+    if (environment && environment.environmentId) {
+      void connect(environment.environmentId)
+    }
+    else {
+      if (connection) {
+        void connection.stop()
+        setConnection(null)
+      }
+    }
+  }, [environment])
 
   return (
     <DockLightHubContext.Provider value={{ connection, connect }}>
@@ -50,3 +65,5 @@ export function useDockLightHub(): DockLightHubContextType {
   }
   return context
 }
+
+export default DockLightHubProvider

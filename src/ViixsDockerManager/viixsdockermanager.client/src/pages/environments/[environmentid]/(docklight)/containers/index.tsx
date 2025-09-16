@@ -6,13 +6,13 @@ import { Box, Button, Chip, Grid, IconButton, List, ListItem, ListItemText, Stac
 import ButtonGroup from '@mui/material/ButtonGroup'
 import ListItemButton from '@mui/material/ListItemButton'
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router'
+import { Link } from 'react-router'
 import ContainerActionResultToast from '../../../../../components/containers/ContainerActionResultToast.tsx'
 import DateTimeAgo from '../../../../../components/DateTimeAgo.tsx'
+import { useEnvironment } from '../../../../../components/providers/EnvironmentProvider.tsx'
 
 const Index: FC = () => {
-  const { environmentid } = useParams()
-  const { state } = useLocation()
+  const { environment } = useEnvironment()
 
   const [containers, setContainers] = useState<ContainerSummary[]>()
 
@@ -20,7 +20,7 @@ const Index: FC = () => {
 
   const getContainerData = async () => {
     try {
-      const response = await fetch(`/api/docklightenvironments/${environmentid}/containers`)
+      const response = await fetch(`/api/docklightenvironments/${environment?.environmentId}/containers`)
 
       if (!response.ok) {
         setContainers([])
@@ -58,7 +58,7 @@ const Index: FC = () => {
     const containerId = containerSummary.id
     disableRow(containerId)
     const startContainerCommand = {
-      environmentId: environmentid,
+      environmentId: environment?.environmentId,
       containerId,
       containerName: containerSummary.name,
     }
@@ -69,7 +69,7 @@ const Index: FC = () => {
       body: JSON.stringify(startContainerCommand),
     }
 
-    await fetch(`/api/docklightenvironments/${environmentid}/containers/${containerId}/start`, requestOptions)
+    await fetch(`/api/docklightenvironments/${environment?.environmentId}/containers/${containerId}/start`, requestOptions)
   }
 
   useEffect(() => {
@@ -187,7 +187,7 @@ const Index: FC = () => {
       <Typography variant="h5">
         Environment:
         {' '}
-        {`${state.environment.name}`}
+        {`${environment?.name}`}
       </Typography>
 
       <Grid

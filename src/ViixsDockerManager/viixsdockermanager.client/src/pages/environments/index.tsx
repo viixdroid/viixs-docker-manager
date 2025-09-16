@@ -4,10 +4,11 @@ import type { DockLightEnvironment } from '../dock-light-environment'
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { DockLightHubProvider, useDockLightHub } from '../../components/signalr/DockLightHubProvider'
-import ViixsDockerManagerList from '../../components/ViixsDockerManagerList'
+import { useDockLightHub } from '../../components/providers/DockLightHubProvider'
+import { useEnvironment } from '../../components/providers/EnvironmentProvider'
 
 const EnvironmentListPage: FC = () => {
+  const { chooseEnvironment } = useEnvironment()
   const navigate = useNavigate()
   const { connect } = useDockLightHub()
 
@@ -19,7 +20,7 @@ const EnvironmentListPage: FC = () => {
 
   const navigateToContainers = (environment: DockLightEnvironment) => {
     connectWebSocket(environment.environmentId)
-    navigate(`${environment.environmentId}/containers`, { state: { environment } })
+    chooseEnvironment(environment)
   }
 
   const getEnvironments = async () => {
@@ -45,7 +46,6 @@ const EnvironmentListPage: FC = () => {
   }, [])
 
   return (
-  // <DockLightHubProvider>
     <List sx={{ width: '100%' }}>
       {environments?.map(environment => (
         <ListItem
@@ -54,10 +54,7 @@ const EnvironmentListPage: FC = () => {
           key={environment.id}
         >
           <ListItemButton
-            // component={Link}
             onClick={_e => navigateToContainers(environment)}
-            // to={{ pathname: `${environment.environmentId}/containers` }}
-            // state={{ environment }}
             divider={true}
           >
             <ListItemText
@@ -68,7 +65,6 @@ const EnvironmentListPage: FC = () => {
         </ListItem>
       ))}
     </List>
-  // </DockLightHubProvider>
   )
 }
 

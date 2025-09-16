@@ -21,7 +21,8 @@ import Typography from '@mui/material/Typography'
 import { useState } from 'react'
 import { Outlet, Link as RouterLink, useLocation } from 'react-router'
 import DrawerToggleButton from '../../components/DrawerToggleButton'
-import { DockLightHubProvider } from '../../components/signalr/DockLightHubProvider'
+import DockLightHubProvider from '../../components/providers/DockLightHubProvider'
+import EnvironmentProvider from '../../components/providers/EnvironmentProvider'
 
 const drawerWidth = 240
 
@@ -174,9 +175,11 @@ const DockLightLayout: FC = () => {
         sx={{ flexGrow: 1, p: 3 }}
       >
         <Toolbar />
-        <DockLightHubProvider>
-          <Outlet />
-        </DockLightHubProvider>
+        <EnvironmentProvider>
+          <DockLightHubProvider>
+            <Outlet />
+          </DockLightHubProvider>
+        </EnvironmentProvider>
       </Box>
 
       <DrawerToggleButton
