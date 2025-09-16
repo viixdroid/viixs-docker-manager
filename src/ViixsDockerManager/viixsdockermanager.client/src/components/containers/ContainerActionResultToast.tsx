@@ -3,15 +3,15 @@ import type { FC } from 'react'
 import { Alert, Snackbar } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDockLightHub } from '../providers/DockLightHubProvider'
-import { OnContainerStarted } from './ContainerActions'
+import { OnContainerKilled, OnContainerRestarted, OnContainerStarted, OnContainerStopped } from './ContainerActions'
 
 interface ContainerActionResultToastProps {
-  handleOnContainerStarted: (containerId: string) => void
+  afterToastShown: (containerId: string) => void
   // handleOnContainerStopped: () => Promise<void>
 }
 
 const ContainerActionResultToast: FC<ContainerActionResultToastProps> = ({
-  handleOnContainerStarted,
+  afterToastShown,
 }: ContainerActionResultToastProps) => {
   const { connection } = useDockLightHub()
   const [message, setMessage] = useState<string>()
@@ -34,7 +34,34 @@ const ContainerActionResultToast: FC<ContainerActionResultToastProps> = ({
       setMessage(`Container ${containerName} ${message}`)
       setSeverity(severity)
       setOpenSnackBar(true)
-      handleOnContainerStarted(containerId)
+      afterToastShown(containerId)
+    })
+
+    connection.on(OnContainerStopped, (containerId: string, containerName: string) => {
+      const message: string = `Container ${containerName} was stopped succesfully`
+      const severity: AlertColor = 'info'
+      setMessage(message)
+      setSeverity(severity)
+      setOpenSnackBar(true)
+      afterToastShown(containerId)
+    })
+
+    connection.on(OnContainerRestarted, (containerId: string, containerName: string) => {
+      const message: string = `Container ${containerName} was restarted succesfully`
+      const severity: AlertColor = 'warning'
+      setMessage(message)
+      setSeverity(severity)
+      setOpenSnackBar(true)
+      afterToastShown(containerId)
+    })
+
+    connection.on(OnContainerKilled, (containerId: string, containerName: string) => {
+      const message: string = `Container ${containerName} was killed succesfully`
+      const severity: AlertColor = 'error'
+      setMessage(message)
+      setSeverity(severity)
+      setOpenSnackBar(true)
+      afterToastShown(containerId)
     })
   }, [connection])
 
@@ -47,6 +74,7 @@ const ContainerActionResultToast: FC<ContainerActionResultToastProps> = ({
 
   return (
     <Snackbar
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       onClose={handleClose}
       open={openSnackBar}
       autoHideDuration={3000}
