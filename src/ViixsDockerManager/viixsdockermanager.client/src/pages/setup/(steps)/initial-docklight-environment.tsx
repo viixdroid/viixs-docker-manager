@@ -30,7 +30,6 @@ const AddInitialDockLightStep: FC = () => {
       apiLocation: initialEnvironment?.protocol.protocolUri,
     }
 
-    // console.log(command)
     try {
       await DockLightEnvironmentService.createDockLightEnvironment(command)
       navigate('/')
@@ -38,17 +37,6 @@ const AddInitialDockLightStep: FC = () => {
     catch (err) {
       console.error(err)
     }
-
-    // const requestOptions = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(command),
-    // }
-
-    // const response = await fetch('/api/docklightenvironments', requestOptions)
-    // if (response.ok) {
-    //   navigate('/')
-    // }
   }
   useEffect(() => {
     void getPossibleDockerProtocols()
