@@ -1,16 +1,16 @@
 import type { FC } from 'react'
 import type { BaseContainerActionCommand } from '../../../../../models/container-action-models.ts'
 import type { ContainerSummary } from './container-models.ts'
-import { DeleteForeverOutlined, PlayArrow, RestartAlt, RestartAltOutlined, Stop } from '@mui/icons-material'
-import { Box, Button, Chip, Grid, IconButton, List, ListItem, ListItemText, Stack, Tooltip, Typography } from '@mui/material'
+import { PlayArrow, RestartAltOutlined, Stop } from '@mui/icons-material'
+import { Box, Button, Chip, Grid, List, ListItem, ListItemText, Stack, Typography } from '@mui/material'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import ListItemButton from '@mui/material/ListItemButton'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import ContainerActionResultToast from '../../../../../components/containers/ContainerActionResultToast.tsx'
+import ContainerSecondaryAction from '../../../../../components/containers/ContainerSecondaryActions.tsx'
 import DateTimeAgo from '../../../../../components/DateTimeAgo.tsx'
 import { useEnvironment } from '../../../../../components/providers/EnvironmentProvider.tsx'
-import { KillContainerCommand, RestartContainerCommand, StartContainerCommand, StopContainerCommand } from '../../../../../models/container-action-models.ts'
 import DockLightService from '../../../../../services/DockLightServices.ts'
 
 const Index: FC = () => {
@@ -63,46 +63,12 @@ const Index: FC = () => {
             alignItems="flex-start"
             key={container.id}
             secondaryAction={(
-              <>
-                {container.state !== 'running'
-                  && (
-                    <Tooltip
-                      children={(
-                        <IconButton color="success" onClick={_ => performAction(new StartContainerCommand(environment?.environmentId, container.id, container.name))} disabled={disabledItemIds.has(container.id)}>
-                          <PlayArrow />
-                        </IconButton>
-                      )}
-                      title={`Start container ${container.name}`}
-                    />
-                  )}
-                {container.state === 'running'
-                  && (
-                    <Tooltip
-                      children={(
-                        <IconButton color="warning" onClick={_ => performAction(new RestartContainerCommand(environment?.environmentId, container.id, container.name))} disabled={disabledItemIds.has(container.id)}>
-                          <RestartAlt />
-                        </IconButton>
-                      )}
-                      title={`Restart container ${container.name}`}
-                    />
-                  )}
-                <Tooltip
-                  children={(
-                    <IconButton color="secondary" onClick={_ => performAction(new StopContainerCommand(environment?.environmentId, container.id, container.name))}disabled={disabledItemIds.has(container.id)}>
-                      <Stop />
-                    </IconButton>
-                  )}
-                  title={`Start container ${container.name}`}
-                />
-                <Tooltip
-                  children={(
-                    <IconButton color="error" onClick={_ => performAction(new KillContainerCommand(environment?.environmentId, container.id, container.name))} disabled={disabledItemIds.has(container.id)}>
-                      <DeleteForeverOutlined />
-                    </IconButton>
-                  )}
-                  title={`Start container ${container.name}`}
-                />
-              </>
+              <ContainerSecondaryAction
+                container={container}
+                environmentId={environment?.environmentId}
+                isDisabled={disabledItemIds.has(container.id)}
+                performActionCommand={performAction}
+              />
             )}
           >
             <ListItemButton
