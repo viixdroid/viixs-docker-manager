@@ -1,5 +1,6 @@
 import type { AlertColor, SnackbarCloseReason } from '@mui/material'
 import type { FC } from 'react'
+import type { ContainerEventType } from './ContainerActions'
 import { Alert, Snackbar } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDockLightHub } from '../providers/DockLightHubProvider'
@@ -7,61 +8,66 @@ import { OnContainerKilled, OnContainerRestarted, OnContainerStarted, OnContaine
 
 interface ContainerActionResultToastProps {
   afterToastShown: (containerId: string) => void
-  // handleOnContainerStopped: () => Promise<void>
+}
+
+interface ToastConfig {
+  containerEventType: ContainerEventType
+  message: (containerName: string, success?: boolean) => string
+  severity: (success?: boolean) => AlertColor
 }
 
 const ContainerActionResultToast: FC<ContainerActionResultToastProps> = ({
   afterToastShown,
 }: ContainerActionResultToastProps) => {
   const { connection } = useDockLightHub()
+
   const [message, setMessage] = useState<string>()
   const [openSnackBar, setOpenSnackBar] = useState<boolean>()
   const [severity, setSeverity] = useState<AlertColor>()
+
+  const toastConfig: Record<ContainerEventType, ToastConfig> = {
+    OnContainerStarted: {
+      containerEventType: OnContainerStarted,
+      message: (name, success = true) =>
+        success
+          ? `Container ${name} was started successfully`
+          : `Container ${name} was NOT started successfully`,
+      severity: (success = true) => (success ? 'success' : 'error'),
+    },
+    OnContainerStopped: {
+      containerEventType: OnContainerStopped,
+      message: name => `Container ${name} was stopped successfully`,
+      severity: () => 'info',
+    },
+    OnContainerRestarted: {
+      containerEventType: OnContainerRestarted,
+      message: name => `Container ${name} was restarted successfully`,
+      severity: () => 'info',
+    },
+    OnContainerKilled: {
+      containerEventType: OnContainerKilled,
+      message: name => `Container ${name} was killed successfully`,
+      severity: () => 'error',
+    },
+  }
+
+  const showContainerToast = (containerId: string, containerName: string, event: ContainerEventType, success?: boolean) => {
+    const config = toastConfig[event]
+
+    setMessage(config.message(containerName, success))
+    setSeverity(config.severity(success))
+    setOpenSnackBar(true)
+    afterToastShown(containerId)
+  }
 
   useEffect(() => {
     if (!connection) {
       return
     }
 
-    connection.on(OnContainerStarted, (containerId: string, containerName: string, isSuccesfullyStarted: boolean) => {
-      let message: string = 'was started successfully'
-      let severity: AlertColor = 'success'
-      if (!isSuccesfullyStarted) {
-        message = 'was NOT started succesfully'
-        severity = 'error'
-      }
-
-      setMessage(`Container ${containerName} ${message}`)
-      setSeverity(severity)
-      setOpenSnackBar(true)
-      afterToastShown(containerId)
-    })
-
-    connection.on(OnContainerStopped, (containerId: string, containerName: string) => {
-      const message: string = `Container ${containerName} was stopped succesfully`
-      const severity: AlertColor = 'info'
-      setMessage(message)
-      setSeverity(severity)
-      setOpenSnackBar(true)
-      afterToastShown(containerId)
-    })
-
-    connection.on(OnContainerRestarted, (containerId: string, containerName: string) => {
-      const message: string = `Container ${containerName} was restarted succesfully`
-      const severity: AlertColor = 'warning'
-      setMessage(message)
-      setSeverity(severity)
-      setOpenSnackBar(true)
-      afterToastShown(containerId)
-    })
-
-    connection.on(OnContainerKilled, (containerId: string, containerName: string) => {
-      const message: string = `Container ${containerName} was killed succesfully`
-      const severity: AlertColor = 'error'
-      setMessage(message)
-      setSeverity(severity)
-      setOpenSnackBar(true)
-      afterToastShown(containerId)
+    Object.entries(toastConfig).forEach(([event, config]) => {
+      connection.on(config.containerEventType, (containerId: string, containerName: string, isSuccesfullyStarted: boolean) =>
+        showContainerToast(containerId, containerName, event as ContainerEventType, isSuccesfullyStarted))
     })
   }, [connection])
 
