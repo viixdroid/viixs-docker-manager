@@ -73,7 +73,6 @@ const Index: FC = () => {
           >
             <ListItemButton
               component={Link}
-              disabled={disabledItemIds.has(container.id)}
               to={{ pathname: `${container.name}` }}
               state={{ container }}
               divider={true}
@@ -111,7 +110,7 @@ const Index: FC = () => {
                       }}
                     >
                       {container.ports.map(port => (
-                        <Chip key={`${port.ip}:${port.privatePort}:${port.publicPort}:${port.type}`} label={`${port.privatePort}:${port.publicPort}`} variant="filled" size="small" />
+                        <Chip key={`${port.ip}:${port.privatePort}:${port.publicPort}:${port.type}`} label={`${port.privatePort}:${port.publicPort}`} variant="outlined" size="small" />
                       ))}
                     </Box>
                   </>
