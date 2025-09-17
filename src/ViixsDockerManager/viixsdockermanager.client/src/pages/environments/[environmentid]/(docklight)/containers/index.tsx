@@ -1,50 +1,53 @@
 import type { FC } from 'react'
-import type { ApiObject } from '../../../../models/api-object.ts'
+import type { BaseContainerActionCommand } from '../../../../../models/container-action-models.ts'
 import type { ContainerSummary } from './container-models.ts'
-import { PlayArrow, Stop } from '@mui/icons-material'
-import { Box, Button, Chip, Grid, IconButton, List, ListItem, ListItemText, Stack, Typography } from '@mui/material'
+import { PlayArrow, RestartAltOutlined, Stop } from '@mui/icons-material'
+import { Box, Button, Chip, Grid, List, ListItem, ListItemText, Stack, Typography } from '@mui/material'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import ListItemButton from '@mui/material/ListItemButton'
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router'
-import DateTimeAgo from '../../../../components/DateTimeAgo.tsx'
+import { Link } from 'react-router'
+import ContainerActionResultToast from '../../../../../components/containers/ContainerActionResultToast.tsx'
+import ContainerSecondaryAction from '../../../../../components/containers/ContainerSecondaryActions.tsx'
+import DateTimeAgo from '../../../../../components/DateTimeAgo.tsx'
+import { useEnvironment } from '../../../../../components/providers/EnvironmentProvider.tsx'
+import DockLightService from '../../../../../services/DockLightServices.ts'
 
 const Index: FC = () => {
-  const { environmentid } = useParams()
-  const { state } = useLocation()
+  const { environment } = useEnvironment()
+
   const [containers, setContainers] = useState<ContainerSummary[]>()
-  const [isError, setIsError] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const [disabledItemIds, setDisabledItemIds] = useState(new Set())
 
   const getContainerData = async () => {
     try {
-      setIsLoading(true)
-      const response = await fetch(`/api/docklightenvironments/${environmentid}/containers`)
-
-      if (!response.ok) {
-        setContainers([])
-        setIsLoading(false)
-        return
+      if (environment?.environmentId) {
+        const response = await DockLightService.getAllContainers(environment?.environmentId)
+        setContainers(response)
       }
-      // console.log(await response.text())
-      const data: ApiObject<ContainerSummary[]> = await response.json()
-
-      if (!data.isSuccess) {
-        setIsError(true)
-        setIsLoading(false)
-        return
-      }
-      if (data.result) {
-        setContainers(data.result)
-        setIsError(false)
-      }
-      setIsLoading(false)
     }
     catch (error) {
       console.error(error)
-      setIsError(true)
-      setIsLoading(false)
     }
+  }
+
+  const enableRow = async (containerId: string) => {
+    await getContainerData()
+    setDisabledItemIds((previous) => {
+      const newDisabledItemsSet = new Set(previous)
+      newDisabledItemsSet.delete(containerId)
+      return newDisabledItemsSet
+    })
+  }
+
+  const disableRow = (containerId: string) => {
+    setDisabledItemIds(previous => new Set(previous).add(containerId))
+  }
+
+  const performAction = async (actionCommand: BaseContainerActionCommand) => {
+    disableRow(actionCommand.containerId)
+    await actionCommand.execute()
   }
 
   useEffect(() => {
@@ -60,19 +63,17 @@ const Index: FC = () => {
             alignItems="flex-start"
             key={container.id}
             secondaryAction={(
-              <>
-                <IconButton>
-                  <PlayArrow />
-                </IconButton>
-
-                <IconButton>
-                  <Stop />
-                </IconButton>
-              </>
+              <ContainerSecondaryAction
+                container={container}
+                environmentId={environment?.environmentId}
+                isDisabled={disabledItemIds.has(container.id)}
+                performActionCommand={performAction}
+              />
             )}
           >
             <ListItemButton
               component={Link}
+              disabled={disabledItemIds.has(container.id)}
               to={{ pathname: `${container.name}` }}
               state={{ container }}
               divider={true}
@@ -124,10 +125,13 @@ const Index: FC = () => {
 
   return (
     <>
+      <ContainerActionResultToast
+        afterToastShown={containerid => enableRow(containerid)}
+      />
       <Typography variant="h5">
         Environment:
         {' '}
-        {`${state.environment.name}`}
+        {`${environment?.name}`}
       </Typography>
 
       <Grid
@@ -140,14 +144,17 @@ const Index: FC = () => {
           variant="outlined"
           aria-label="Basic button group"
         >
-          <Button>Only Be</Button>
-          <Button>Visible</Button>
-          <Button>with mutlitple selections?</Button>
+          <Button variant="outlined" color="success" startIcon={<PlayArrow />}>
+            Start
+          </Button>
+          <Button variant="outlined" color="warning" startIcon={<RestartAltOutlined />}>
+            Restart
+          </Button>
+          <Button variant="outlined" color="secondary" startIcon={<Stop />}>
+            Stop
+          </Button>
         </ButtonGroup>
       </Grid>
-
-      {isLoading && !isError && <div><p>We loading data atm... pls wait..</p></div>}
-      {!isLoading && isError && <div><p>An error from the backend.</p></div>}
       {containers && containerContent}
     </>
   )

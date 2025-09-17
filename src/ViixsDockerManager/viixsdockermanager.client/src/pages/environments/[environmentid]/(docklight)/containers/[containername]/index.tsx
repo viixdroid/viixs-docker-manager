@@ -1,38 +1,33 @@
 import type { FC, SetStateAction } from 'react'
-import type { ApiObject } from '../../../../../models/api-object'
-import type { ContainerDetails1 } from '../container-models'
+import type { ContainerDetails } from '../container-models'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import { Box, Paper, Tab, Table, TableBody, TableContainer, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
-import ContainerDetailTableRow from '../../../../../components/containers/ContainerDetailTableRow'
-import DateTimeAgo from '../../../../../components/DateTimeAgo'
+import ContainerDetailTableRow from '../../../../../../components/containers/ContainerDetailTableRow'
+import DateTimeAgo from '../../../../../../components/DateTimeAgo'
+import DockLightService from '../../../../../../services/DockLightServices'
 
 const ContainerDetailsPage: FC = () => {
   const { environmentid } = useParams()
   const { state } = useLocation()
   const [currentTabIndex, setCurrentTabIndex] = useState<number>(1)
-  const [containerDetails, setContainerDetails] = useState<ContainerDetails1 | null>()
+  const [containerDetails, setContainerDetails] = useState<ContainerDetails | null>()
 
   const getContainerDetails = async () => {
-    const response = await fetch(`/api/docklightenvironments/${environmentid}/containers/${state.container.id}`)
-
-    if (!response.ok) {
-      console.error('not a good response from backend')
-      return
+    if (!environmentid) {
+      throw new Error('No environment found. Cannot get container details')
     }
-
-    const data: ApiObject<ContainerDetails1> = await response.json()
-
-    if (!data.isSuccess) {
-      console.error('not good')
+    try {
+      const result = await DockLightService.getContainerDetails(environmentid, state.container.id)
+      setContainerDetails(result)
+    }
+    catch (error) {
       setContainerDetails(null)
-      return
+      console.error(error)
     }
-
-    setContainerDetails(data.result)
   }
 
   const handleTabChange = (_event: any, newValue: SetStateAction<number>) => {

@@ -34,7 +34,7 @@ const NordTheme = createTheme({
       contrastText: nordColors.snowStorm2,
     },
     secondary: {
-      main: nordColors.auroraGreen,
+      main: nordColors.auroraPurple,
       light: nordColors.auroraYellow,
       dark: nordColors.auroraRed,
       contrastText: nordColors.snowStorm2,
@@ -54,7 +54,7 @@ const NordTheme = createTheme({
     success: { main: nordColors.auroraGreen },
   },
   typography: {
-    fontFamily: ['Noto Sans Variable', 'Roboto', 'Arial', 'sans-serif'].join(','),
+    fontFamily: ['Noto Sans Variable', 'Roboto', 'sans-serif'].join(','),
     h1: { color: nordColors.snowStorm2 },
     h2: { color: nordColors.snowStorm2 },
     h3: { color: nordColors.snowStorm2 },

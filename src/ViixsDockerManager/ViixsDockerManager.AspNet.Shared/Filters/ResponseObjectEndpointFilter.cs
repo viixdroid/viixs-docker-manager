@@ -8,6 +8,10 @@ namespace ViixDockerManager.AspNet.Shared.Filters;
 
 public class ResponseObjectEndpointFilter : IEndpointFilter
 {
+    public ResponseObjectEndpointFilter()
+    {
+        
+    }
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
         var result = await next(context);
