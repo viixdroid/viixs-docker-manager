@@ -23,6 +23,7 @@ import { Outlet, Link as RouterLink, useLocation } from 'react-router'
 import DrawerToggleButton from '../../components/DrawerToggleButton'
 import DockLightHubProvider from '../../components/providers/DockLightHubProvider'
 import EnvironmentProvider from '../../components/providers/EnvironmentProvider'
+import ThemeSwitcherButton from '../../components/themes/ThemeSwitcherButton'
 
 const drawerWidth = 240
 
@@ -92,8 +93,10 @@ const DockLightLayout: FC = () => {
         elevation={0}
         sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar>
-          <Box
+        <Toolbar
+          sx={{ justifyContent: 'space-between' }}
+        >
+          {/* <Box
             component="img"
             sx={{
               height: 32,
@@ -104,7 +107,7 @@ const DockLightLayout: FC = () => {
             }}
             alt="Viixs Docker manager"
             src="/favicon.svg"
-          />
+          /> */}
 
           <Typography
             variant="h6"
@@ -113,6 +116,7 @@ const DockLightLayout: FC = () => {
           >
             Viixs Docker Manager
           </Typography>
+          <ThemeSwitcherButton />
         </Toolbar>
       </MuiAppBar>
 
