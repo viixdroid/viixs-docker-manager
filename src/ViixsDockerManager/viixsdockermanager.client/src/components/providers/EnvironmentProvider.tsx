@@ -2,6 +2,7 @@ import type { FC, ReactNode } from 'react'
 import type { DockLightEnvironment } from '../../models/dock-light-environment'
 import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router'
+import { EnvironmentStorageKey } from '../../constants/StorageKeys'
 
 interface EnvironmentContextValue {
   environment: DockLightEnvironment | null
@@ -11,8 +12,6 @@ interface EnvironmentContextValue {
 interface EnvironmentProviderProps {
   children: ReactNode
 }
-
-const EnvironmentStorageKey = 'environment'
 
 const EnvironmentContext = createContext<EnvironmentContextValue | undefined>(undefined)
 
