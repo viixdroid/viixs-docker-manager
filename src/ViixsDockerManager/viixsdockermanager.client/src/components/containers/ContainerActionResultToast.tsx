@@ -1,10 +1,10 @@
 import type { AlertColor, SnackbarCloseReason } from '@mui/material'
 import type { FC } from 'react'
-import type { ContainerEventType } from './ContainerActions'
+import type { ContainerEventType } from '../../constants/ContainerActions'
 import { Alert, Snackbar } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { OnContainerKilled, OnContainerRestarted, OnContainerStarted, OnContainerStopped } from '../../constants/ContainerActions'
 import { useDockLightHub } from '../providers/DockLightHubProvider'
-import { OnContainerKilled, OnContainerRestarted, OnContainerStarted, OnContainerStopped } from './ContainerActions'
 
 interface ContainerActionResultToastProps {
   afterToastShown: (containerId: string) => void
