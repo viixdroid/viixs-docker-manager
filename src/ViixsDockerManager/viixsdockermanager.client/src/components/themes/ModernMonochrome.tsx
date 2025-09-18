@@ -1,40 +1,42 @@
 import type { PaletteMode, Theme } from '@mui/material/styles'
 import { createTheme } from '@mui/material/styles'
+import { ThemeColors } from './ThemeColors'
 import '@fontsource-variable/outfit'
 import '@fontsource-variable/lexend-deca'
 import '@fontsource-variable/noto-sans'
 
 export function ModernMonochromeTheme(mode: PaletteMode): Theme {
+  const isLight = mode === 'light'
   return createTheme({
     palette: {
       mode,
       primary: {
-        main: mode === 'light' ? '#424242' : '#bdbdbd', // Medium-dark gray for light, lighter gray for dark
+        main: isLight ? ThemeColors.graphiteGray : ThemeColors.silverGray,
       },
       secondary: {
-        main: mode === 'light' ? '#e91e63' : '#f06292', // Bright fuchsia accent for light, slightly brighter for dark
+        main: isLight ? ThemeColors.fuchsiaPink : ThemeColors.rosePink,
       },
       error: {
-        main: mode === 'light' ? '#d32f2f' : '#ef5350',
+        main: isLight ? ThemeColors.crimsonRed : ThemeColors.salmonRed,
       },
       background: {
-        default: mode === 'light' ? '#dadadaff' : '#2c2c2c', // White for light, dark charcoal for dark
-        paper: mode === 'light' ? '#f5f5f5' : '#212121', // '#2c2c2c', // Very light gray for light, slightly lighter charcoal for dark
+        default: isLight ? ThemeColors.concreteGray : ThemeColors.charcoalBlack,
+        paper: isLight ? ThemeColors.cloudGray : ThemeColors.onyxBlack,
       },
       text: {
-        primary: mode === 'light' ? '#212121' : '#e0e0e0', // Dark gray for light, light gray for dark
-        secondary: mode === 'light' ? '#616161' : '#a0a0a0',
+        primary: isLight ? ThemeColors.inkBlack : ThemeColors.mistGray,
+        secondary: isLight ? ThemeColors.slateGray : ThemeColors.ashGray,
       },
     },
     typography: {
       fontFamily: ['Noto Sans Variable', 'Roboto', 'sans-serif'].join(','),
       h5: {
-        color: mode === 'light' ? '#303030' : '#f0f0f0',
+        color: isLight ? ThemeColors.coalGray : ThemeColors.snowGray,
         fontWeight: 'bold',
       },
       h4: {
         fontWeight: 600,
-        color: mode === 'light' ? '#303030' : '#f0f0f0',
+        color: isLight ? ThemeColors.coalGray : ThemeColors.snowGray,
       },
       fontWeightBold: '700',
       fontWeightMedium: '500',
@@ -50,7 +52,9 @@ export function ModernMonochromeTheme(mode: PaletteMode): Theme {
           },
           containedSecondary: {
             // Subtle accent shadow
-            boxShadow: mode === 'light' ? '0 3px 5px 2px rgba(233, 30, 99, .2)' : '0 3px 5px 2px rgba(240, 98, 146, .2)',
+            boxShadow: isLight
+              ? '0 3px 5px 2px rgba(233, 30, 99, .2)'
+              : '0 3px 5px 2px rgba(240, 98, 146, .2)',
           },
         },
       },
@@ -61,7 +65,7 @@ export function ModernMonochromeTheme(mode: PaletteMode): Theme {
             // Make sure to adjust margin/padding if needed so it doesn't float oddly
           },
           colorPrimary: {
-            backgroundColor: mode === 'light' ? '#303030' : '#121212',
+            backgroundColor: isLight ? ThemeColors.coalGray : ThemeColors.obsidianBlack,
           },
         },
       },
