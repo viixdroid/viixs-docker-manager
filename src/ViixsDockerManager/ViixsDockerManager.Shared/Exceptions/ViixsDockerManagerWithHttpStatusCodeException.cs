@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 
 namespace ViixsDockerManager.Shared.Exceptions;
 
-public abstract class ViixDockerManagerWithHttpStatusCodeException : Exception
+public abstract class ViixsDockerManagerWithHttpStatusCodeException : Exception
 {
     public HttpStatusCode StatusCode { get; }
 
-    protected ViixDockerManagerWithHttpStatusCodeException(string message,
+    protected ViixsDockerManagerWithHttpStatusCodeException(string message,
         HttpStatusCode statusCode = HttpStatusCode.InternalServerError, Exception? innerException = null)
         : base(message, innerException)
     {
