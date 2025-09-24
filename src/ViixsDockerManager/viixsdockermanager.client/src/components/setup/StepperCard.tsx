@@ -10,12 +10,9 @@ const StepperCard: FC<StepperProps> = ({ activeStep, steps }: StepperProps) => {
   return (
     <Card sx={{ margin: 'auto', mt: 2, p: 2 }}>
       <CardContent>
-        <Stepper
-          activeStep={activeStep}
-          alternativeLabel
-        >
+        <Stepper activeStep={activeStep} sx={{ '& .MuiStepIcon-root': { color: 'success' } }}>
           {steps.map(label => (
-            <Step key={label}>
+            <Step key={label} color="succes">
               <StepLabel>{label}</StepLabel>
             </Step>
           ))}

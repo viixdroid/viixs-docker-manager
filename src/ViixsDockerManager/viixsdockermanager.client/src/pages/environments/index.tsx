@@ -26,7 +26,7 @@ const EnvironmentListPage: FC = () => {
   const getEnvironments = async () => {
     try {
       const response = await DockLightEnvironmentService.getAllDockLightEnvironments()
-      if (response) {
+      if (response && response.length > 0) {
         setEnvironments(response)
         return
       }

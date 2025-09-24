@@ -4,9 +4,10 @@ import Box from '@mui/material/Box'
 import { useState } from 'react'
 import SetupCard from '../../components/setup/SetupCard.tsx'
 import StepperCard from '../../components/setup/StepperCard.tsx'
-import InitialDocklightEnvironment from './(steps)/initial-docklight-environment.tsx'
+import InitialDocklightEnvironment from './(steps)/initialDocklightEnvironment.tsx'
+import RegisterNewUserStep from './(steps)/registerNewUser.tsx'
 
-const steps = ['Setup initial docker environment']
+const steps = ['Create user account', 'Setup initial docker environment']
 
 const Setup: FC = () => {
   const [
@@ -35,11 +36,7 @@ const Setup: FC = () => {
               justifyContent: 'start',
             }}
             >
-              <Typography
-                component="h1"
-                variant="h4"
-                sx={{ mb: 4 }}
-              >
+              <Typography component="h1" variant="h4" sx={{ mb: 4 }}>
                 Set up Viix's Docker Manager
               </Typography>
             </Box>
@@ -50,9 +47,18 @@ const Setup: FC = () => {
                 steps={steps}
               />
 
-              <SetupCard title={steps[activeStep]}>
-                <InitialDocklightEnvironment />
-              </SetupCard>
+              {activeStep === 0
+                && (
+                  <SetupCard title={steps[activeStep]}>
+                    <RegisterNewUserStep />
+                  </SetupCard>
+                )}
+              {activeStep === 1
+                && (
+                  <SetupCard title={steps[activeStep]}>
+                    <InitialDocklightEnvironment />
+                  </SetupCard>
+                )}
             </Box>
 
             <Box sx={{
@@ -61,14 +67,11 @@ const Setup: FC = () => {
               width: '100%',
             }}
             >
-              <Grid
-                container
-                spacing={2}
-                sx={{ mt: 2 }}
-              >
+              <Grid container spacing={2} sx={{ mt: 2 }}>
                 <Grid size={6}>
                   <Button
                     fullWidth
+                    color="info"
                     variant="outlined"
                     disabled={activeStep === 0}
                     onClick={handleGoToPreviousStep}
@@ -80,16 +83,12 @@ const Setup: FC = () => {
                 <Grid size={6}>
                   {isLastStep()
                     ? (
-                        <Button fullWidth variant="contained">
-                          Reset / Afronden
+                        <Button fullWidth variant="contained" color="info">
+                          Afronden
                         </Button>
                       )
                     : (
-                        <Button
-                          fullWidth
-                          variant="contained"
-                          onClick={handleGoToNextStep}
-                        >
+                        <Button fullWidth variant="contained" color="info" onClick={handleGoToNextStep}>
                           Volgende
                         </Button>
                       )}

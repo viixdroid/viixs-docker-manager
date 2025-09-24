@@ -1,11 +1,7 @@
+import type { ICommand } from './command-model'
 import DockLightActionService from '../services/DockLightActionService'
 
-// TODO: Move to actual good place
-export interface ICommmand {
-  execute: () => Promise<void>
-}
-
-export abstract class BaseContainerActionCommand implements ICommmand {
+export abstract class BaseContainerActionCommand implements ICommand {
   environmentId: string
   containerId: string
   containerName: string
