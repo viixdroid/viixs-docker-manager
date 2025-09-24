@@ -9,25 +9,25 @@ internal class SendContainerNotifications(IHubContext<DockLightInformationHub, I
 {
     public Task SendContainerStarted(BaseContainerActionCommand containerActionCommand, bool isSuccessfullyStarted)
     {
-        string environmentId = containerActionCommand.EnvironmentId.ToString();
+        var environmentId = containerActionCommand.EnvironmentId.ToString();
         return dockLightInformationContext.Clients.Group(environmentId).OnContainerStarted(containerActionCommand.ContainerId, containerActionCommand.ContainerName, isSuccessfullyStarted);
     }
 
     public Task SendContainerStopped(BaseContainerActionCommand containerActionCommand)
     {
-        string environmentId = containerActionCommand.EnvironmentId.ToString();
+        var environmentId = containerActionCommand.EnvironmentId.ToString();
         return dockLightInformationContext.Clients.Group(environmentId).OnContainerStopped(containerActionCommand.ContainerId, containerActionCommand.ContainerName);
     }
 
     public Task SendContainerRestarted(BaseContainerActionCommand containerActionCommand)
     {
-        string environmentId = containerActionCommand.EnvironmentId.ToString();
+        var environmentId = containerActionCommand.EnvironmentId.ToString();
         return dockLightInformationContext.Clients.Group(environmentId).OnContainerRestarted(containerActionCommand.ContainerId, containerActionCommand.ContainerName);
     }
 
     public Task SendContainerKilled(BaseContainerActionCommand containerActionCommand)
     {
-        string environmentId = containerActionCommand.EnvironmentId.ToString();
+        var environmentId = containerActionCommand.EnvironmentId.ToString();
         return dockLightInformationContext.Clients.Group(environmentId).OnContainerKilled(containerActionCommand.ContainerId, containerActionCommand.ContainerName);
     }
 }

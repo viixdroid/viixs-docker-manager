@@ -10,6 +10,7 @@ using ViixsDockerManager.DockLight.Shared.Extensions;
 using ViixsDockerManager.Mediator.Extensions;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
+using ViixsDockerManager.Users.Accounts.Extensiosn;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,6 @@ builder.Configuration.AddEnvironmentVariables();
 
 var logFileLocation = builder.Configuration.GetSection("ViixsDockerManager").GetValue<string>("logfilelocation") ?? throw ViixsDockerManager.Shared.Exceptions.ViixsDockerManagerException.InvalidOperation("No log file locations");
 const string logTemplate = "[{Timestamp:HH:mm:ss}] [{Level:u4}] [{SourceContext}] {Message:j}{NewLine}{Exception}";
-
 
 builder.Host.UseSerilog((context, services, configuration) => configuration
     .ReadFrom.Configuration(context.Configuration)
@@ -37,14 +37,14 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.AddServiceDefaults();
 
-
 // Add services to the container.
 builder.Services.AddMediatorServices();
 builder.Services.AddDockLightContainerServices();
 builder.Services.AddDockLightEnvironmentServices(builder.Configuration);
 builder.Services.AddDockLightSharedServices();
+builder.Services.AddUserAccountsService(builder.Configuration);
+builder.Services.AddUserAccountCommandHandlers();
 builder.Services.AddExceptionHandlerService();
-
 
 builder.Services.AddSignalR()
     .AddJsonProtocol(options =>
@@ -67,18 +67,27 @@ var app = builder.Build();
 
 app.UseExceptionHandlerService();
 
-await app.RunDocklightEnvironmentMigrations();
+app.AddDocklightEnvironmentMigrations();
+app.AddUserAccountsMigrations();
+
+app.RunMigrations();
 
 app.UseSerilogRequestLogging();
 
+await app.SeedRolesAsync();
+
 var webSocketGroup = app.MapGroup("ws");
 webSocketGroup.MapDockLightSignalRHubs();
+webSocketGroup.MapUserAccountsSignalRHubs();
 
 var builderWithAppliedEndpointFilter = app.ApplyEndpointFilter();
-var environmentRoot = builderWithAppliedEndpointFilter.MapDocklightEnvironmentRoutes();
+var apiGroup = builderWithAppliedEndpointFilter.MapGroup("api");
+
+var environmentRoot = apiGroup.MapDocklightEnvironmentRoutes();
 environmentRoot.MapDockLightEnvironmentSetupRoutes();
 environmentRoot.MapDocklightRoutes();
 
+apiGroup.MapUserAccountRoutes();
 
 app.MapDefaultEndpoints();
 

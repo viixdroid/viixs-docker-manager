@@ -4,17 +4,17 @@ namespace ViixsDockerManager.Shared.Exceptions;
 
 public class ViixsDockerManagerException : Exception
 {
-    private ViixsDockerManagerException(string message)
+    public ViixsDockerManagerException(string message)
         : base(message)
     {
     }
 
-    private ViixsDockerManagerException(string message, Exception innerException)
+    public ViixsDockerManagerException(string message, Exception innerException)
         : base(message, innerException)
     {
     }
 
-    private ViixsDockerManagerException(Exception exception)
+    public ViixsDockerManagerException(Exception exception)
         : base(exception.Message, exception)
     {
     }

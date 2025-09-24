@@ -78,20 +78,9 @@ const AddInitialDockLightStep: FC = () => {
           />
         </Stack>
 
-        <Stack
-          spacing={1}
-          direction="column"
-          alignItems="start"
-        >
-          <Typography
-            variant="body1"
-            component="div"
-            sx={{ textAlign: 'start' }}
-          >
-            <Box
-              component="span"
-              sx={{ fontStyle: 'oblique' }}
-            >
+        <Stack spacing={1} direction="column" alignItems="start">
+          <Typography variant="body1" component="div" sx={{ textAlign: 'start' }}>
+            <Box component="span" sx={{ fontStyle: 'oblique' }}>
               Protocol
             </Box>
           </Typography>

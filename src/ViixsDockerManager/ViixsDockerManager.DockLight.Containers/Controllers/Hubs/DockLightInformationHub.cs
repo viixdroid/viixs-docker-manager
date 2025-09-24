@@ -35,14 +35,10 @@ internal class DockLightInformationHub : Hub<IDockLightInformationContext>
     }
 
 
-    private async Task AddToGroup(string environmentId)
-    {
-        await Groups.AddToGroupAsync(Context.ConnectionId, environmentId).ConfigureAwait(false);
-    }
+    private Task AddToGroup(string environmentId)
+        => Groups.AddToGroupAsync(Context.ConnectionId, environmentId);
 
-    private async Task RemoveFromGroup(string environmentId)
-    {
-        await Groups.RemoveFromGroupAsync(Context.ConnectionId, environmentId).ConfigureAwait(false);
-    }
+    private Task RemoveFromGroup(string environmentId)
+        => Groups.RemoveFromGroupAsync(Context.ConnectionId, environmentId);
 }
 

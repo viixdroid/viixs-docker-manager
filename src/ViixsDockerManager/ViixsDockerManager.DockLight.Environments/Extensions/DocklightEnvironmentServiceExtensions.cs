@@ -12,6 +12,7 @@ using ViixsDockerManager.DockLight.Environments.Models.Queries;
 using ViixsDockerManager.DockLight.Shared.Entities;
 using ViixsDockerManager.Mediator.Extensions;
 using ViixsDockerManager.Shared.Database.Extensions;
+using ViixsDockerManager.Shared.Database.Models;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 
 namespace ViixsDockerManager.DockLight.Environments.Extensions;
@@ -26,7 +27,7 @@ public static class DocklightEnvironmentServiceExtensions
         services.AddReadEntityServices<DockLightEnvironmentReadDbContext, DockLightEnvironment>();
 
         //write
-        services.AddWriteDatabaseServices<DockLightEnvironmentWriteDbContext>(configuration);
+        services.AddWriteDatabaseServices<DockLightEnvironmentWriteDbContext>(configuration, migrationsHistory: new MigrationsHistory("DockLightEnvironment"));
         services.AddWriteEntityServices<DockLightEnvironmentWriteDbContext, DockLightEnvironment>();
 
         //TODO: Place in correct place.
@@ -40,14 +41,12 @@ public static class DocklightEnvironmentServiceExtensions
         return services;
     }
 
-    public static Task RunDocklightEnvironmentMigrations(this IHost serviceHost)
-    {
-        return serviceHost.RunMigrations<DockLightEnvironmentWriteDbContext>();
-    }
+    public static void AddDocklightEnvironmentMigrations(this IHost serviceHost)
+        => serviceHost.AddContextForMigrationRunning<DockLightEnvironmentWriteDbContext>();
 
     public static RouteGroupBuilder MapDocklightEnvironmentRoutes(this IEndpointRouteBuilder serviceHost)
     {
-        var group = serviceHost.MapGroup("api/docklightenvironments");
+        var group = serviceHost.MapGroup("docklightenvironments");
 
         group.MapRouteActions();
         return group;

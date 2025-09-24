@@ -18,6 +18,9 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
   </Folder>
+  <Folder Name="/Users/">
+    <Project Path="ViixsDockerManager.Users.Accounts/ViixsDockerManager.Users.Accounts.csproj" Id="f4fcbf86-875b-4466-99bb-26e8b856a5c8" />
+  </Folder>
   <Project Path="viixsdockermanager.client/viixsdockermanager.client.esproj">
     <Build />
   </Project>

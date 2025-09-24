@@ -9,4 +9,14 @@ public static class Guard
         ViixsDockerManagerException.ThrowIfArgumentNull(value, parameterName);
         return value!;
     }
+
+    public static string ValueIsNotNullOrEmpty(string? value, string parameterName)
+    {
+        if(string.IsNullOrEmpty(value))
+        {
+            throw new ViixsDockerManagerException($"Parameter '{parameterName}' cannot be null or empty.");
+        }
+
+        return value;
+    }
 }
