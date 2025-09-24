@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using ViixsDockerManager.Shared.Exceptions;
 using ViixsDockerManager.Shared.Models;
 
-namespace ViixDockerManager.AspNet.Shared.Handlers;
+namespace ViixsDockerManager.AspNet.Shared.Handlers;
 
 public class ViixsDockerManagerExceptionHandler : IExceptionHandler
 {
@@ -14,10 +14,10 @@ public class ViixsDockerManagerExceptionHandler : IExceptionHandler
     {
         var statusCode = HttpStatusCode.InternalServerError;
         var message = "An unhandled exception occurred on the server";
-        if (exception is ViixDockerManagerWithHttpStatusCodeException viixDockerManagerWithHttpStatusCodeException)
+        if (exception is ViixsDockerManagerWithHttpStatusCodeException viixsDockerManagerWithHttpStatusCodeException)
         {
-            statusCode = viixDockerManagerWithHttpStatusCodeException.StatusCode;
-            message = viixDockerManagerWithHttpStatusCodeException.Message;
+            statusCode = viixsDockerManagerWithHttpStatusCodeException.StatusCode;
+            message = viixsDockerManagerWithHttpStatusCodeException.Message;
         }
 
         httpContext.Response.StatusCode = (int)statusCode;

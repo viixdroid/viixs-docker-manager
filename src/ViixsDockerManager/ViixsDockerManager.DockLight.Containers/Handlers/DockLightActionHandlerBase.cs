@@ -25,7 +25,7 @@ internal abstract class DockLightActionHandlerBase<TCommand>(IDockerServiceFacto
         {
             containerActionResult = await ExecuteContainerActionAsync(service, command, cancellationToken).ConfigureAwait(false);
         }
-        catch (ViixDockerManagerWithHttpStatusCodeException)
+        catch (ViixsDockerManagerWithHttpStatusCodeException)
         {
             containerActionResult = false;
         }

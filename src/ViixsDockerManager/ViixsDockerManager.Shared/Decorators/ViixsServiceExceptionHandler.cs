@@ -57,18 +57,18 @@ public class ViixsServiceExceptionHandler<TService> : DispatchProxy
 
     private void WrapException(MethodInfo? methodInfo, Exception exception)
     {
-        if (exception is ViixDockerManagerWithHttpStatusCodeException viixDockerManagerWithHttpStatusCodeException)
+        if (exception is ViixsDockerManagerWithHttpStatusCodeException viixsDockerManagerWithHttpStatusCodeException)
         {
-            viixDockerManagerWithHttpStatusCodeException.Log(_logger!);
-            throw viixDockerManagerWithHttpStatusCodeException;
+            viixsDockerManagerWithHttpStatusCodeException.Log(_logger!);
+            throw viixsDockerManagerWithHttpStatusCodeException;
         }
 
         var innerException = exception.InnerException ?? exception;
         //The inner exception can also be a custom exception.
-        if (innerException is ViixDockerManagerWithHttpStatusCodeException viixDockerManagerWithHttpStatusCodeException1)
+        if (innerException is ViixsDockerManagerWithHttpStatusCodeException viixsDockerManagerWithHttpStatusCodeException1)
         {
-            viixDockerManagerWithHttpStatusCodeException1.Log(_logger!);
-            throw viixDockerManagerWithHttpStatusCodeException1;
+            viixsDockerManagerWithHttpStatusCodeException1.Log(_logger!);
+            throw viixsDockerManagerWithHttpStatusCodeException1;
         }
 
         var serviceFaultedException = new ServiceFaultUnhandledException(typeof(TService).Name, methodInfo?.Name ?? "Unknown Method", innerException);

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace ViixsDockerManager.Shared.Exceptions;
 
 public class ServiceFaultUnhandledException(string serviceName, string methodName, Exception? originalException)
-    : ViixDockerManagerWithHttpStatusCodeException(
+    : ViixsDockerManagerWithHttpStatusCodeException(
         $"The service {serviceName}::{methodName} faulted.",
         HttpStatusCode.InternalServerError, originalException)
 {

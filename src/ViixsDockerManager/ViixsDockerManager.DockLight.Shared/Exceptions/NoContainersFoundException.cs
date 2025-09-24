@@ -4,6 +4,6 @@ using ViixsDockerManager.Shared.Exceptions;
 namespace ViixsDockerManager.DockLight.Shared.Exceptions;
 
 public class NoContainersFoundException()
-    : ViixDockerManagerWithHttpStatusCodeException("There were no containers found", HttpStatusCode.NotFound)
+    : ViixsDockerManagerWithHttpStatusCodeException("There were no containers found", HttpStatusCode.NotFound)
 {
 }
