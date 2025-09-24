@@ -35,6 +35,7 @@
         <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.AspNet.Shared.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Users.Accounts\ViixsDockerManager.Users.Accounts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
