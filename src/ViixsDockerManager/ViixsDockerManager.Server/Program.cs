@@ -13,7 +13,8 @@ using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
 using ViixsDockerManager.Users.Accounts.Extensiosn;
 
-var webApp = WebAppStarter.Instance
+var webApp = WebAppStarter.Instance    
+    .ConfigureEventHandlers()
     .CreateWebApplicationBuilder(args, builder =>
 {
     builder.Configuration.AddEnvironmentVariables();

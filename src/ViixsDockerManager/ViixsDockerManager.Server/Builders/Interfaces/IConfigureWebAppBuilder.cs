@@ -1,4 +1,4 @@
-﻿namespace ViixsDockerManager.Server.Builders;
+﻿namespace ViixsDockerManager.Server.Builders.Interfaces;
 
 public interface IConfigureWebAppBuilder
 {
