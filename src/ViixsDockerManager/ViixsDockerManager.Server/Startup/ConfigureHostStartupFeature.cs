@@ -1,12 +1,13 @@
 ﻿using ViixsDockerManager.Server.Startup.Factories;
+using ViixsDockerManager.Server.Startup.Interfaces;
 using ViixsDockerManager.Shared.AspNet.Startup.Interfaces;
 using ViixsDockerManager.Shared.Helpers;
 
 namespace ViixsDockerManager.Server.Startup;
 
-internal sealed class HostStartupFeature(IBuilderCollectionFactory builderCollectionFactory) : StartupFeature
+internal sealed class ConfigureHostStartupFeature(IBuilderCollectionFactory builderCollectionFactory) : IConfigureHostStartupFeature, IStartupFeature
 {
-    protected override void ConfigureBuilder(WebApplicationBuilder webAppbuilder)
+    private void ConfigureHost(WebApplicationBuilder webAppbuilder)
     {
         var hostBuilderCollection = builderCollectionFactory.GetBuilderCollection<IHostComponent>();
         hostBuilderCollection = Guard.ValueIsNotNull(hostBuilderCollection, nameof(hostBuilderCollection));
@@ -17,4 +18,6 @@ internal sealed class HostStartupFeature(IBuilderCollectionFactory builderCollec
         }
 
     }
+
+    void IConfigureHostStartupFeature.ConfigureHost(WebApplicationBuilder webAppbuilder) => ConfigureHost(webAppbuilder);
 }

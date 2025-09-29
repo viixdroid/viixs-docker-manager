@@ -1,4 +1,5 @@
 ﻿using ViixsDockerManager.Server.Startup.Factories;
+using ViixsDockerManager.Server.Startup.Interfaces;
 using ViixsDockerManager.Shared.Database.Migrations;
 using ViixsDockerManager.Shared.Database.Startup.Interfaces;
 using ViixsDockerManager.Shared.Exceptions;
@@ -6,11 +7,9 @@ using ViixsDockerManager.Shared.Helpers;
 
 namespace ViixsDockerManager.Server.Startup;
 
-internal sealed class MigrationStartupFeature(IBuilderCollectionFactory builderCollectionFactory) : StartupFeature
+internal sealed class ConfigureMigrationsStartupFeature(IBuilderCollectionFactory builderCollectionFactory) : IConfigureMigrationStartupFeature, IStartupFeature
 {
-    protected override void ConfigureBuilder(WebApplicationBuilder webAppbuilder) { }
-
-    protected override void GetMigrations(IMigrationRunner migrationRunner)
+    private void GetMigrations(IMigrationRunner migrationRunner)
     {
         var migrationComponentsCollection = builderCollectionFactory.GetBuilderCollection<IMigrationComponent>();
         migrationComponentsCollection = Guard.ValueIsNotNull(migrationComponentsCollection, nameof(migrationComponentsCollection));
@@ -20,4 +19,6 @@ internal sealed class MigrationStartupFeature(IBuilderCollectionFactory builderC
             migrationRunner.AddContext(component.GetMigrationDbContextType());
         }
     }
+
+    void IConfigureMigrationStartupFeature.GetMigrations(IMigrationRunner migrationRunner) => GetMigrations(migrationRunner);
 }

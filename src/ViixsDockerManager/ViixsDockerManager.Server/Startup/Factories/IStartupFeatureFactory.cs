@@ -1,7 +1,13 @@
 ﻿
+using ViixsDockerManager.Server.Startup.Interfaces;
+
 namespace ViixsDockerManager.Server.Startup.Factories;
 
 internal interface IStartupFeatureFactory
 {
-    IEnumerable<IStartupFeature> GetStartupFeatures();
+    IConfigureAppStartupFeature GetConfigureAppStartupFeature();
+    IConfigureHostStartupFeature GetConfigureHostStartupFeature();
+    IConfigureRoutesStartupFeature GetConfigureRoutesStartupFeature();
+    IConfigureServicesStartupFeature GetConfigureServicesStartupFeature();
+    IConfigureMigrationStartupFeature GetConfigureMigrationStartupFeature();
 }
