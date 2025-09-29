@@ -24,10 +24,10 @@ internal sealed class RouteStartupFeature(IBuilderCollectionFactory builderColle
         }
     }
 
-    private static IEndpointRouteBuilder CreateDefaultWebSocketRoute(WebApplication webApp)
+    private static RouteGroupBuilder CreateDefaultWebSocketRoute(WebApplication webApp)
         => webApp.MapGroup(WebSocketRoute);
 
-    private static IEndpointRouteBuilder CreateDefaultApiRoute(WebApplication webApp)
+    private static RouteGroupBuilder CreateDefaultApiRoute(WebApplication webApp)
     {
         var builderWithAppliedEndpoint = webApp.ApplyEndpointFilter();
         return builderWithAppliedEndpoint.MapGroup(ApiRoute);
