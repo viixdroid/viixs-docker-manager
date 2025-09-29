@@ -85,8 +85,8 @@ public static class UserAccountsServiceExtensions
         return group;
     }
 
-    public static void AddUserAccountsMigrations(this IHost serviceHost)
-        => serviceHost.AddContextForMigrationRunning<UserAccountDbContext>();
+    //public static void AddUserAccountsMigrations(this IHost serviceHost)
+    //    => serviceHost.AddContextForMigrationRunning<UserAccountDbContext>();
 
     public static async Task SeedRolesAsync(this IHost serviceHost)
     {

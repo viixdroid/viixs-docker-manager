@@ -41,8 +41,8 @@ public static class DocklightEnvironmentServiceExtensions
         return services;
     }
 
-    public static void AddDocklightEnvironmentMigrations(this IHost serviceHost)
-        => serviceHost.AddContextForMigrationRunning<DockLightEnvironmentWriteDbContext>();
+    //public static void AddDocklightEnvironmentMigrations(this IHost serviceHost)
+    //    => serviceHost.AddContextForMigrationRunning<DockLightEnvironmentWriteDbContext>();
 
     public static RouteGroupBuilder MapDocklightEnvironmentRoutes(this IEndpointRouteBuilder serviceHost)
     {
