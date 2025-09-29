@@ -30,7 +30,8 @@ public sealed class DockLightContainerRouteComponent : RouteComponent
 
     protected override void ConfigureWebApiRoutes(IEndpointRouteBuilder routeGroupBuilder)
     {
-        MapDocklightRoutes(routeGroupBuilder);
+        var docklightenvironmentsGroup = routeGroupBuilder.MapGroup("docklightenvironments");
+        MapDocklightRoutes(docklightenvironmentsGroup);
     }
 
     protected override void ConfigureWebSocketRoutes(IEndpointRouteBuilder routeGroupBuilder)
