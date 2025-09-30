@@ -1,15 +1,13 @@
-﻿using System.Reflection;
-using Serilog;
+﻿using Serilog;
 using ViixsDockerManager.Server.Builders.EventHandlers;
 using ViixsDockerManager.Server.Builders.EventHandlers.EventArguments;
 using ViixsDockerManager.Server.Builders.Interfaces;
 using ViixsDockerManager.Server.Helpers;
 using ViixsDockerManager.Server.Startup.Factories;
-using ViixsDockerManager.Server.Startup.Interfaces;
 using ViixsDockerManager.Shared.Database.Migrations;
 using ViixsDockerManager.Shared.Helpers;
 
-namespace ViixsDockerManager.Server.Builders;
+namespace ViixsDockerManager.Server;
 
 public class WebAppStarter : IWebAppStarterConfigurator, IWebAppStarter, IConfigureWebAppBuilder, IStartWebApp, IWebAppStarterEvents
 {
@@ -18,7 +16,6 @@ public class WebAppStarter : IWebAppStarterConfigurator, IWebAppStarter, IConfig
     private WebApplication? _webApplication;
     private WebApplicationBuilder? _webApplicationBuilder;
 
-    //private IEnumerable<IStartupFeature>? _startupFeatures;
     private IStartupFeatureFactory? _startupFeatureFactory;
 
     private WebAppStarter()
