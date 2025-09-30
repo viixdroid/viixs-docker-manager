@@ -8,21 +8,20 @@ interface SetupCardProps {
 
 const SetupCard: FC<SetupCardProps> = ({ title, children }: SetupCardProps) => {
   return (
-    <Card sx={{ margin: 'auto', mt: 4, p: 2 }}>
-      <CardContent>
-        {title && (
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{ mb: 2, textAlign: 'center' }}
-          >
-            {title}
-          </Typography>
-        )}
+    <>
+      {title && (
+        <Typography
+          variant="h5"
+          component="div"
+          sx={{ mb: 2, textAlign: 'center' }}
+        >
+          {title}
+        </Typography>
+      )}
 
-        {children}
-      </CardContent>
-    </Card>
+      {children}
+
+    </>
   )
 }
 
