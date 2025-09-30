@@ -13,7 +13,7 @@
 
     <ItemGroup>
 
-        <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.AspNet.Shared.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.Shared.AspNet.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Mediator\ViixsDockerManager.Mediator.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />

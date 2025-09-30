@@ -89,29 +89,4 @@ public static class SharedDatabaseSqliteServiceExtensions
         });
         return services;
     }
-
-    public static void AddContextForMigrationRunning<TContext>(this IHost serviceHost)
-        where TContext : DbContext, IWriteDbContext
-    {
-        var contextType = typeof(TContext);
-        var factory = typeof(IDbContextFactory<>).MakeGenericType(contextType);
-        _migrationContextFactories.Add(factory);
-    }
-
-    public static void RunMigrations(this IHost serviceHost)
-    {
-        using var scope = serviceHost.Services.CreateScope();
-        foreach (var factory in _migrationContextFactories)
-        {
-            var dbContextFactory = scope.ServiceProvider.GetRequiredService(factory);
-
-            var createDbContextMethod = factory.GetMethod(nameof(IDbContextFactory<DbContext>.CreateDbContext))!;
-
-            using var dbContext = (DbContext)createDbContextMethod.Invoke(dbContextFactory, [])!;
-
-            //We run each migration sync. We need to make sure the lock is available for each migrate.
-            //Using MigrateAsync() will concurrently call the lock, causing a deadlock.
-            dbContext.Database.Migrate();
-        }
-    }
 }

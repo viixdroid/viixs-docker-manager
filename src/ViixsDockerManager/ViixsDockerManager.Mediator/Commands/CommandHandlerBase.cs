@@ -27,7 +27,7 @@ public abstract class CommandHandlerBase<TCommand, TCommandNotificationSender>(T
         }
         catch (Exception e)
         {
-            if (e is ViixDockerManagerWithHttpStatusCodeException vdmException)
+            if (e is ViixsDockerManagerWithHttpStatusCodeException vdmException)
             {
                 vdmException.Log(logger);
                 throw;
