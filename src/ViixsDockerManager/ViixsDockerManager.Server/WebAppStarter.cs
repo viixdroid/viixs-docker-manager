@@ -79,6 +79,13 @@ public class WebAppStarter : IWebAppStarterConfigurator, IWebAppStarter, IConfig
     {
         applicationStartedEventArgs = Guard.ValueIsNotNull(applicationStartedEventArgs, nameof(applicationStartedEventArgs));
         OnApplicationStarted?.Invoke(this, applicationStartedEventArgs);
+        UnconfigureEventHandlers();
+    }
+
+    private static void UnconfigureEventHandlers()
+    {
+        LoggingEventHandler.Instance.DetachEventHandlers();
+        PerformanceMeasureEventHandler.Instance.DetachEventHandlers();
     }
     #endregion
 
