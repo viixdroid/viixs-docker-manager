@@ -16,7 +16,6 @@ internal sealed class ConfigureHostStartupFeature(IBuilderCollectionFactory buil
         {
             component.ConfigureHost(webAppbuilder.Host);
         }
-
     }
 
     void IConfigureHostStartupFeature.ConfigureHost(WebApplicationBuilder webAppbuilder) => ConfigureHost(webAppbuilder);

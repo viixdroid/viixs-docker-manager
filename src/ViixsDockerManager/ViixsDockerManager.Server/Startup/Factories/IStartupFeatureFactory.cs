@@ -1,5 +1,4 @@
-﻿
-using ViixsDockerManager.Server.Startup.Interfaces;
+﻿using ViixsDockerManager.Server.Startup.Interfaces;
 
 namespace ViixsDockerManager.Server.Startup.Factories;
 

@@ -14,10 +14,6 @@ internal class WebAppServiceComponent : ServiceComponent
         {
             options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter(namingPolicy: JsonNamingPolicy.SnakeCaseLower));
         });
-        services.AddControllers(options =>
-        {
-            options.Filters.Add<WrapControllerResultFilter>(); //Old style controllers
-        });
         services.AddOpenApi();
         services.ConfigureHttpJsonOptions(options =>
         {

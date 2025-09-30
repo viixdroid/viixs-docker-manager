@@ -18,8 +18,6 @@ internal sealed class WebAppConfigureAppComponent : ConfigureAppComponent
 
         webApplication.UseAuthorization();
 
-        webApplication.MapControllers();
-
         webApplication.MapFallbackToFile("/index.html");
     }
 }

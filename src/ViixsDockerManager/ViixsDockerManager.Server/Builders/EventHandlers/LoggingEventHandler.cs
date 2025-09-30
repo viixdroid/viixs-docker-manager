@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
 using Serilog;
 using ViixsDockerManager.Server.Builders.EventHandlers.EventArguments;
-using ViixsDockerManager.Server.Helpers;
 
 namespace ViixsDockerManager.Server.Builders.EventHandlers;
 
