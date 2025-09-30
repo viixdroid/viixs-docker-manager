@@ -6,7 +6,7 @@ namespace ViixsDockerManager.Server.Helpers;
 
 internal static class LogHelpers
 {
-    private const string LogTemplate = "[{Timestamp:HH:mm:ss}] [{Level:u4}] [{SourceContext}] {Message:j}{NewLine}{Exception}";
+    private const string LogTemplate = "[{Timestamp:HH:mm:ss}] [{Level:u3}] [{SourceContext}] {Message:j}{NewLine}{Exception}";
     public static LoggerConfiguration GetLoggerConfiguration(this LoggerConfiguration loggerConfiguration, IConfiguration configuration, IServiceProvider? serviceProvider = null)
     {
         var logFileLocation = configuration.GetSection("ViixsDockerManager").GetValue<string>("logfilelocation") ?? throw ViixsDockerManagerException.InvalidOperation("No log file locations");
