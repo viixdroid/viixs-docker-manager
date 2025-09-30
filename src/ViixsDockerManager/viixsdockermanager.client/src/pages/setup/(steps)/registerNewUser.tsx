@@ -1,8 +1,14 @@
 import type { FC } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, styled, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { CreateUserAccountCommand } from '../(models)/createuserAccount'
+
+const FormBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(4),
+}))
 
 // TODO: check if there is already a user
 const RegisterNewUserStep: FC = () => {
@@ -35,7 +41,41 @@ const RegisterNewUserStep: FC = () => {
 
   return (
     <>
-      <Stack>
+      <FormBox>
+        <Stack spacing={2}>
+          <TextField fullWidth label="Email Address" type="email" variant="outlined" required />
+          <FormControl variant="outlined" fullWidth required>
+            <InputLabel htmlFor="outlined-adornment-password" required>
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+              endAdornment={(
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showPassword ? 'hide the password' : 'display the password'
+                    }
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              )}
+              label="Password"
+              required
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </FormControl>
+        </Stack>
+      </FormBox>
+      {/* <StyledAlert severity="info">Create your account to get started with our platform</StyledAlert> */}
+      {/* <Stack>
         <Typography variant="body1">
           To use Viixs docker manager, please create an account first.
         </Typography>
@@ -97,7 +137,7 @@ const RegisterNewUserStep: FC = () => {
         >
           Temporary save button
         </Button>
-      </Stack>
+      </Stack> */}
 
     </>
   )

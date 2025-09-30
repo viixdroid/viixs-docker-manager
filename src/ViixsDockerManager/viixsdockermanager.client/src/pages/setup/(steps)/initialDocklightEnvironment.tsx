@@ -1,11 +1,17 @@
 import type { FC } from 'react'
 import type { CreateDockLightEnvironmentCommand, InitialDockLightEnvironment } from '../(models)/initialdocklightenvironment.ts'
 import type { ApiObject } from '../../../models/api-object.ts'
-import { Button, Stack, TextField, Typography } from '@mui/material'
+import { Button, Stack, styled, TextField, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import DockLightEnvironmentService from '../../../services/DockLightEnvironmentService.ts'
+
+const FormBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(4),
+}))
 
 const AddInitialDockLightStep: FC = () => {
   const navigate = useNavigate()
@@ -44,66 +50,43 @@ const AddInitialDockLightStep: FC = () => {
 
   return (
     <>
-      <Stack spacing={1}>
-        <Typography variant="body1">
-          To setup Viix's Docker Manager, we need to create an environment.
-          <br />
-          This environment will communicate with your local docker engine.
-          <br />
-          Based upon your OS, the protocol is predefined.
-          <br />
-          You are running on
-          {' '}
+      <FormBox>
+        <Stack spacing={2}>
+          <Typography variant="body1">
 
-          <Box component="span" sx={{ fontWeight: 'bold' }}>
-            {initialEnvironment?.environment}
-          </Box>
-          {initialEnvironment?.isRunningInDocker ? ' in docker.' : '.'}
-        </Typography>
+            You are running on
+            {' '}
 
-        <Stack spacing={1} direction="column" alignItems="start">
-          <Typography variant="body1" component="div" sx={{ textAlign: 'start' }}>
-            <Box component="span" sx={{ fontStyle: 'oblique' }}>
-              Environment name
+            <Box component="span" sx={{ fontWeight: 'bold' }}>
+              {initialEnvironment?.environment}
             </Box>
+            {initialEnvironment?.isRunningInDocker ? ' in docker.' : '.'}
           </Typography>
 
           <TextField
-            id="outlined-basic"
             fullWidth
-            placeholder="The name of the environment"
+            label="Environment Name"
+            type="email"
             variant="outlined"
+            required
             value={name}
             onChange={e => setName(e.target.value)}
           />
-        </Stack>
-
-        <Stack spacing={1} direction="column" alignItems="start">
-          <Typography variant="body1" component="div" sx={{ textAlign: 'start' }}>
-            <Box component="span" sx={{ fontStyle: 'oblique' }}>
-              Protocol
-            </Box>
-          </Typography>
 
           <TextField
+            label="Docker API Endpoint"
             id="connection"
             fullWidth
-            defaultValue={initialEnvironment?.protocol.protocolUri}
+            defaultValue={initialEnvironment?.protocol.protocolUri ?? ''}
             slotProps={{
               input: {
                 readOnly: true,
               },
             }}
           />
-        </Stack>
 
-        <Button
-          variant="contained"
-          onClick={saveNewEnvironment}
-        >
-          Temporary save button
-        </Button>
-      </Stack>
+        </Stack>
+      </FormBox>
 
     </>
   )
