@@ -9,7 +9,7 @@
     <Project Path="ViixsDockerManager.DockLight.Shared/ViixsDockerManager.DockLight.Shared.csproj" />
   </Folder>
   <Folder Name="/Shared/">
-    <Project Path="ViixsDockerManager.AspNet.Shared/ViixsDockerManager.AspNet.Shared.csproj" />
+    <Project Path="ViixsDockerManager.AspNet.Shared/ViixsDockerManager.Shared.AspNet.csproj" />
     <Project Path="ViixsDockerManager.Mediator/ViixsDockerManager.Mediator.csproj" />
     <Project Path="ViixsDockerManager.Shared.Database.Sqlite/ViixsDockerManager.Shared.Database.Sqlite.csproj" />
     <Project Path="ViixsDockerManager.Shared.Database/ViixsDockerManager.Shared.Database.csproj" />
