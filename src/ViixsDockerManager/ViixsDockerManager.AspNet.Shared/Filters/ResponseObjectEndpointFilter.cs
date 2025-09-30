@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Http.Metadata;
 using ViixsDockerManager.Shared.Models;
 
-namespace ViixsDockerManager.Shared.AspNet.Filters;
+namespace ViixsDockerManager.AspNet.Shared.Filters;
 
 public class ResponseObjectEndpointFilter : IEndpointFilter
 {

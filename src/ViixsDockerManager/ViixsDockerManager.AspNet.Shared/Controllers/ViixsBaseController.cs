@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace ViixsDockerManager.Shared.AspNet.Controllers;
+namespace ViixsDockerManager.AspNet.Shared.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

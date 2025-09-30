@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using ViixsDockerManager.Shared.Exceptions;
 using ViixsDockerManager.Shared.Models;
 
-namespace ViixsDockerManager.Shared.AspNet.Handlers;
+namespace ViixsDockerManager.AspNet.Shared.Handlers;
 
 public class ViixsDockerManagerExceptionHandler : IExceptionHandler
 {

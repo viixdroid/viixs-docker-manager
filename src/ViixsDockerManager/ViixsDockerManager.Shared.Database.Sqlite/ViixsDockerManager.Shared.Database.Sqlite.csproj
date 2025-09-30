@@ -16,9 +16,10 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.9" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
+      <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
     </ItemGroup>
 </Project>

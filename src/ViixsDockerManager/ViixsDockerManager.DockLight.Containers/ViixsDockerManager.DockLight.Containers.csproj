@@ -8,7 +8,7 @@
     </PropertyGroup>
    
     <ItemGroup>
-        <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.Shared.AspNet.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.AspNet.Shared.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.DockLight.Shared\ViixsDockerManager.DockLight.Shared.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
     </ItemGroup>

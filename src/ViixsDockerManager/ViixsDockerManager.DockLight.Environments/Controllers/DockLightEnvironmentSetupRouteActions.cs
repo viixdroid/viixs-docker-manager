@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ViixsDockerManager.DockLight.Environments.Models.Dtos;
 using ViixsDockerManager.DockLight.Environments.Models.Queries;
@@ -16,7 +15,7 @@ internal static class DockLightEnvironmentSetupRouteActions
         return builder;
     }
 
-    private static Task<InitialDockerEnvironment> GetDockLightProtocols([FromServices] IMediator mediator)
+    private static Task<InitialDockerEnvironment> GetDockLightProtocols(IMediator mediator)
     {
         var query = new GetPossibleDockerProtocolsQuery();
         return mediator.Send(query);

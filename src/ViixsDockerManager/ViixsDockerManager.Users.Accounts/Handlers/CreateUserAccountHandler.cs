@@ -40,7 +40,7 @@ internal class CreateUserAccountHandler(ISendUserAccountNotifications sendUserAc
             await userManager.AddToRoleAsync(user, AdministratorRole);
         }
 
-        if (!string.IsNullOrEmpty(command.Role))
+        if (string.IsNullOrEmpty(command.Role))
         {
             await userManager.AddToRoleAsync(user, command.Role);
         }

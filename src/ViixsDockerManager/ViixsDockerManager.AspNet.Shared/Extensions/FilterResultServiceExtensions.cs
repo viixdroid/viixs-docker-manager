@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using ViixsDockerManager.Shared.AspNet.Filters;
+using ViixsDockerManager.AspNet.Shared.Filters;
 
-namespace ViixsDockerManager.Shared.AspNet.Extensions;
+namespace ViixsDockerManager.AspNet.Shared.Extensions;
 
 public static class FilterResultServiceExtensions
 {
