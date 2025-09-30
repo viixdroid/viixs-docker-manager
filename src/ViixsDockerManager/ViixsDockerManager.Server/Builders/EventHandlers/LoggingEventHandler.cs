@@ -6,6 +6,8 @@ namespace ViixsDockerManager.Server.Builders.EventHandlers;
 
 public class LoggingEventHandler : WebAppStarterEventHandler
 {
+    private const string ApplicationName = "ViixsDockerManager";
+
     private static readonly Lazy<LoggingEventHandler> _loggingEventHandlerInstance = new Lazy<LoggingEventHandler>(() => new LoggingEventHandler());
 
     public static LoggingEventHandler Instance => _loggingEventHandlerInstance.Value;
@@ -15,7 +17,7 @@ public class LoggingEventHandler : WebAppStarterEventHandler
     {
     }
 
-    public override void AttachEventHandlers()
+    protected override void OnAttachEventHandlers()
     {
         WebAppStarter.Instance.OnInitializing += LogOnInitializing;
         WebAppStarter.Instance.OnInitialized += LogOnInitialized;
@@ -28,7 +30,7 @@ public class LoggingEventHandler : WebAppStarterEventHandler
     }
 
 
-    public override void DetachEventHandlers()
+    protected override void OnDetachEventHandlers()
     {
         WebAppStarter.Instance.OnInitializing -= LogOnInitializing;
         WebAppStarter.Instance.OnInitialized -= LogOnInitialized;
@@ -42,28 +44,23 @@ public class LoggingEventHandler : WebAppStarterEventHandler
     private void LogOnInitializing(object? sender, InitializingEventArgs initializingEventArgs)
     {
         _logger = Log.Logger.ForContext<WebAppStarter>();
-        _logger.Information("Starting ViixsDockerManager {Version}", Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion[..14]);
-        _logger.Information("Configuring WebAppStarter");
+        _logger.Information("Starting {ApplicationName} {Version}", ApplicationName, Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion[..14]);
+        _logger.Information("Configuring {ApplicationName} Builder", ApplicationName);
     }
 
-    private void LogOnInitialized(object? sender, InitializedEventArgs e)
-    {
-        _logger?.Information("WebAppStarter configured");
-    }
-
-    private void LogOnConfiguringServices(object? sender, ConfiguringServicesEventArgs e) => _logger?.Information("Configuring services");
-    private void LogOnServicesConfigured(object? sender, ServicesConfiguredEventArgs e) => _logger?.Information("Services configured");
-    private void LogOnConfiguringApplication(object? sender, ConfiguringApplicationEventArgs e) => _logger?.Information("Configuring application");
-    private void LogOnApplicationConfigured(object? sender, ApplicationConfiguredEventArgs e) => _logger?.Information("Application configured");
+    private void LogOnInitialized(object? sender, InitializedEventArgs e) => _logger?.Information("{ApplicationName} Builder configured", ApplicationName);
+    private void LogOnConfiguringServices(object? sender, ConfiguringServicesEventArgs e) => _logger?.Information("Configuring {ApplicationName} services", ApplicationName);
+    private void LogOnServicesConfigured(object? sender, ServicesConfiguredEventArgs e) => _logger?.Information("{ApplicationName} Services configured", ApplicationName);
+    private void LogOnConfiguringApplication(object? sender, ConfiguringApplicationEventArgs e) => _logger?.Information("Configuring {ApplicationName}", ApplicationName);
+    private void LogOnApplicationConfigured(object? sender, ApplicationConfiguredEventArgs e) => _logger?.Information("{ApplicationName} configured", ApplicationName);
     private void LogOnApplicationStarting(object? sender, StartingApplicationEventArgs e)
     {
-        _logger?.Information("Application Initialization Done.");
-        _logger?.Information("Running ViixsDcokerManager");
+        _logger?.Information("Initialization Done.");
+        _logger?.Information("Running {ApplicationName}", ApplicationName);
     }
 
     private void LogOnApplicationStarted(object? sender, ApplicationStartedEventArgs e)
     {
-        _logger?.Information("ViixsDockerManager is Started!");
-        DetachEventHandlers();
+        _logger?.Information("{ApplicationName} is Started!", ApplicationName);
     }
 }

@@ -16,13 +16,13 @@ public class PerformanceMeasureEventHandler : WebAppStarterEventHandler
     {
 
     }
-    public override void AttachEventHandlers()
+    protected override void OnAttachEventHandlers()
     {
         WebAppStarter.Instance.OnInitializing += StartMeasureOnInitializing;
         WebAppStarter.Instance.OnApplicationStarted += StopMeasureOnApplicationStarted;
     }
 
-    public override void DetachEventHandlers()
+    protected override void OnDetachEventHandlers()
     {
         WebAppStarter.Instance.OnInitializing -= StartMeasureOnInitializing;
         WebAppStarter.Instance.OnApplicationStarted -= StopMeasureOnApplicationStarted;
@@ -40,6 +40,5 @@ public class PerformanceMeasureEventHandler : WebAppStarterEventHandler
             var logger = Log.Logger.ForContext<WebAppStarter>();
             logger.Information("Application started in {ElaspedTime}", _stopwatch.Elapsed.Humanize(3));
         }
-        DetachEventHandlers();
     }
 }
