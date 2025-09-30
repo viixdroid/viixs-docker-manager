@@ -10,6 +10,7 @@ var webApp = WebAppStarter.Instance
     .ConfigureWebAppBuilder()
     .BuildWebApp()
     .RunMigrations()
+    .ConfigureRoutes()
     .ConfigureApplication();
 
 await webApp.RunApp(default);
