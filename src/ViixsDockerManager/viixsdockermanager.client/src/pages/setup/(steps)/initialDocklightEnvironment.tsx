@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import type { CreateDockLightEnvironmentCommand, InitialDockLightEnvironment } from '../(models)/initialdocklightenvironment.ts'
 import type { ApiObject } from '../../../models/api-object.ts'
-import { Button, Stack, styled, TextField, Typography } from '@mui/material'
+import { Alert, Button, Stack, styled, TextField, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
@@ -11,6 +11,10 @@ const FormBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(4),
+}))
+
+const StyledAlert = styled(Alert)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
 }))
 
 const AddInitialDockLightStep: FC = () => {
@@ -52,17 +56,15 @@ const AddInitialDockLightStep: FC = () => {
     <>
       <FormBox>
         <Stack spacing={2}>
-          <Typography variant="body1">
-
-            You are running on
+          <StyledAlert severity="info">
+            Viixs Docker Manager is running on
             {' '}
 
             <Box component="span" sx={{ fontWeight: 'bold' }}>
               {initialEnvironment?.environment}
             </Box>
             {initialEnvironment?.isRunningInDocker ? ' in docker.' : '.'}
-          </Typography>
-
+          </StyledAlert>
           <TextField
             fullWidth
             label="Environment Name"

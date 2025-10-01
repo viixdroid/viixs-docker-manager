@@ -1,13 +1,9 @@
 import type { FC } from 'react'
-import { Brightness4, Brightness7, CheckCircle, Settings, Verified } from '@mui/icons-material'
-import { Alert, Button, Chip, Container, Grid, IconButton, Paper, Stack, Step, StepLabel, Stepper, styled, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Button, Grid, Step, StepLabel, Stepper, styled, Typography, useMediaQuery, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useState } from 'react'
-import SetupCard from '../../components/setup/SetupCard.tsx'
-import StepperCard from '../../components/setup/StepperCard.tsx'
 import ThemeSwitcherButton from '../../components/themes/ThemeSwitcherButton.tsx'
-import InitialDocklightEnvironment from './(steps)/initialDocklightEnvironment.tsx'
-import RegisterNewUserStep from './(steps)/registerNewUser.tsx'
+import { SetupSteps } from './(models)/setup.tsx'
 
 const RootContainer = styled(Box)({
   height: '100vh',
@@ -70,12 +66,6 @@ const ContentBox = styled(Box)({
   zIndex: 1,
 })
 
-const OverlineText = styled(Typography)({
-  opacity: 0.8,
-  letterSpacing: 2,
-  fontSize: '0.875rem',
-})
-
 const HeroTitle = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing(2),
   fontWeight: 700,
@@ -84,16 +74,6 @@ const HeroTitle = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     fontSize: '1.25rem',
     marginTop: 0,
-  },
-}))
-
-const HeroDescription = styled(Typography)(({ theme }) => ({
-  marginTop: theme.spacing(3),
-  opacity: 0.9,
-  lineHeight: 1.7,
-  maxWidth: 450,
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
   },
 }))
 
@@ -227,10 +207,6 @@ const FormContentWrapper = styled(Box)({
   flex: 1,
 })
 
-const StyledAlert = styled(Alert)(({ theme }) => ({
-  marginBottom: theme.spacing(3),
-}))
-
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-end',
@@ -240,11 +216,11 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   borderTop: `1px solid ${theme.palette.divider}`,
 }))
 
-const BackButton = styled(Button)<{ $isFirstStep: boolean }>(({ $isFirstStep }) => ({
+const BackButton = styled(Button)<{ isFirstStep: boolean }>(({ isFirstStep }) => ({
   paddingLeft: 32,
   paddingRight: 32,
   minWidth: 120,
-  visibility: $isFirstStep ? 'hidden' : 'visible',
+  visibility: isFirstStep ? 'hidden' : 'visible',
 }))
 
 const NextButton = styled(Button)({
@@ -260,36 +236,29 @@ const MobileProgressText = styled(Typography)(() => ({
   letterSpacing: 0.5,
 }))
 
-const steps = ['Create user account', 'Setup initial docker environment', 'Finish']
-
 const Setup: FC = () => {
   const theme = useTheme()
   const [activeStep, setActiveStep] = useState<number>(0)
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
-  const isLastStep = () => activeStep === steps.length - 1
+  const isLastStep = () => activeStep === SetupSteps.length - 1
 
   const handleGoToPreviousStep = () => setActiveStep(Math.max(activeStep - 1, 0))
 
-  const handleGoToNextStep = () => setActiveStep(Math.min(activeStep + 1, steps.length - 1))
+  const handleGoToNextStep = () => setActiveStep(Math.min(activeStep + 1, SetupSteps.length - 1))
 
   return (
     <RootContainer>
       <Grid container sx={{ flex: 1, height: '100%', flexDirection: { xs: 'column', md: 'row' } }}>
         <LeftColumn size={{ xs: 12, md: 3 }}>
-          {/* <ThemeToggleButton /> */}
           <ThemeToggleButton>
             <ThemeSwitcherButton />
           </ThemeToggleButton>
 
           <ContentBox sx={{ display: { xs: 'none', md: 'block' } }}>
-            <OverlineText variant="overline">Getting Started</OverlineText>
             <HeroTitle variant="h3" as="h1">
               Viix's Docker Manager Setup
             </HeroTitle>
-            <HeroDescription variant="body1">
-              Complete the setup to get started with Viix's Docker Manager.
-            </HeroDescription>
           </ContentBox>
 
           <ContentBox sx={{ display: { xs: 'block', md: 'none' } }}>
@@ -308,13 +277,13 @@ const Setup: FC = () => {
                 {' '}
                 of
                 {' '}
-                {steps.length}
+                {SetupSteps.length}
               </MobileProgressText>
             )}
             <StyledStepper activeStep={activeStep} orientation={isMobile ? 'horizontal' : 'vertical'}>
-              {steps.map(step => (
-                <Step key={step}>
-                  <StepLabel>{step}</StepLabel>
+              {SetupSteps.map(step => (
+                <Step key={step.step}>
+                  <StepLabel>{step.title}</StepLabel>
                 </Step>
               ))}
             </StyledStepper>
@@ -331,31 +300,21 @@ const Setup: FC = () => {
               <TitleSection>
                 <TitleRow>
                   <StepTitle variant="h4">
-                    {steps[activeStep]}
+                    {SetupSteps.find(ss => ss.step === activeStep)?.title}
                   </StepTitle>
                 </TitleRow>
                 <Typography variant="body1" color="text.primary">
-                  {activeStep === 0 && 'Create your user account to get started with Viixs Docker Manager.'}
-                  {activeStep === 1 && 'Setup your initial Docker environment to start managing your containers.'}
-                  {activeStep === 2 && 'You are all set! Click finish to complete the setup and start using Viixs Docker Manager.'}
+                  {SetupSteps.find(ss => ss.step === activeStep)?.description}
                 </Typography>
               </TitleSection>
 
-              {activeStep === 0 && (
-                <RegisterNewUserStep />
-              )}
-
-              {activeStep === 1 && (
-                <>
-                  <StyledAlert severity="info">
-                    The initial environment is required to connect to your local Docker instance.
-                    <br />
-                    You can add more environments later.
-                  </StyledAlert>
-                  <InitialDocklightEnvironment />
-                </>
-              )}
-
+              {SetupSteps.find(ss => ss.step === activeStep) === undefined
+                ? (
+                    null
+                  )
+                : (
+                    SetupSteps.find(ss => ss.step === activeStep)?.component
+                  )}
             </FormContentWrapper>
 
             <ButtonContainer>
@@ -365,7 +324,7 @@ const Setup: FC = () => {
                 disabled={activeStep === 0}
                 onClick={handleGoToPreviousStep}
                 size="large"
-                $isFirstStep={activeStep === 0}
+                isFirstStep={activeStep === 0}
               >
                 Back
               </BackButton>
