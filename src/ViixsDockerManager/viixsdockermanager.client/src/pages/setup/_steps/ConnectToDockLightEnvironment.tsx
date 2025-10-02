@@ -1,6 +1,6 @@
 import type { FC } from 'react'
-import type { CreateDockLightEnvironmentCommand, InitialDockLightEnvironment } from '../(models)/initialdocklightenvironment.ts'
 import type { ApiObject } from '../../../models/api-object.ts'
+import type { CreateDockLightEnvironmentCommand, InitialDockLightEnvironment } from '../_models/initialdocklightenvironment.ts'
 import { Alert, Button, Stack, styled, TextField, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useEffect, useState } from 'react'
@@ -17,7 +17,7 @@ const StyledAlert = styled(Alert)(({ theme }) => ({
   marginBottom: theme.spacing(3),
 }))
 
-const AddInitialDockLightStep: FC = () => {
+const ConnectToDockLightEnvironmentStep: FC = () => {
   const navigate = useNavigate()
 
   const [initialEnvironment, setInitialEnvironment] = useState<InitialDockLightEnvironment>()
@@ -94,4 +94,4 @@ const AddInitialDockLightStep: FC = () => {
   )
 }
 
-export default AddInitialDockLightStep
+export default ConnectToDockLightEnvironmentStep

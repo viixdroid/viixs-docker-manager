@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react'
-import AddInitialDockLightStep from '../(steps)/initialDocklightEnvironment'
-import RegisterNewUserStep from '../(steps)/registerNewUser'
+import ConnectToDockLightEnvironmentStep from '../_steps/ConnectToDockLightEnvironment'
+import RegisterNewUserStep from '../_steps/RegisterNewAccount'
 
 export interface SetupStep {
-  step: number // on which step this step must show.
+  stepId: number // order of the step
+  stepName: string
   title: string
   description: string
   component?: ReactNode
@@ -11,24 +12,28 @@ export interface SetupStep {
 
 export const SetupSteps: SetupStep[] = [
   {
-    step: 0,
+    stepId: 0,
+    stepName: 'Welcome',
     title: 'Welcome!',
     description: 'In the following steps you will setup Viixs Docker Manager',
   },
   {
-    step: 1,
+    stepId: 1,
+    stepName: 'RegisterNewAccount',
     title: 'Create account',
     description: 'Create your user account to get started with Viixs Docker Manager.',
     component: <RegisterNewUserStep />,
   },
   {
-    step: 2,
+    stepId: 2,
+    stepName: 'ConnectToDockLightEnvironment',
     title: 'Connect to Docker',
     description: 'Connect to your local Docker to start managing your containers.',
-    component: <AddInitialDockLightStep />,
+    component: <ConnectToDockLightEnvironmentStep />,
   },
   {
-    step: 3,
+    stepId: 3,
+    stepName: 'Finish',
     title: 'Finished!',
     description: 'You are all set! Click finish to complete this setup and start using Viixs Docker Manager.',
   },

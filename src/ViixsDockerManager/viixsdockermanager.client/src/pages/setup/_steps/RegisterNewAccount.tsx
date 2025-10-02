@@ -1,8 +1,9 @@
 import type { FC } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, styled, TextField, Typography } from '@mui/material'
-import { useState } from 'react'
-import { CreateUserAccountCommand } from '../(models)/createuserAccount'
+import { useEffect, useState } from 'react'
+import { useOutletContext } from 'react-router'
+import { CreateUserAccountCommand } from '../_models/createuserAccount'
 
 const FormBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -12,10 +13,16 @@ const FormBox = styled(Box)(({ theme }) => ({
 
 // TODO: check if there is already a user
 const RegisterNewUserStep: FC = () => {
+  const { registerOnBeforeNavigate } = useOutletContext<{
+    registerOnBeforeNavigate: (callback: () => Promise<boolean>) => void
+  }>()
+
   const [emailAddress, setEmailAddress] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
+
+  const [disableInput, setDisableInput] = useState<boolean>(false)
 
   const handleClickShowPassword = () => setShowPassword(show => !show)
 
@@ -27,23 +34,47 @@ const RegisterNewUserStep: FC = () => {
     event.preventDefault()
   }
 
-  const registerNewUser = async () => {
+  const registerNewUser = async (): Promise<boolean> => {
+    if (disableInput) {
+      // continue to next step if we already registered.
+      return true
+    }
+
+    setDisableInput(true)
     const command = new CreateUserAccountCommand(emailAddress, password)
 
     try {
       await command.execute()
-      // Notify next step after succes
+      return true
     }
     catch (err) {
       console.error(err)
+      setDisableInput(false)
+      return false
     }
   }
+  useEffect(() => {
+    registerOnBeforeNavigate(registerNewUser)
+
+    // Cleanup function to remove the callback when navigating away
+    return () => {
+      registerOnBeforeNavigate(() => Promise.resolve(true)) // Reset to a default no-op callback
+    }
+  }, [])
 
   return (
     <>
       <FormBox>
         <Stack spacing={2}>
-          <TextField fullWidth label="Email Address" type="email" variant="outlined" required />
+          <TextField
+            fullWidth
+            label="Email Address"
+            type="email"
+            variant="outlined"
+            required
+            disabled={disableInput}
+            onChange={e => setEmailAddress(e.target.value)}
+          />
           <FormControl variant="outlined" fullWidth required>
             <InputLabel htmlFor="outlined-adornment-password" required>
               Password
@@ -68,6 +99,7 @@ const RegisterNewUserStep: FC = () => {
               )}
               label="Password"
               required
+              disabled={disableInput}
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
