@@ -1,5 +1,5 @@
 import type { DockLightEnvironment } from '../models/dock-light-environment'
-import type { CreateDockLightEnvironmentCommand } from '../pages/setup/(models)/initialdocklightenvironment'
+import type { CreateDockLightEnvironmentCommand } from '../pages/setup/_models/initialdocklightenvironment'
 import backendApi from '../clients/BackendApiClient'
 
 const Url = 'docklightenvironments'
