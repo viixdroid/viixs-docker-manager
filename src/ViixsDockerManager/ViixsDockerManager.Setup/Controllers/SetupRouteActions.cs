@@ -1,0 +1,72 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using ViixsDockerManager.DockLight.Environments.Models.Commands;
+using ViixsDockerManager.Mediator;
+using ViixsDockerManager.Setup.Models.Commands;
+using ViixsDockerManager.Setup.Models.Dtos;
+using ViixsDockerManager.Setup.Models.Queries;
+using ViixsDockerManager.Shared.Models.Commands.Users;
+using ViixsDockerManager.Shared.Models.Dtos.DockLightEnvironments;
+using ViixsDockerManager.Shared.Models.Queries.DockLightEnvironments;
+
+namespace ViixsDockerManager.Setup.Controllers;
+
+internal static class SetupRouteActions
+{
+    public static RouteGroupBuilder MapSetupRouteActions(this RouteGroupBuilder builder)
+    {
+        builder.MapGet("/currentStep", GetCurrentSetupStep);
+        builder.MapPost("/currentStep", SetCurrentSetupStep);
+
+        builder.MapGet("/protocols", GetDockLightProtocols);
+
+        builder.MapPost("/start", StartSetup);
+        builder.MapPost("/createuser", CreateUserAccount);
+        builder.MapPost("/createdocklightenvironment", CreateDockLightEnvironment);
+        builder.MapPost("/finish", FinishSetup);
+        return builder;
+    }
+
+
+    private static Task SetCurrentSetupStep([FromBody] SetCurrentSetupStepCommand setCurrentSetupStepCommand, [FromServices] IMediator mediator)
+    {
+        return mediator.Send(setCurrentSetupStepCommand);
+    }
+
+    private static Task<SetupStep> GetCurrentSetupStep([FromServices] IMediator mediator)
+    {
+        var query = new GetCurrentSetupStepQuery();
+        return mediator.Send(query);
+    }
+
+    private static Task<InitialDockerEnvironment> GetDockLightProtocols([FromServices] IMediator mediator)
+    {
+        var query = new GetPossibleDockerProtocolsQuery();
+        return mediator.Send(query);
+    }
+
+    private static Task StartSetup([FromBody] SetupCommand<StartSetupCommand> startSetupCommand, [FromServices] IMediator mediator)
+    {
+        _ = mediator.Send(startSetupCommand);//sets current step to "Welcome"
+        return mediator.Send(startSetupCommand.InternalCommand);
+    }
+
+    private static Task CreateUserAccount([FromBody] SetupCommand<CreateUserAccountCommand> createUserAccountCommand, [FromServices] IMediator mediator)
+    {
+        _ = mediator.Send(createUserAccountCommand);//sets curent step to CreateNewUserAccount
+        return mediator.Send(createUserAccountCommand.InternalCommand);
+    }
+
+    private static Task CreateDockLightEnvironment([FromBody] SetupCommand<CreateDockLightEnvironmentCommand> createDockLightEnvironmentCommand, [FromServices] IMediator mediator)
+    {
+        _ = mediator.Send(createDockLightEnvironmentCommand);//sets current step to "ConnectToDocker"
+        return mediator.Send(createDockLightEnvironmentCommand.InternalCommand);
+    }
+
+    private static Task FinishSetup([FromBody] SetupCommand<FinishSetupCommand> finishSetupCommand, [FromServices] IMediator mediator)
+    {
+        _ = mediator.Send(finishSetupCommand);//Sets current step to finished and sets setup to finished
+        return mediator.Send(finishSetupCommand.InternalCommand);
+    }
+}
