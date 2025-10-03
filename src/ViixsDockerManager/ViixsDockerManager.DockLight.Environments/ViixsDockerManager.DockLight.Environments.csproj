@@ -11,6 +11,7 @@
       <ProjectReference Include="..\ViixsDockerManager.DockLight.Shared\ViixsDockerManager.DockLight.Shared.csproj" />
       <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
       <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
+      <ProjectReference Include="..\ViixsDockerManager.Shared.Models\ViixsDockerManager.Shared.Models.csproj" />
     </ItemGroup>
 
 </Project>

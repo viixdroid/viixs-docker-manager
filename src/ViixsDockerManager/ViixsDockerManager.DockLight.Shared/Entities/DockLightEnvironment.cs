@@ -1,4 +1,6 @@
-﻿using ViixsDockerManager.Shared.Database.Entities;
+﻿using ViixsDockerManager.DockLight.Environments.Models.Commands;
+using ViixsDockerManager.Shared.Database.Entities;
+using ViixsDockerManager.Shared.Helpers;
 
 namespace ViixsDockerManager.DockLight.Shared.Entities;
 
@@ -22,5 +24,15 @@ public class DockLightEnvironment : BaseEntity
     /// for external connections, this can be an ip address.
     /// </summary>
     public required string ApiLocation { get; set; }
+
+    public static implicit operator DockLightEnvironment(CreateDockLightEnvironmentCommand command)
+    {
+        command = Guard.ValueIsNotNull(command, nameof(command));
+        return new DockLightEnvironment()
+        {
+            Name = command.Name,
+            ApiLocation = command.ApiLocation
+        };
+    }
 
 }

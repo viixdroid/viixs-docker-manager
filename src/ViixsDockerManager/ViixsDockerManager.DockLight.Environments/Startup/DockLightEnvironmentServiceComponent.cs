@@ -10,6 +10,7 @@ using ViixsDockerManager.Mediator.Extensions;
 using ViixsDockerManager.Shared.Database.Extensions;
 using ViixsDockerManager.Shared.Database.Models;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
+using ViixsDockerManager.Shared.Models.Queries.DockLightEnvironments;
 
 namespace ViixsDockerManager.DockLight.Environments.Startup;
 

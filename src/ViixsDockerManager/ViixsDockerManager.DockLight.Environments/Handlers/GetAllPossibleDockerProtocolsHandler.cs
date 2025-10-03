@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ViixsDockerManager.DockLight.Environments.Factories;
 using ViixsDockerManager.DockLight.Environments.Helpers;
-using ViixsDockerManager.DockLight.Environments.Models.Dtos;
-using ViixsDockerManager.DockLight.Environments.Models.Queries;
 using ViixsDockerManager.Mediator.Queries;
+using ViixsDockerManager.Shared.Models.Dtos.DockLightEnvironments;
+using ViixsDockerManager.Shared.Models.Queries.DockLightEnvironments;
 using static ViixsDockerManager.DockLight.Shared.Constants.DockLightConstants;
 
 

@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using ViixsDockerManager.DockLight.Environments.Exceptions;
-using ViixsDockerManager.DockLight.Environments.Models.Dtos;
-
+using ViixsDockerManager.Shared.Models.Dtos.DockLightEnvironments;
 using static ViixsDockerManager.DockLight.Environments.Constants.DockLightEnvironmentConstants.Protocol;
 
 namespace ViixsDockerManager.DockLight.Environments.Factories;
@@ -26,5 +25,6 @@ internal static class DockerProtocolFactory
         return dockerProtocol;
     }
 
+    public static IEnumerable<DockerProtocol> GetAllDockerProtocols() => _dockerProtocolCache.Values;
 
 }
