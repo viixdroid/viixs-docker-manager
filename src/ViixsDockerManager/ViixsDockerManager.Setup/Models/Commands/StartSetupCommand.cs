@@ -3,4 +3,4 @@ using ViixsDockerManager.Setup.Models.Dtos;
 
 namespace ViixsDockerManager.Setup.Models.Commands;
 
-internal record StartSetupCommand(SetupStep currentSetupStep) : ICommand;
+internal record StartSetupCommand(string ConnectionId, Guid? SetupId = null) : ICommand;

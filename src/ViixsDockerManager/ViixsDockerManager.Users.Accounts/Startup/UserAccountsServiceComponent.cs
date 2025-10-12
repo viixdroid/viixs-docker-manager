@@ -5,7 +5,7 @@ using ViixsDockerManager.Shared.AspNet.Startup;
 using ViixsDockerManager.Shared.Database.Models;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
-using ViixsDockerManager.Users.Accounts.Commands;
+using ViixsDockerManager.Shared.Models.Commands.Users;
 using ViixsDockerManager.Users.Accounts.DbContexts;
 using ViixsDockerManager.Users.Accounts.Handlers;
 using ViixsDockerManager.Users.Accounts.Models;

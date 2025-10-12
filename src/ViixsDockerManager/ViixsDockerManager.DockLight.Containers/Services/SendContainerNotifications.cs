@@ -15,7 +15,7 @@ internal class SendContainerNotifications(IHubContext<DockLightInformationHub, I
 
     public Task SendContainerStopped(BaseContainerActionCommand containerActionCommand)
     {
-        var environmentId = containerActionCommand.EnvironmentId.ToString();
+        var environmentId = containerActionCommand.EnvironmentId.ToString();        
         return dockLightInformationContext.Clients.Group(environmentId).OnContainerStopped(containerActionCommand.ContainerId, containerActionCommand.ContainerName);
     }
 

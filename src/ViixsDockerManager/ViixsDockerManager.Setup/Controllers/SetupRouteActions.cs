@@ -16,6 +16,8 @@ internal static class SetupRouteActions
 {
     public static RouteGroupBuilder MapSetupRouteActions(this RouteGroupBuilder builder)
     {
+        builder.MapGet("/issetupdone", GetIsSetupDone);
+
         builder.MapGet("/currentStep", GetCurrentSetupStep);
         builder.MapPost("/currentStep", SetCurrentSetupStep);
 
@@ -28,6 +30,11 @@ internal static class SetupRouteActions
         return builder;
     }
 
+    private static Task<IsSetupDone> GetIsSetupDone([FromServices] IMediator mediator)
+    {
+        var query = new IsSetupDoneQuery();
+        return mediator.Send(query);
+    }
 
     private static Task SetCurrentSetupStep([FromBody] SetCurrentSetupStepCommand setCurrentSetupStepCommand, [FromServices] IMediator mediator)
     {
@@ -46,10 +53,10 @@ internal static class SetupRouteActions
         return mediator.Send(query);
     }
 
-    private static Task StartSetup([FromBody] SetupCommand<StartSetupCommand> startSetupCommand, [FromServices] IMediator mediator)
+    private static Task StartSetup([FromBody] StartSetupCommand startSetupCommand, [FromServices] IMediator mediator)
     {
-        _ = mediator.Send(startSetupCommand);//sets current step to "Welcome"
-        return mediator.Send(startSetupCommand.InternalCommand);
+        //_ = mediator.Send(startSetupCommand);//sets current step to "Welcome"
+        return mediator.Send(startSetupCommand);
     }
 
     private static Task CreateUserAccount([FromBody] SetupCommand<CreateUserAccountCommand> createUserAccountCommand, [FromServices] IMediator mediator)

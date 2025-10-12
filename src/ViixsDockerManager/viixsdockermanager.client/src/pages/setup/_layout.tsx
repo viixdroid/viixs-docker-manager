@@ -1,11 +1,13 @@
 import type { FC } from 'react'
+import type { WebSocketClient } from '../../clients/WebSocketClient'
 import { Box, Grid, styled, useMediaQuery, useTheme } from '@mui/material'
 import { use, useEffect, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router'
+import { WebSocketClientManager } from '../../clients/managers/WebSocketClientManager'
 import SetupContent from './_components/(content)/SetupContent'
 import NavigationButtons from './_components/(navigation)/NavigationButtons'
 import SideBar from './_components/(sidebar)/SideBar'
-import { SetupSteps } from './_models/setup'
+import { SetupSteps, StartSetupCommand } from './_models/setup'
 
 const RootContainer = styled(Box)({
   height: '100vh',
@@ -49,11 +51,53 @@ const SetupLayout: FC = () => {
 
   const [isNextStepLoading, setIsNextStepLoading] = useState<boolean>(false)
 
+  const [webSocketClientManager] = useState<WebSocketClientManager>(new WebSocketClientManager())
+  const [webSocketClient, setWebSocketClient] = useState<WebSocketClient>()
+  const [setupId, setSetupId] = useState<string>()
+
   const isLastStep = () => currentStepId === SetupSteps[SetupSteps.length - 1].stepId
   // const theme = useTheme()
   // const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const [onBeforeNavigateCallback, setOnBeforeNavigateCallback] = useState<(() => Promise<boolean>) | null>(null)
+
+  useEffect(() => {
+    const createWebSocketClient = async () => {
+      const webSocketClient = webSocketClientManager.getClient('setup')
+      await webSocketClient.start()
+        .then(() => {
+          setWebSocketClient(webSocketClient)
+        })
+      // .then(() => {
+    }
+
+    createWebSocketClient()
+    // })
+  }, [currentStepId])
+
+  useEffect(() => {
+
+  }, [])
+
+  useEffect(() => {
+    if (!webSocketClient || !webSocketClient.isConnected) {
+      console.log('not connected?')
+      return
+    }
+    const connectionId = webSocketClient.getConnectionId()
+    if (!connectionId) {
+      console.log(connectionId)
+      const command = new StartSetupCommand(connectionId!)
+      command.execute()
+    }
+  }, [webSocketClient])
+
+  useEffect(() => {
+    webSocketClient?.on<{ setupId: string, currentStep: string }>('OnSetupStarted', (setupStep) => {
+      console.error(`${setupStep.setupId} + ${setupStep.currentStep}`)
+      setSetupId(setupStep.setupId)
+    })
+  }, [webSocketClient])
 
   useEffect(() => {
     if (currentStepName === null) {
@@ -67,6 +111,13 @@ const SetupLayout: FC = () => {
     }
     setCurrentStepId(step.stepId)
   }, [currentStepName])
+
+  // const setCurrentStepName = (stepName: string) => {
+  //   setSearchParams({ step: 'Welcome' })
+  // }
+
+  const setSetupStep = (stepId: string) => {
+  }
 
   const navigateStep = (stepName: string) => {
     navigate(`/setup?step=${stepName}`)
@@ -116,7 +167,14 @@ const SetupLayout: FC = () => {
         <SideBar
           title="Viixs Docker Manager Setup"
           mobileTitle="Setup"
-          footerContent="v1.1.0"
+          footerContent={(
+            <>
+              v1.1.0
+              {' '}
+              <br />
+              {setupId}
+            </>
+          )}
           currentStep={currentStepId}
           setupSteps={SetupSteps}
         />

@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import type { ICommand } from '../../../models/command-model'
+import SetupActionService from '../../../services/SetupActionService'
 import ConnectToDockLightEnvironmentStep from '../_steps/ConnectToDockLightEnvironment'
 import RegisterNewUserStep from '../_steps/RegisterNewAccount'
 
@@ -38,3 +40,17 @@ export const SetupSteps: SetupStep[] = [
     description: 'You are all set! Click finish to complete this setup and start using Viixs Docker Manager.',
   },
 ]
+
+export class StartSetupCommand implements ICommand {
+  connectionId: string
+  setupId?: string
+
+  constructor(connectionId: string, setupId?: string | undefined) {
+    this.connectionId = connectionId
+    this.setupId = setupId
+  }
+
+  execute(): Promise<void> {
+    return SetupActionService.startSetup(this)
+  }
+}
