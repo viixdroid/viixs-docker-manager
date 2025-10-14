@@ -1,6 +1,6 @@
 ﻿using ViixsDockerManager.Mediator.Commands;
 
-namespace ViixsDockerManager.DockLight.Environments.Models.Commands;
+namespace ViixsDockerManager.Shared.Models.Commands.DockLightEnvironments;
 
 public record CreateDockLightEnvironmentCommand(string Name, string ApiLocation) : CommandBase
 {

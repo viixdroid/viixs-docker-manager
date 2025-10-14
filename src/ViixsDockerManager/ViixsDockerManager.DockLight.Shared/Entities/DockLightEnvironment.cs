@@ -1,6 +1,6 @@
-﻿using ViixsDockerManager.DockLight.Environments.Models.Commands;
-using ViixsDockerManager.Shared.Database.Entities;
+﻿using ViixsDockerManager.Shared.Database.Entities;
 using ViixsDockerManager.Shared.Helpers;
+using ViixsDockerManager.Shared.Models.Commands.DockLightEnvironments;
 
 namespace ViixsDockerManager.DockLight.Shared.Entities;
 
