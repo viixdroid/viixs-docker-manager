@@ -5,6 +5,7 @@ namespace ViixsDockerManager.Setup.Services.Interfaces;
 
 internal interface ISendSetupStateNotifications : IViixsBaseService
 {
+    Task SendNextSetupStepAsync(SetupStep setupStep);
     Task SendOnEnvironmentCreated(SetupStep setupStep, object validationInformation);
     Task SendOnSetupFinishedAsync(SetupStep setupStep);
     Task SendOnSetupStartedAsync(string connectionId, SetupStep setupStep);

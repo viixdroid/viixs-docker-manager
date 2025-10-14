@@ -7,6 +7,8 @@ using ViixsDockerManager.Setup.Services;
 using ViixsDockerManager.Setup.Services.Interfaces;
 using ViixsDockerManager.Shared.AspNet.Startup;
 using ViixsDockerManager.Shared.Extensions;
+using ViixsDockerManager.Shared.Models.Commands.DockLightEnvironments;
+using ViixsDockerManager.Shared.Models.Commands.Users;
 using ViixsDockerManager.Shared.WebSockets;
 using ViixsDockerManager.Shared.WebSockets.Interfaces;
 
@@ -23,5 +25,11 @@ public class SetupServicesComponent : ServiceComponent
     protected override void ConfigureCommandHandlers(IServiceCollection services)
     {
         services.RegisterCommandHandler<StartSetupHandler, StartSetupCommand>();
+
+        services.RegisterCommandHandler<CreateUserAccountHandler, CreateUserAccountCommand>();
+        services.RegisterCommandHandler<SetupHandler<CreateUserAccountCommand>, SetupCommand<CreateUserAccountCommand>>();
+
+        //services.RegisterCommandHandler<CreateDockLightEnvironmentHandler, CreateDockLightEnvironmentCommand>();
+        services.RegisterCommandHandler<SetupHandler<CreateDockLightEnvironmentCommand>, SetupCommand<CreateDockLightEnvironmentCommand>>();
     }
 }

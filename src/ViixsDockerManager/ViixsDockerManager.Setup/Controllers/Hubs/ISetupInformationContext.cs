@@ -4,6 +4,7 @@ namespace ViixsDockerManager.Setup.Controllers.Hubs;
 
 public interface ISetupInformationContext
 {
+    Task NextSetupStepAsync(SetupStep setupStep);
     Task OnSetupStarted(SetupStep setupStep);
     Task OnUserCreated(SetupStep setupStep);
     Task OnEnvironmentCreated(SetupStep setupStep);

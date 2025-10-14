@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using ViixsDockerManager.DockLight.Environments.Models.Commands;
 using ViixsDockerManager.Mediator;
 using ViixsDockerManager.Setup.Models.Commands;
 using ViixsDockerManager.Setup.Models.Dtos;
 using ViixsDockerManager.Setup.Models.Queries;
+using ViixsDockerManager.Shared.Models.Commands.DockLightEnvironments;
 using ViixsDockerManager.Shared.Models.Commands.Users;
 using ViixsDockerManager.Shared.Models.Dtos.DockLightEnvironments;
 using ViixsDockerManager.Shared.Models.Queries.DockLightEnvironments;
@@ -22,6 +22,8 @@ internal static class SetupRouteActions
         builder.MapPost("/currentStep", SetCurrentSetupStep);
 
         builder.MapGet("/protocols", GetDockLightProtocols);
+
+        builder.MapPost("/updateStep", UpdateStep);
 
         builder.MapPost("/start", StartSetup);
         builder.MapPost("/createuser", CreateUserAccount);
@@ -59,10 +61,15 @@ internal static class SetupRouteActions
         return mediator.Send(startSetupCommand);
     }
 
+    private static Task UpdateStep([FromBody] SetupCommand updateSetupStepCommand, [FromServices] IMediator mediator)
+    {
+        return mediator.Send(updateSetupStepCommand);
+    }
+
     private static Task CreateUserAccount([FromBody] SetupCommand<CreateUserAccountCommand> createUserAccountCommand, [FromServices] IMediator mediator)
     {
-        _ = mediator.Send(createUserAccountCommand);//sets curent step to CreateNewUserAccount
-        return mediator.Send(createUserAccountCommand.InternalCommand);
+        //_ = mediator.Send(createUserAccountCommand);//sets curent step to CreateNewUserAccount
+        return mediator.Send(createUserAccountCommand);
     }
 
     private static Task CreateDockLightEnvironment([FromBody] SetupCommand<CreateDockLightEnvironmentCommand> createDockLightEnvironmentCommand, [FromServices] IMediator mediator)

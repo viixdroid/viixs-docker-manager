@@ -64,5 +64,14 @@ internal class SendSetupStateNotifications(
         await client.OnSetupFinished(setupStep);
     }
 
+    public async Task SendNextSetupStepAsync(SetupStep setupStep)
+    {
+        var client = GetClient(setupStep.SetupId);
+        if (client is null)
+        {
+            return;
+        }
+        await client.NextSetupStepAsync(setupStep);
 
+    }
 }
