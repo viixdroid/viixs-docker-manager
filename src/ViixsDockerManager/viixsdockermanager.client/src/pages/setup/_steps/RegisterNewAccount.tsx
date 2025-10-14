@@ -1,4 +1,5 @@
 import type { FC } from 'react'
+import type { ICommand } from '../../../models/command-model'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, styled, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -13,8 +14,10 @@ const FormBox = styled(Box)(({ theme }) => ({
 
 // TODO: check if there is already a user
 const RegisterNewUserStep: FC = () => {
-  const { registerOnBeforeNavigate } = useOutletContext<{
+  const { registerOnBeforeNavigate, onNextStepCallback, isDisabled } = useOutletContext<{
+    isDisabled: boolean
     registerOnBeforeNavigate: (callback: () => Promise<boolean>) => void
+    onNextStepCallback: (callback: () => ICommand | undefined) => void
   }>()
 
   const [emailAddress, setEmailAddress] = useState<string>('')
@@ -32,6 +35,10 @@ const RegisterNewUserStep: FC = () => {
 
   const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
+  }
+
+  const createUserAccountCommand = (): ICommand => {
+    return new CreateUserAccountCommand(emailAddress, password)
   }
 
   const registerNewUser = async (): Promise<boolean> => {
@@ -55,123 +62,58 @@ const RegisterNewUserStep: FC = () => {
   }
   useEffect(() => {
     registerOnBeforeNavigate(registerNewUser)
+    onNextStepCallback(createUserAccountCommand)
 
     // Cleanup function to remove the callback when navigating away
     return () => {
       registerOnBeforeNavigate(() => Promise.resolve(true)) // Reset to a default no-op callback
+      onNextStepCallback(() => undefined)
     }
   }, [])
 
   return (
-    <>
-      <FormBox>
-        <Stack spacing={2}>
-          <TextField
-            fullWidth
-            label="Email Address"
-            type="email"
-            variant="outlined"
+    <FormBox>
+      <Stack spacing={2}>
+        <TextField
+          fullWidth
+          label="Email Address"
+          type="email"
+          variant="outlined"
+          required
+          disabled={isDisabled}
+          onChange={e => setEmailAddress(e.target.value)}
+        />
+        <FormControl variant="outlined" fullWidth required>
+          <InputLabel htmlFor="useraccount-password" required>
+            Password
+          </InputLabel>
+          <OutlinedInput
+            id="useraccount-password"
+            type={showPassword ? 'text' : 'password'}
+            endAdornment={(
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={
+                    showPassword ? 'hide the password' : 'display the password'
+                  }
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  onMouseUp={handleMouseUpPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            )}
+            label="Password"
             required
-            disabled={disableInput}
-            onChange={e => setEmailAddress(e.target.value)}
+            disabled={isDisabled}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
           />
-          <FormControl variant="outlined" fullWidth required>
-            <InputLabel htmlFor="outlined-adornment-password" required>
-              Password
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={(
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label={
-                      showPassword ? 'hide the password' : 'display the password'
-                    }
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    onMouseUp={handleMouseUpPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              )}
-              label="Password"
-              required
-              disabled={disableInput}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-          </FormControl>
-        </Stack>
-      </FormBox>
-      {/* <StyledAlert severity="info">Create your account to get started with our platform</StyledAlert> */}
-      {/* <Stack>
-        <Typography variant="body1">
-          To use Viixs docker manager, please create an account first.
-        </Typography>
-        <Stack spacing={1} direction="column" alignItems="start">
-          <Typography variant="body1" component="div" sx={{ textAlign: 'start' }}>
-            <Box component="span" sx={{ fontStyle: 'oblique' }}>
-              Email
-            </Box>
-          </Typography>
-
-          <TextField
-            id="emailAddress"
-            fullWidth
-            placeholder="Your email address you wish to login with"
-            variant="outlined"
-            type="email"
-            value={emailAddress}
-            onChange={e => setEmailAddress(e.target.value)}
-          />
-        </Stack>
-
-        <Stack spacing={1} direction="column" alignItems="start">
-          <Typography variant="body1" component="div" sx={{ textAlign: 'start' }}>
-            <Box component="span" sx={{ fontStyle: 'oblique' }}>
-              Password
-            </Box>
-          </Typography>
-
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={(
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label={
-                      showPassword ? 'hide the password' : 'display the password'
-                    }
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    onMouseUp={handleMouseUpPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              )}
-              label="Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-          </FormControl>
-        </Stack>
-
-        <Button
-          variant="contained"
-          onClick={registerNewUser}
-        >
-          Temporary save button
-        </Button>
-      </Stack> */}
-
-    </>
+        </FormControl>
+      </Stack>
+    </FormBox>
   )
 }
 

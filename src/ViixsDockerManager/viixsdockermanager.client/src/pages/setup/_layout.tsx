@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import type { WebSocketClient } from '../../clients/WebSocketClient'
+import type { ICommand } from '../../models/command-model'
 import { Box, Grid, styled, useMediaQuery, useTheme } from '@mui/material'
 import { use, useEffect, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router'
@@ -7,7 +8,7 @@ import { WebSocketClientManager } from '../../clients/managers/WebSocketClientMa
 import SetupContent from './_components/(content)/SetupContent'
 import NavigationButtons from './_components/(navigation)/NavigationButtons'
 import SideBar from './_components/(sidebar)/SideBar'
-import { SetupSteps, StartSetupCommand } from './_models/setup'
+import { SetupCommand, SetupCommand2, SetupSteps, StartSetupCommand } from './_models/setup'
 
 const RootContainer = styled(Box)({
   height: '100vh',
@@ -60,6 +61,7 @@ const SetupLayout: FC = () => {
   // const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const [onBeforeNavigateCallback, setOnBeforeNavigateCallback] = useState<(() => Promise<boolean>) | null>(null)
+  const [onNextStepCallback, setOnNextStepCallback] = useState<(() => ICommand | undefined) | null>(null)
 
   useEffect(() => {
     const createWebSocketClient = async () => {
@@ -110,7 +112,7 @@ const SetupLayout: FC = () => {
       return
     }
     setCurrentStepId(step.stepId)
-  }, [currentStepName])
+  }, [])
 
   // const setCurrentStepName = (stepName: string) => {
   //   setSearchParams({ step: 'Welcome' })
@@ -138,14 +140,23 @@ const SetupLayout: FC = () => {
     }
     setIsNextStepLoading(true)
     try {
-      if (onBeforeNavigateCallback) {
-        const canNavigate = await onBeforeNavigateCallback()
-        if (!canNavigate) {
-          setIsNextStepLoading(false)
-          return
+      if (onNextStepCallback) {
+        const stepCommand = onNextStepCallback()
+        if (stepCommand) {
+          const setupCommand = new SetupCommand(setupId, stepCommand)
+          await setupCommand.execute()
         }
       }
 
+      // if (onBeforeNavigateCallback) {
+      //   const canNavigate = await onBeforeNavigateCallback()
+      //   if (!canNavigate) {
+      //     setIsNextStepLoading(false)
+      //     return
+      //   }
+      // }
+
+      // Should be done after getting information from the websockets.
       const nextStepId = currentStepId + 1
       const nextStepName = SetupSteps.find(s => s.stepId === nextStepId)?.stepName
       if (isLastStep()) {
@@ -182,8 +193,10 @@ const SetupLayout: FC = () => {
           <SetupFormContainer>
             <Outlet
               context={{
+                isDisabled: isNextStepLoading,
                 registerOnBeforeNavigate: (callback: () => Promise<boolean>) =>
                   setOnBeforeNavigateCallback(() => callback),
+                onNextStepCallback: (callback: () => ICommand | undefined) => setOnNextStepCallback(() => callback),
               }}
             />
             <NavigationButtons

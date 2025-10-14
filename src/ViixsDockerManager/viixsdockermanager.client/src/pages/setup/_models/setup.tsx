@@ -54,3 +54,42 @@ export class StartSetupCommand implements ICommand {
     return SetupActionService.startSetup(this)
   }
 }
+
+export class SetupCommand2 implements ICommand {
+  setupId: string
+  internalCommand: ICommand
+
+  constructor(setupId: string, internalCommand: ICommand) {
+    this.setupId = setupId
+    this.internalCommand = internalCommand
+  }
+
+  execute(): Promise<void> {
+    return SetupActionService.executeStep2(this)
+  }
+}
+
+export class SetupCommand<TInternalCommand extends ICommand> implements ICommand {
+  setupId: string
+  internalCommand: TInternalCommand
+
+  constructor(setupId: string, internalCommand: TInternalCommand) {
+    this.internalCommand = internalCommand
+    this.setupId = setupId
+  }
+
+  execute(): Promise<void> {
+    return SetupActionService.executeStep(this)
+  }
+}
+
+export abstract class BaseSetupCommand<TInternalCommand extends ICommand> extends SetupCommand<TInternalCommand> {
+  abstract url: string
+  abstract executeInteral(command: BaseSetupCommand<TInternalCommand>): Promise<void>
+
+  public execute(): Promise<void> {
+    return this.executeInteral(this)
+  }
+}
+
+
