@@ -8,4 +8,4 @@ namespace ViixsDockerManager.Setup.Models.Commands;
 /// </summary>
 /// <param name="CurrentSetupStep">The setup step to set as the current step.</param>
 internal record SetCurrentSetupStepCommand(SetupStep CurrentSetupStep)
-    : ICommand;
+    : CommandBase;

@@ -3,4 +3,4 @@ using ViixsDockerManager.Setup.Models.Dtos;
 
 namespace ViixsDockerManager.Setup.Models.Commands;
 
-internal record FinishSetupCommand(SetupStep currentSetupStep) : ICommand;
+internal record FinishSetupCommand(SetupStep currentSetupStep) : CommandBase;
