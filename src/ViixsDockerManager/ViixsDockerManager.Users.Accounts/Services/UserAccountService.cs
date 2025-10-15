@@ -27,8 +27,11 @@ internal class UserAccountService(IUserStore<ViixsDockerManagerUser> userStore,
             throw new CouldNotCreateUserException(createResult.ToString());
         }
 
-        var role = Guard.ValueIsNotNullOrEmpty(createUserAccountCommand.Role, nameof(createUserAccountCommand.Role));
+        //temp? fix.
+        var role = string.IsNullOrEmpty(createUserAccountCommand.Role) ? "Administrator" : createUserAccountCommand.Role;
 
-        await userManager.AddToRoleAsync(user, role);
+        //var role = Guard.ValueIsNotNullOrEmpty(createUserAccountCommand.Role, nameof(createUserAccountCommand.Role));
+
+        await userManager.AddToRoleAsync(user, role );
     }
 }
