@@ -1,8 +1,8 @@
 import type { FC } from 'react'
-import type { ICommand } from '../../../models/command-model'
+import type { SetupStepOutletContext } from '../_models/setupHandler'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, styled, TextField, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Box, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Stack, styled, TextField } from '@mui/material'
+import { useEffect, useRef, useState } from 'react'
 import { useOutletContext } from 'react-router'
 import { CreateUserAccountCommand } from '../_models/createuserAccount'
 
@@ -14,18 +14,15 @@ const FormBox = styled(Box)(({ theme }) => ({
 
 // TODO: check if there is already a user
 const RegisterNewUserStep: FC = () => {
-  const { registerOnBeforeNavigate, onNextStepCallback, isDisabled } = useOutletContext<{
-    isDisabled: boolean
-    registerOnBeforeNavigate: (callback: () => Promise<boolean>) => void
-    onNextStepCallback: (callback: () => ICommand | undefined) => void
-  }>()
+  const { onNextStepCallback, isDisabled } = useOutletContext<SetupStepOutletContext<CreateUserAccountCommand>>()
 
   const [emailAddress, setEmailAddress] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
-  const [disableInput, setDisableInput] = useState<boolean>(false)
+  const emailAddressRef = useRef(emailAddress)
+  const passwordRef = useRef(password)
 
   const handleClickShowPassword = () => setShowPassword(show => !show)
 
@@ -37,36 +34,21 @@ const RegisterNewUserStep: FC = () => {
     event.preventDefault()
   }
 
-  const createUserAccountCommand = (): ICommand => {
-    return new CreateUserAccountCommand(emailAddress, password)
+  const createUserAccountCommand = (): CreateUserAccountCommand => {
+    return new CreateUserAccountCommand(emailAddressRef.current, passwordRef.current)
   }
 
-  const registerNewUser = async (): Promise<boolean> => {
-    if (disableInput) {
-      // continue to next step if we already registered.
-      return true
-    }
-
-    setDisableInput(true)
-    const command = new CreateUserAccountCommand(emailAddress, password)
-
-    try {
-      await command.execute()
-      return true
-    }
-    catch (err) {
-      console.error(err)
-      setDisableInput(false)
-      return false
-    }
-  }
   useEffect(() => {
-    registerOnBeforeNavigate(registerNewUser)
-    onNextStepCallback(createUserAccountCommand)
+    emailAddressRef.current = emailAddress
+    passwordRef.current = password
+  }, [emailAddress, password])
 
-    // Cleanup function to remove the callback when navigating away
+  useEffect(() => {
+  // Register a function once, on mount
+    onNextStepCallback(() => createUserAccountCommand())
+
     return () => {
-      registerOnBeforeNavigate(() => Promise.resolve(true)) // Reset to a default no-op callback
+    // Clean up when unmounting
       onNextStepCallback(() => undefined)
     }
   }, [])
@@ -81,6 +63,7 @@ const RegisterNewUserStep: FC = () => {
           variant="outlined"
           required
           disabled={isDisabled}
+          value={emailAddress}
           onChange={e => setEmailAddress(e.target.value)}
         />
         <FormControl variant="outlined" fullWidth required>

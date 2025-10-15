@@ -55,41 +55,53 @@ export class StartSetupCommand implements ICommand {
   }
 }
 
-export class SetupCommand2 implements ICommand {
-  setupId: string
-  internalCommand: ICommand
+// export class SetupCommand2 implements ICommand {
+//   setupId: string
+//   internalCommand: ICommand
 
-  constructor(setupId: string, internalCommand: ICommand) {
-    this.setupId = setupId
-    this.internalCommand = internalCommand
-  }
+//   constructor(setupId: string, internalCommand: ICommand) {
+//     this.setupId = setupId
+//     this.internalCommand = internalCommand
+//   }
 
-  execute(): Promise<void> {
-    return SetupActionService.executeStep2(this)
-  }
-}
+//   execute(): Promise<void> {
+//     return SetupActionService.executeStep2(this)
+//   }
+// }
 
-export class SetupCommand<TInternalCommand extends ICommand> implements ICommand {
-  setupId: string
-  internalCommand: TInternalCommand
+// export class SetupCommand<TInternalCommand> implements ICommand {
+//   setupId: string
+//   internalCommand: TInternalCommand
 
-  constructor(setupId: string, internalCommand: TInternalCommand) {
-    this.internalCommand = internalCommand
-    this.setupId = setupId
-  }
+//   constructor(setupId: string, internalCommand: TInternalCommand) {
+//     this.internalCommand = internalCommand
+//     this.setupId = setupId
+//   }
 
-  execute(): Promise<void> {
-    return SetupActionService.executeStep(this)
-  }
-}
+//   execute(): Promise<void> {
+//     return SetupActionService.executeStep(this)
+//   }
+// }
 
-export abstract class BaseSetupCommand<TInternalCommand extends ICommand> extends SetupCommand<TInternalCommand> {
-  abstract url: string
-  abstract executeInteral(command: BaseSetupCommand<TInternalCommand>): Promise<void>
+// export abstract class BaseSetupCommand<TInternalCommand> implements ICommand {
+//   command: SetupCommand<TInternalCommand>
 
-  public execute(): Promise<void> {
-    return this.executeInteral(this)
-  }
-}
+//   constructor(command: SetupCommand<TInternalCommand>) {
+//     this.command = command
+//   }
 
+//   protected abstract executeCommand(command: SetupCommand<TInternalCommand>): Promise<void>
 
+//   execute(): Promise<void> {
+//     return this.executeCommand(this.command)
+//   }
+// }
+
+// export abstract class BaseSetupCommandG<TInternalCommand extends ICommand> extends SetupCommand<TInternalCommand> {
+//   abstract url: string
+//   abstract executeInteral(command: BaseSetupCommand<TInternalCommand>): Promise<void>
+
+//   public execute(): Promise<void> {
+//     return this.executeInteral(this)
+//   }
+// }

@@ -1,20 +1,18 @@
-import type { ICommand } from '../../../models/command-model'
+import type { SetupStep } from './setupHandler'
 import SetupActionService from '../../../services/SetupActionService'
-import userAccountService from '../../../services/UserAccountService'
-import { BaseSetupCommand } from './setup'
+import { SetupStepHandler } from './setupHandler'
 
-export class CreateUserAccountCommand implements ICommand {
+export class CreateUserAccountCommand extends SetupStepHandler<CreateUserAccountCommand> {
   emailAddress: string
   password: string
-  role?: string
 
-  constructor(emailAddress: string, password: string, role: string = '') {
+  constructor(emailAddress: string, password: string) {
+    super()
     this.emailAddress = emailAddress
     this.password = password
-    this.role = role
   }
 
-  execute(): Promise<void> {
-    return SetupActionService.createUser(this)
+  protected executeStep(step: SetupStep<CreateUserAccountCommand>): Promise<void> {
+    return SetupActionService.createUser(step)
   }
 }

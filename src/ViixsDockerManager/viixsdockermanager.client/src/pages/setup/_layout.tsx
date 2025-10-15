@@ -1,14 +1,18 @@
 import type { FC } from 'react'
 import type { WebSocketClient } from '../../clients/WebSocketClient'
-import type { ICommand } from '../../models/command-model'
-import { Box, Grid, styled, useMediaQuery, useTheme } from '@mui/material'
-import { use, useEffect, useState } from 'react'
+import type { CreateUserAccountCommand } from './_models/createuserAccount'
+import type { SetupStepHandler, SetupStepOutletContext } from './_models/setupHandler'
+import { Box, Grid, styled } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router'
 import { WebSocketClientManager } from '../../clients/managers/WebSocketClientManager'
-import SetupContent from './_components/(content)/SetupContent'
 import NavigationButtons from './_components/(navigation)/NavigationButtons'
 import SideBar from './_components/(sidebar)/SideBar'
-import { SetupCommand, SetupCommand2, SetupSteps, StartSetupCommand } from './_models/setup'
+import { SetupStepFactory } from './_factories/setupStepFactory'
+import { SetupSteps, StartSetupCommand } from './_models/setup'
+
+type SetupStepCommands
+  = | CreateUserAccountCommand
 
 const RootContainer = styled(Box)({
   height: '100vh',
@@ -60,8 +64,12 @@ const SetupLayout: FC = () => {
   // const theme = useTheme()
   // const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
-  const [onBeforeNavigateCallback, setOnBeforeNavigateCallback] = useState<(() => Promise<boolean>) | null>(null)
-  const [onNextStepCallback, setOnNextStepCallback] = useState<(() => ICommand | undefined) | null>(null)
+  const [onNextStepCallback, setOnNextStepCallback] = useState<(() => SetupStepHandler<SetupStepCommands> | undefined) | null>(null)
+
+  const outletContext: SetupStepOutletContext<SetupStepCommands> = {
+    isDisabled: isNextStepLoading,
+    onNextStepCallback: callback => setOnNextStepCallback(() => callback),
+  }
 
   useEffect(() => {
     const createWebSocketClient = async () => {
@@ -83,12 +91,12 @@ const SetupLayout: FC = () => {
 
   useEffect(() => {
     if (!webSocketClient || !webSocketClient.isConnected) {
-      console.log('not connected?')
+      // console.log('not connected?')
       return
     }
     const connectionId = webSocketClient.getConnectionId()
     if (!connectionId) {
-      console.log(connectionId)
+      // console.log(connectionId)
       const command = new StartSetupCommand(connectionId!)
       command.execute()
     }
@@ -114,13 +122,6 @@ const SetupLayout: FC = () => {
     setCurrentStepId(step.stepId)
   }, [])
 
-  // const setCurrentStepName = (stepName: string) => {
-  //   setSearchParams({ step: 'Welcome' })
-  // }
-
-  const setSetupStep = (stepId: string) => {
-  }
-
   const navigateStep = (stepName: string) => {
     navigate(`/setup?step=${stepName}`)
   }
@@ -143,18 +144,10 @@ const SetupLayout: FC = () => {
       if (onNextStepCallback) {
         const stepCommand = onNextStepCallback()
         if (stepCommand) {
-          const setupCommand = new SetupCommand(setupId, stepCommand)
+          const setupCommand = SetupStepFactory.createSetupCommand(setupId!, 'CreateNewAccount', stepCommand) // TODO: Actually handle correct step name
           await setupCommand.execute()
         }
       }
-
-      // if (onBeforeNavigateCallback) {
-      //   const canNavigate = await onBeforeNavigateCallback()
-      //   if (!canNavigate) {
-      //     setIsNextStepLoading(false)
-      //     return
-      //   }
-      // }
 
       // Should be done after getting information from the websockets.
       const nextStepId = currentStepId + 1
@@ -191,14 +184,7 @@ const SetupLayout: FC = () => {
         />
         <SetupContentContainer flexGrow={1} size={{ xs: 12, md: 9 }}>
           <SetupFormContainer>
-            <Outlet
-              context={{
-                isDisabled: isNextStepLoading,
-                registerOnBeforeNavigate: (callback: () => Promise<boolean>) =>
-                  setOnBeforeNavigateCallback(() => callback),
-                onNextStepCallback: (callback: () => ICommand | undefined) => setOnNextStepCallback(() => callback),
-              }}
-            />
+            <Outlet context={outletContext} />
             <NavigationButtons
               isFirstStep={currentStepId === SetupSteps[0].stepId}
               isLastStep={isLastStep()}
