@@ -15,14 +15,12 @@ namespace ViixsDockerManager.Setup.Handlers.Commands;
 internal class CreateUserAccountHandler(
     ISharedUserAccountService sharedUserAccountService,
     ISendSetupStateNotifications sendSetupStateNotifications)
-    : ICommandHandler<SetupCommand<CreateUserAccountCommand>>
+    : ICommandHandler<CreateUserAccountCommand>
 {
-    public async Task Handle(SetupCommand<CreateUserAccountCommand> command, CancellationToken cancellationToken = default)
+    public async Task Handle(CreateUserAccountCommand command, CancellationToken cancellationToken = default)
     {
-
-
-
-        await sharedUserAccountService.CreateUserAccount(command.InternalCommand, cancellationToken);
-
+        //command.Role = "Administrator";
+        await sharedUserAccountService.CreateUserAccount(command, cancellationToken);
+        await sendSetupStateNotifications.SendOnUserCreatedAsync(null, null);
     }
 }
