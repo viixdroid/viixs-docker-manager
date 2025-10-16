@@ -1,5 +1,6 @@
 ﻿using ViixsDockerManager.DockLight.Environments.Startup;
 using ViixsDockerManager.Server.Startup.Builders;
+using ViixsDockerManager.Setup.Startup;
 using ViixsDockerManager.Shared.Database.Startup.Interfaces;
 using ViixsDockerManager.Users.Accounts.Startup;
 
@@ -9,7 +10,8 @@ internal class MigrationComponentCollection : BuilderCollection<IMigrationCompon
 {
     protected override IReadOnlyList<IMigrationComponent> GetComponents()
         => [
-            new DockLightEnvironmentMigrationComponent(),
-            new UserAccountsMigrationComponent()
-            ];
+                new DockLightEnvironmentMigrationComponent(),
+                new UserAccountsMigrationComponent(),
+                new SetupMigrationComponent()
+           ];
 }

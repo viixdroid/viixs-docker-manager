@@ -18,7 +18,7 @@ internal class ServicesComponentCollection(IConfiguration configuration)
             new DockLightEnvironmentServiceComponent(configuration),
             new DockLightContainerServiceComponent(),
             new UserAccountsServiceComponent(configuration),
-            new SetupServicesComponent(),
+            new SetupServicesComponent(configuration),
             new WebAppServiceComponent()
             ];
 }
