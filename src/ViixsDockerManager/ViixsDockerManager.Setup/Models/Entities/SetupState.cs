@@ -8,6 +8,7 @@ namespace ViixsDockerManager.Setup.Models.Entities;
 public class SetupState() : BaseEntity
 {
     public Guid SetupId { get; set; }
+    public string? LastCompletedStep { get; set; } 
     public required string CurrentStep { get; set; }
     public required DateTime LastUpdated { get; set; }
     public bool IsCompleted { get; set; }
