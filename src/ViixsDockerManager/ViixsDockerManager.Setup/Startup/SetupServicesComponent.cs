@@ -26,8 +26,8 @@ public class SetupServicesComponent : ServiceComponent
     {
         services.RegisterCommandHandler<StartSetupHandler, StartSetupCommand>();
 
-        services.RegisterCommandHandler<CreateUserAccountHandler, CreateUserAccountCommand>();
-        services.RegisterCommandHandler<SetupHandler<CreateUserAccountCommand>, SetupCommand<CreateUserAccountCommand>>();
+        services.RegisterCommandHandler<CreateUserAccountHandler, CreateFirstUserAccountCommand>();
+        services.RegisterCommandHandler<SetupHandler<CreateFirstUserAccountCommand>, SetupCommand<CreateFirstUserAccountCommand>>();
 
         //services.RegisterCommandHandler<CreateDockLightEnvironmentHandler, CreateDockLightEnvironmentCommand>();
         services.RegisterCommandHandler<SetupHandler<CreateDockLightEnvironmentCommand>, SetupCommand<CreateDockLightEnvironmentCommand>>();

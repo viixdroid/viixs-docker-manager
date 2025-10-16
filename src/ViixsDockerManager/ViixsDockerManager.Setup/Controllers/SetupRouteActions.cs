@@ -66,7 +66,7 @@ internal static class SetupRouteActions
         return mediator.Send(updateSetupStepCommand);
     }
 
-    private static Task CreateUserAccount([FromBody] SetupCommand<CreateUserAccountCommand> createUserAccountCommand, [FromServices] IMediator mediator)
+    private static Task CreateUserAccount([FromBody] SetupCommand<CreateFirstUserAccountCommand> createUserAccountCommand, [FromServices] IMediator mediator)
     {
         //_ = mediator.Send(createUserAccountCommand);//sets curent step to CreateNewUserAccount
         return mediator.Send(createUserAccountCommand);
