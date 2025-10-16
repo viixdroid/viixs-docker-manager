@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ViixsDockerManager.Mediator;
-using ViixsDockerManager.Shared.Models.Commands.Users;
+using ViixsDockerManager.Users.Accounts.Commands;
 
 namespace ViixsDockerManager.Users.Accounts.Controllers;
 

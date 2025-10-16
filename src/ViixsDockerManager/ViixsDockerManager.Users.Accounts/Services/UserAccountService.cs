@@ -12,7 +12,7 @@ internal class UserAccountService(IUserStore<ViixsDockerManagerUser> userStore,
     )
     : IUserAccountService, ISharedUserAccountService
 {
-    public async Task CreateUserAccount(CreateUserAccountCommand createUserAccountCommand, CancellationToken cancellationToken = default)
+    public async Task CreateUserAccount(ICreateUserAccountCommand createUserAccountCommand, CancellationToken cancellationToken = default)
     {
         // Validate command
 
@@ -27,11 +27,8 @@ internal class UserAccountService(IUserStore<ViixsDockerManagerUser> userStore,
             throw new CouldNotCreateUserException(createResult.ToString());
         }
 
-        //temp? fix.
-        var role = string.IsNullOrEmpty(createUserAccountCommand.Role) ? "Administrator" : createUserAccountCommand.Role;
+        var role = Guard.ValueIsNotNullOrEmpty(createUserAccountCommand.Role, nameof(createUserAccountCommand.Role));
 
-        //var role = Guard.ValueIsNotNullOrEmpty(createUserAccountCommand.Role, nameof(createUserAccountCommand.Role));
-
-        await userManager.AddToRoleAsync(user, role );
+        await userManager.AddToRoleAsync(user, role);
     }
 }

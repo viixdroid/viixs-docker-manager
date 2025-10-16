@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ViixsDockerManager.Mediator.Commands;
-using ViixsDockerManager.Shared.Models.Commands.Users;
+using ViixsDockerManager.Users.Accounts.Commands;
 using ViixsDockerManager.Users.Accounts.Exceptions;
 using ViixsDockerManager.Users.Accounts.Models;
 using ViixsDockerManager.Users.Accounts.Services.Interfaces;

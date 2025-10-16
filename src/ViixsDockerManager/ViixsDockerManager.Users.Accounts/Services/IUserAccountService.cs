@@ -4,5 +4,5 @@ namespace ViixsDockerManager.Users.Accounts.Services;
 
 internal interface IUserAccountService
 {
-    Task CreateUserAccount(CreateUserAccountCommand createUserAccountCommand, CancellationToken cancellationToken = default);
+    Task CreateUserAccount(ICreateUserAccountCommand createUserAccountCommand, CancellationToken cancellationToken = default);
 }
