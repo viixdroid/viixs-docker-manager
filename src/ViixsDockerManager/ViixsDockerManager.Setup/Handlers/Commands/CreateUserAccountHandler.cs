@@ -13,6 +13,6 @@ internal class CreateUserAccountHandler(
     public async Task Handle(CreateFirstUserAccountCommand command, CancellationToken cancellationToken = default)
     {
         await sharedUserAccountService.CreateUserAccount(command, cancellationToken);
-        await sendSetupStateNotifications.SendOnUserCreatedAsync(null, null);
+        //await sendSetupStateNotifications.SendOnUserCreatedAsync(null, null);
     }
 }

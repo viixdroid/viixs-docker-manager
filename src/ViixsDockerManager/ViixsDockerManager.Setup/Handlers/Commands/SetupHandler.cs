@@ -13,7 +13,7 @@ using ViixsDockerManager.Shared.Models.Commands.Users;
 namespace ViixsDockerManager.Setup.Handlers.Commands;
 
 internal sealed class SetupHandler<TCommand>(
-    //IDatabaseReadRepository<SetupState> setupStateReadRepository,
+    IDatabaseReadRepository<SetupState> setupStateReadRepository,
     ISendSetupStateNotifications sendSetupStateNotifications,
     IMediator mediator
     ) : ICommandHandler<SetupCommand<TCommand>>
@@ -22,12 +22,12 @@ internal sealed class SetupHandler<TCommand>(
     public async Task Handle(SetupCommand<TCommand> command, CancellationToken cancellationToken = default)
     {
         var setupId = Guard.ValueIsNotNull(command.SetupId, nameof(command.SetupId));
-        //var currentStep = await setupStateReadRepository.GetByFilterAsync(new GetStateBySetupIdFilter(setupId));
+        var currentStep = await setupStateReadRepository.GetByFilterAsync(new GetStateBySetupIdFilter(setupId));
 
-        //if (currentStep is null)
-        //{
-        //    throw new SetupIdDoesNotExistException(setupId);
-        //}
+        if (currentStep is null)
+        {
+            throw new SetupIdDoesNotExistException(setupId);
+        }
 
         var step = (SetupStepName)command.CurrentSetupStepName;
 
