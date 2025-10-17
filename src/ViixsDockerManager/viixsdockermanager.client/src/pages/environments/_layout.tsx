@@ -22,7 +22,8 @@ import { useState } from 'react'
 import { Outlet, Link as RouterLink, useLocation } from 'react-router'
 import DrawerToggleButton from '../../components/DrawerToggleButton'
 import DockLightHubProvider from '../../components/providers/DockLightHubProvider'
-import EnvironmentProvider from '../../components/providers/EnvironmentProvider'
+import EnvironmentProvider, { useEnvironment } from '../../components/providers/EnvironmentProvider'
+import WebSocketProvider from '../../components/providers/WebSocketHubProvider'
 import ThemeSwitcherButton from '../../components/themes/ThemeSwitcherButton'
 
 const drawerWidth = 240
@@ -77,6 +78,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
 const DockLightLayout: FC = () => {
   const [open, setOpen] = useState(true) // State to control the drawer
   const { pathname } = useLocation()
+  // const { environment } = useEnvironment()
 
   // TODO: pass menuitems
   const menuItems = [
@@ -86,17 +88,18 @@ const DockLightLayout: FC = () => {
   ]
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <MuiAppBar
-        position="fixed"
-        color="primary"
-        elevation={0}
-        sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}
-      >
-        <Toolbar
-          sx={{ justifyContent: 'space-between' }}
+    <EnvironmentProvider>
+      <Box sx={{ display: 'flex' }}>
+        <MuiAppBar
+          position="fixed"
+          color="primary"
+          elevation={0}
+          sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}
         >
-          {/* <Box
+          <Toolbar
+            sx={{ justifyContent: 'space-between' }}
+          >
+            {/* <Box
             component="img"
             sx={{
               height: 32,
@@ -109,90 +112,100 @@ const DockLightLayout: FC = () => {
             src="/favicon.svg"
           /> */}
 
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-          >
-            Viixs Docker Manager
-          </Typography>
-          <ThemeSwitcherButton />
-        </Toolbar>
-      </MuiAppBar>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+            >
+              Viixs Docker Manager
+            </Typography>
+            <ThemeSwitcherButton />
+          </Toolbar>
+        </MuiAppBar>
 
-      <Drawer
-        variant="permanent"
-        open={open}
-      >
-        <Toolbar />
-
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-        }}
+        <Drawer
+          variant="permanent"
+          open={open}
         >
-          <List>
-            {menuItems.map(item => (
-              <ListItem
-                key={item.text}
-                disablePadding
-                sx={{ display: 'block' }}
-              >
-                <ListItemButton
-                  component={RouterLink}
-                  to={item.path}
-                  selected={pathname === item.path}
-                  sx={{ minHeight: 48, px: 2.5, justifyContent: open ? 'initial' : 'center' }}
+          <Toolbar />
+
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          }}
+          >
+            <List>
+              {menuItems.map(item => (
+                <ListItem
+                  key={item.text}
+                  disablePadding
+                  sx={{ display: 'block' }}
                 >
-                  <ListItemIcon sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
+                  <ListItemButton
+                    component={RouterLink}
+                    to={item.path}
+                    selected={pathname === item.path}
+                    sx={{ minHeight: 48, px: 2.5, justifyContent: open ? 'initial' : 'center' }}
                   >
-                    {item.icon}
-                  </ListItemIcon>
+                    <ListItemIcon sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
 
-                  <ListItemText
-                    primary={item.text}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
+                    <ListItemText
+                      primary={item.text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+
+            <Box sx={{ flexGrow: 1 }} />
+
+            <List>
+              <ListItem>
+                {open
+                  && <ListItemText primary="Version xyz" />}
               </ListItem>
-            ))}
-          </List>
+            </List>
+          </Box>
+        </Drawer>
 
-          <Box sx={{ flexGrow: 1 }} />
-
-          <List>
-            <ListItem>
-              {open
-                && <ListItemText primary="Version xyz" />}
-            </ListItem>
-          </List>
-        </Box>
-      </Drawer>
-
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3 }}
-      >
-        <Toolbar />
-        <EnvironmentProvider>
-          <DockLightHubProvider>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3 }}
+        >
+          <Toolbar />
+          <WebSocketProvider
+            endpoint="docklight"
+          // queryParams={{ environmentId: environment?.environmentId || '' }}
+          >
             <Outlet />
-          </DockLightHubProvider>
-        </EnvironmentProvider>
-      </Box>
+          </WebSocketProvider>
+        </Box>
 
-      <DrawerToggleButton
-        open={open}
-        handleToggle={() => setOpen(!open)}
-        drawerWidth={drawerWidth}
-      />
-    </Box>
+        <DrawerToggleButton
+          open={open}
+          handleToggle={() => setOpen(!open)}
+          drawerWidth={drawerWidth}
+        />
+      </Box>
+    </EnvironmentProvider>
   )
 }
 
-export default DockLightLayout
+// const DockLightLayoutWithWebSocket: FC = () => {
+//   return (
+//     <WebSocketProvider endpoint="docklight" queryParams={{ userId: '12345', sessionId: 'abcde' }}>
+//       <DockLightLayout />
+//     </WebSocketProvider>
+//   )
+// }
+
+export default DockLightLayout // WithWebSocket
