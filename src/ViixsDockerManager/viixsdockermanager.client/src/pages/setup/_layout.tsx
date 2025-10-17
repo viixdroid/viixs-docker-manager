@@ -3,9 +3,11 @@ import type { WebSocketClient } from '../../clients/WebSocketClient'
 import type { CreateUserAccountCommand } from './_models/createuserAccount'
 import type { SetupStepHandler, SetupStepOutletContext } from './_models/setupHandler'
 import { Box, Grid, styled } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router'
 import { WebSocketClientManager } from '../../clients/managers/WebSocketClientManager'
+import WebSocketProvider, { useWebSocketContext } from '../../components/providers/WebSocketHubProvider'
+import useWebSocket from '../../hooks/useWebSocket'
 import NavigationButtons from './_components/(navigation)/NavigationButtons'
 import SideBar from './_components/(sidebar)/SideBar'
 import { SetupStepFactory } from './_factories/setupStepFactory'
@@ -46,7 +48,12 @@ const SetupFormContainer = styled(Box)(() => ({
   justifyContent: 'space-between',
 }))
 
-const SetupLayout: FC = () => {
+interface SetupLayoutProps {
+  setSetupId: (id: string) => void
+  setupId: string
+}
+
+const SetupLayout: FC<SetupLayoutProps> = ({ setupId, setSetupId }) => {
   const navigate = useNavigate()
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -58,7 +65,8 @@ const SetupLayout: FC = () => {
 
   const [webSocketClientManager] = useState<WebSocketClientManager>(new WebSocketClientManager())
   const [webSocketClient, setWebSocketClient] = useState<WebSocketClient>()
-  const [setupId, setSetupId] = useState<string>()
+  const { connection } = useWebSocketContext()
+  // const [setupId] = useState<string>()
 
   const isLastStep = () => currentStepId === SetupSteps[SetupSteps.length - 1].stepId
   // const theme = useTheme()
@@ -71,43 +79,57 @@ const SetupLayout: FC = () => {
     onNextStepCallback: callback => setOnNextStepCallback(() => callback),
   }
 
+  // useEffect(() => {
+  //   const createWebSocketClient = async () => {
+  //     const webSocketClient = webSocketClientManager.getClient('setup')
+  //     await webSocketClient.start()
+  //       .then(() => {
+  //         setWebSocketClient(webSocketClient)
+  //       })
+  //     // .then(() => {
+  //   }
+
+  //   createWebSocketClient()
+  //   // })
+  // }, [currentStepId])
+
+  // useEffect(() => {
+
+  // }, [])
+
   useEffect(() => {
-    const createWebSocketClient = async () => {
-      const webSocketClient = webSocketClientManager.getClient('setup')
-      await webSocketClient.start()
-        .then(() => {
-          setWebSocketClient(webSocketClient)
-        })
-      // .then(() => {
-    }
-
-    createWebSocketClient()
-    // })
-  }, [currentStepId])
-
-  useEffect(() => {
-
-  }, [])
-
-  useEffect(() => {
-    if (!webSocketClient || !webSocketClient.isConnected) {
-      // console.log('not connected?')
-      return
-    }
-    const connectionId = webSocketClient.getConnectionId()
-    if (!connectionId) {
-      // console.log(connectionId)
-      const command = new StartSetupCommand(connectionId!)
+    if (connection) {
+      console.log(connection.connectionId)
+      const command = new StartSetupCommand(connection.connectionId!)
       command.execute()
     }
-  }, [webSocketClient])
+
+    // if (!webSocketClient || !webSocketClient.isConnected) {
+    //   // console.log('not connected?')
+    //   return
+    // }
+    // if (!connectionId) {
+    //   // console.log(connectionId)
+    // }
+  }, [connection])
 
   useEffect(() => {
-    webSocketClient?.on<{ setupId: string, currentStep: string }>('OnSetupStarted', (setupStep) => {
-      console.error(`${setupStep.setupId} + ${setupStep.currentStep}`)
-      setSetupId(setupStep.setupId)
-    })
-  }, [webSocketClient])
+    if (connection) {
+      connection.on('OnSetupStarted', (setupStep) => {
+        console.log(`${setupStep.setupId} + ${setupStep.currentStep}`)
+        setSetupId(setupStep.setupId)
+      })
+      connection.on('OnNextSetupStep', (setupStep) => {
+        console.log(`Next step: ${setupStep.currentStep}`)
+        if (currentStepName !== setupStep.currentStep) {
+          navigate(setupStep.currentStep)
+        }
+      })
+    }
+    else {
+      console.error('No connection')
+    }
+  }, [connection])
 
   useEffect(() => {
     if (currentStepName === null) {
@@ -199,4 +221,14 @@ const SetupLayout: FC = () => {
   )
 }
 
-export default SetupLayout
+const SetupLayoutWithWebSocket: FC = () => {
+  const [setupId, setSetupId] = useState<string>('')
+  const setupIdRef = useRef(setupId)
+
+  return (
+    <WebSocketProvider endpoint="setup" queryParams={{ setupId: setupIdRef.current }}>
+      <SetupLayout setSetupId={setSetupId} setupId={setupId} />
+    </WebSocketProvider>
+  )
+}
+export default SetupLayoutWithWebSocket
