@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ViixsDockerManager.Shared.Helpers;
 using ViixsDockerManager.Shared.Models.Commands.Users;
+using ViixsDockerManager.Shared.Models.Exceptions;
 using ViixsDockerManager.Shared.Services;
-using ViixsDockerManager.Users.Accounts.Exceptions;
 using ViixsDockerManager.Users.Accounts.Models;
 
 namespace ViixsDockerManager.Users.Accounts.Services;
