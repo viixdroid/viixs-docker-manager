@@ -1,6 +1,9 @@
 ﻿using ViixsDockerManager.Mediator.Commands;
 using ViixsDockerManager.Setup.Models.Commands;
 using ViixsDockerManager.Setup.Services.Interfaces;
+using ViixsDockerManager.Shared.Exceptions;
+using ViixsDockerManager.Shared.Models.Errors;
+using ViixsDockerManager.Shared.Models.Exceptions;
 using ViixsDockerManager.Shared.Services;
 
 namespace ViixsDockerManager.Setup.Handlers.Commands;
@@ -12,7 +15,19 @@ internal class CreateUserAccountHandler(
 {
     public async Task Handle(CreateFirstUserAccountCommand command, CancellationToken cancellationToken = default)
     {
-        await sharedUserAccountService.CreateUserAccount(command, cancellationToken);
-        //await sendSetupStateNotifications.SendOnUserCreatedAsync(null, null);
+        try
+        {
+            await sharedUserAccountService.CreateUserAccount(command, cancellationToken);
+        }
+        catch (CouldNotCreateUserException e)
+        {
+            await sendSetupStateNotifications.SendOnUserCreationFailedAsync(e.Errors); //rename to user creation failed
+            throw;
+        }
+        catch (ViixsDockerManagerException e)
+        {
+            await sendSetupStateNotifications.SendOnUserCreationFailedAsync([new ErrorDetail("VDMERR1", e.Message, "General")]);
+            throw;
+        }
     }
 }

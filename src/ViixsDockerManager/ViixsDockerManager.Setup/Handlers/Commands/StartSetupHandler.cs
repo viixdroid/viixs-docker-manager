@@ -16,24 +16,19 @@ internal class StartSetupHandler(
 {
     public async Task Handle(StartSetupCommand command, CancellationToken cancellationToken = default)
     {
-        SetupState? currentSetupState = null;
-        if (command.SetupId is not null)
+        var currentSetupState = await setupStateReadRepository.GetFirstOrDefaultAsync();
+        if (currentSetupState is null)
         {
-            var currentState = await setupStateReadRepository.GetByFilterAsync(new GetStateBySetupIdFilter(command.SetupId));
-            if (currentState is not null)
+            currentSetupState = new SetupState()
             {
-                currentSetupState = currentState;
-            }
-        }
-        currentSetupState ??= new SetupState()
-        {
-            SetupId = Guid.NewGuid(),
-            CurrentStep = SetupStepName.Welcome,
-            LastUpdated = DateTime.UtcNow,
-            IsCompleted = false,
-        };
+                SetupId = Guid.NewGuid(),
+                CurrentStep = SetupStepName.Welcome,
+                LastUpdated = DateTime.UtcNow,
+                IsCompleted = false,
+            };
 
-        await setupStateWriteRepository.Save(currentSetupState);
+            await setupStateWriteRepository.Save(currentSetupState);
+        }
         await sendSetupStateNotifications.SendOnSetupStartedAsync(command.ConnectionId, currentSetupState);
     }
 }

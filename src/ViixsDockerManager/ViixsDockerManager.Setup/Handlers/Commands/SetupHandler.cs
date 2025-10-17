@@ -30,8 +30,16 @@ internal sealed class SetupHandler<TCommand>(
         }
 
         var step = (SetupStepName)command.CurrentSetupStepName;
+        var nextStep = SetupStepName.GetNextStep(step);
 
-        await mediator.Send(command.InternalCommand, cancellationToken);
-        await sendSetupStateNotifications.SendNextSetupStepAsync(new Models.Dtos.SetupStep(setupId, SetupStepName.GetNextStep(step)!));
+        try
+        {
+            await mediator.Send(command.InternalCommand, cancellationToken);
+        }
+        catch
+        {
+            nextStep = step;
+        }
+        await sendSetupStateNotifications.SendNextSetupStepAsync(new Models.Dtos.SetupStep(setupId, nextStep!));
     }
 }

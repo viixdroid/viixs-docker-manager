@@ -12,6 +12,7 @@ public class ConnectionRegistery<THub> : IConnectionRegistery<THub>
     {
         _connectionDictionary.AddOrUpdate(key, connectionId, (key, oldValue) => connectionId);
     }
+
     public void RemoveConnectionId(string connectionId)
     {
         var connection = _connectionDictionary.FirstOrDefault(c => c.Value == connectionId);
@@ -21,5 +22,6 @@ public class ConnectionRegistery<THub> : IConnectionRegistery<THub>
         }
         _connectionDictionary.TryRemove(connection.Key, out _);
     }
+
     public string? GetConnectionId(string key) => _connectionDictionary.TryGetValue(key, out var connectionId) ? connectionId : null;
 }
