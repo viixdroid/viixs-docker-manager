@@ -9,4 +9,5 @@ public interface IReadUnitOfWork<TEntity>
     Task<TEntity?> GetSingleOrDefaultForQueryAsync(IQuerySource<TEntity> query);
     Task<TEntity> GetSingleForQueryAsync(IQuerySource<TEntity> query);
     Task<int> GetCountForQueryAsync(IQuerySource<TEntity> query);
+    Task<bool> AnyAsync(IQuerySource<TEntity> query);
 }

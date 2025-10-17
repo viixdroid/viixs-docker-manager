@@ -51,4 +51,21 @@ public class DatabaseReadRepository<TReadDbContext, TEntity>(
         return await ReadUnitOfWork.GetCountForQueryAsync(queryBuilder);
     }
 
+    public async Task<bool> AnyAsync(IDatabaseQueryFilter<TEntity>? filter = null)
+    {
+        var queryBuilder = new DatabaseQueryBuilder<TEntity>(GetQueryable());
+        if (filter is not null)
+        {
+            queryBuilder.ApplyFilter(filter);
+        }
+        return await ReadUnitOfWork.AnyAsync(queryBuilder);
+    }
+
+    public async Task<TEntity?> GetFirstOrDefaultAsync(IDatabaseQueryFilter<TEntity>? filter = null)
+    {
+        var queryBuilder = new DatabaseQueryBuilder<TEntity>(GetQueryable());
+        queryBuilder.ApplyFilter(filter);
+        return await ReadUnitOfWork.GetFirstOrDefaultForQueryAsync(queryBuilder);
+    }
+
 }

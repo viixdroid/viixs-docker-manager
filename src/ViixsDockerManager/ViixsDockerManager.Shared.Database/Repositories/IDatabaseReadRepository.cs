@@ -11,4 +11,6 @@ public interface IDatabaseReadRepository<TEntity> : IReadRepository<TEntity>
     Task<TEntity?> GetByFilterAsync(IDatabaseQueryFilter<TEntity> filter);
     Task<IEnumerable<TEntity>> FindAsync(IDatabaseQueryFilter<TEntity> filter);
     Task<int> CountAsync(IDatabaseQueryFilter<TEntity>? filter = null);
+    Task<bool> AnyAsync(IDatabaseQueryFilter<TEntity>? filter = null);
+    Task<TEntity?> GetFirstOrDefaultAsync(IDatabaseQueryFilter<TEntity>? filter = null);
 }

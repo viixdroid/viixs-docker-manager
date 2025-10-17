@@ -6,7 +6,7 @@ using ViixsDockerManager.Shared.Database.Queries.Ordering;
 namespace ViixsDockerManager.Shared.Database.Queries;
 
 /// <summary>
-/// The class represents a query
+/// The class represents a builder for a query
 /// </summary>
 /// <param name="queryObject">
 /// The IQueryable to filter
