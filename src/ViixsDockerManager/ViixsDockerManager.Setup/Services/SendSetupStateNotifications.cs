@@ -2,6 +2,7 @@
 using ViixsDockerManager.Setup.Controllers.Hubs;
 using ViixsDockerManager.Setup.Models.Dtos;
 using ViixsDockerManager.Setup.Services.Interfaces;
+using ViixsDockerManager.Shared.Models.Errors;
 using ViixsDockerManager.Shared.WebSockets.Interfaces;
 
 namespace ViixsDockerManager.Setup.Services;
@@ -10,43 +11,47 @@ internal class SendSetupStateNotifications(
     IHubContext<SetupInformationHub, ISetupInformationContext> hubContext,
     IConnectionRegistery<SetupInformationHub> connectionRegistery) : ISendSetupStateNotifications
 {
-    private ISetupInformationContext? GetClient(Guid setupId)
+    private const string DefaultSetupIdKey = "client-setup-id-key";
+
+    private ISetupInformationContext? GetClient()
     {
-        var connectionId = connectionRegistery.GetConnectionId(setupId.ToString());
-        if (connectionId == null)
+        var setupId = connectionRegistery.GetConnectionId(DefaultSetupIdKey);
+        if (setupId == null)
         {
             return null;
         }
-        return hubContext.Clients.Client(connectionId);
+        return hubContext.Clients.Group(setupId);
     }
 
     public async Task SendOnSetupStartedAsync(string connectionId, SetupStep setupStep)
     {
-        var setupId = setupStep.SetupId.ToString();
-
         if (string.IsNullOrEmpty(connectionId))
         {
             return;
         }
 
-        connectionRegistery.AddOrUpdateConnectionId(setupId, connectionId);
+        var setupId = setupStep.SetupId.ToString();
 
-        await hubContext.Clients.Client(connectionId).OnSetupStarted(setupStep);
+        // Update the connection registry with the default setup ID key
+        connectionRegistery.AddOrUpdateConnectionId(DefaultSetupIdKey, setupId);
+
+        await hubContext.Groups.AddToGroupAsync(connectionId, setupId);
+        await hubContext.Clients.Group(setupId).OnSetupStarted(setupStep);
     }
 
-    public async Task SendOnUserCreatedAsync(SetupStep setupStep, object validationInformation)//TODO: actual have validation information
+    public async Task SendOnUserCreationFailedAsync(IReadOnlyList<ErrorDetail> errorDetails)
     {
-        var client = GetClient(setupStep.SetupId);
+        var client = GetClient();
         if (client is null)
         {
             return;
         }
-        await client.OnUserCreated(setupStep);
+        await client.OnUserCreationFailed([.. errorDetails]);
     }
 
     public async Task SendOnEnvironmentCreated(SetupStep setupStep, object validationInformation)
     {
-        var client = GetClient(setupStep.SetupId);
+        var client = GetClient();
         if (client is null)
         {
             return;
@@ -56,7 +61,7 @@ internal class SendSetupStateNotifications(
 
     public async Task SendOnSetupFinishedAsync(SetupStep setupStep)
     {
-        var client = GetClient(setupStep.SetupId);
+        var client = GetClient();
         if (client is null)
         {
             return;
@@ -66,12 +71,11 @@ internal class SendSetupStateNotifications(
 
     public async Task SendNextSetupStepAsync(SetupStep setupStep)
     {
-        var client = GetClient(setupStep.SetupId);
+        var client = GetClient();
         if (client is null)
         {
             return;
         }
-        await client.NextSetupStepAsync(setupStep);
-
+        await client.OnNextSetupStep(setupStep);
     }
 }
