@@ -1,17 +1,17 @@
 import type { FC } from 'react'
 import type { WebSocketClient } from '../../clients/WebSocketClient'
-import type { CreateUserAccountCommand } from './_models/createuserAccount'
+import type { SetupStep, SetupStepConfiguration, SetupStepName, SetupStepNameStrings } from './_models/setup'
 import type { SetupStepHandler, SetupStepOutletContext } from './_models/setupHandler'
+import type { CreateUserAccountCommand } from './_models/userAccount'
 import { Box, Grid, styled } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router'
 import { WebSocketClientManager } from '../../clients/managers/WebSocketClientManager'
 import WebSocketProvider, { useWebSocketContext } from '../../components/providers/WebSocketHubProvider'
-import useWebSocket from '../../hooks/useWebSocket'
 import NavigationButtons from './_components/(navigation)/NavigationButtons'
 import SideBar from './_components/(sidebar)/SideBar'
 import { SetupStepFactory } from './_factories/setupStepFactory'
-import { SetupSteps, StartSetupCommand } from './_models/setup'
+import { SetupStartedCommand, SetupSteps, StartSetupCommand } from './_models/setup'
 
 type SetupStepCommands
   = | CreateUserAccountCommand
@@ -49,11 +49,9 @@ const SetupFormContainer = styled(Box)(() => ({
 }))
 
 interface SetupLayoutProps {
-  setSetupId: (id: string) => void
-  setupId: string
 }
 
-const SetupLayout: FC<SetupLayoutProps> = ({ setupId, setSetupId }) => {
+const SetupLayout: FC<SetupLayoutProps> = () => {
   const navigate = useNavigate()
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -66,9 +64,10 @@ const SetupLayout: FC<SetupLayoutProps> = ({ setupId, setSetupId }) => {
   const [webSocketClientManager] = useState<WebSocketClientManager>(new WebSocketClientManager())
   const [webSocketClient, setWebSocketClient] = useState<WebSocketClient>()
   const { connection } = useWebSocketContext()
-  // const [setupId] = useState<string>()
+  const [setupId, setSetupId] = useState<string>()
+  const [setupStep, setSetupStep] = useState<SetupStep>()
 
-  const isLastStep = () => currentStepId === SetupSteps[SetupSteps.length - 1].stepId
+  const isLastStep = () => currentStepId === SetupSteps[SetupSteps.length - 1].stepOrder
   // const theme = useTheme()
   // const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -96,6 +95,68 @@ const SetupLayout: FC<SetupLayoutProps> = ({ setupId, setSetupId }) => {
   // useEffect(() => {
 
   // }, [])
+  const navigateStep = (setupStepName: SetupStepName) => {
+    navigate(`/setup?step=${setupStepName.stepName}`)
+  }
+  const handleBack = () => {
+    // get previous step name and navigate to it.
+    // maybe save it in a state?
+
+    const previousStepId = currentStepId - 1
+    const previousStepName = SetupSteps.find(s => s.stepOrder === previousStepId)?.stepName
+    if (previousStepName === undefined) {
+      return
+    }
+    navigateStep(previousStepName)
+  }
+
+  const handleNext = async () => {
+    if (isNextStepLoading) {
+      return
+    }
+    setIsNextStepLoading(true)
+    try {
+      if (onNextStepCallback) {
+        const stepCommand = onNextStepCallback()
+        if (stepCommand) {
+          console.log(`Current setupStepname? : ${setupStep?.currentStep.stepName}`)
+          const setupCommand = SetupStepFactory.createSetupCommand(setupId!, setupStep?.currentStep.stepName ?? '', stepCommand) // TODO: Actually handle correct step name
+          await setupCommand.execute()
+        }
+      }
+      if (setupStep) {
+        console.log(`Current Step: ${setupStep.currentStep.stepName}, Next Step: ${setupStep.nextStep.stepName}`)
+        if (setupStep.nextStep.isLastStep) {
+          navigate(`/environments`)
+        }
+        else if (setupStep.currentStep.isFirstStep) {
+          console.log(`${setupStep.currentStep.stepName} + ${setupStep.nextStep.stepName} + ${setupStep.currentStep.isFirstStep}`)
+
+          const setupStartedCommand = SetupStepFactory.createSetupCommand(setupId!, setupStep?.currentStep.stepName ?? 'Welcome', new SetupStartedCommand(setupId!))
+          await setupStartedCommand.execute()
+        }
+        // else {
+        //   if (setupStep.nextStep.stepName !== setupStep.currentStep.stepName) {
+        //     navigateStep(setupStep.nextStep)
+        //   }
+        // }
+      }
+
+      // // Should be done after getting information from the websockets.
+      // const nextStepId = currentStepId + 1
+      // const nextStepName = SetupSteps.find(s => s.stepId === nextStepId)?.stepName
+      // if (isLastStep()) {
+      //   navigate(`/environments`)
+      // }
+      // if (nextStepName === undefined) {
+      //   return
+      // }
+      // navigateStep(nextStepName)
+    }
+    finally {
+      setIsNextStepLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (connection) {
@@ -115,15 +176,29 @@ const SetupLayout: FC<SetupLayoutProps> = ({ setupId, setSetupId }) => {
 
   useEffect(() => {
     if (connection) {
-      connection.on('OnSetupStarted', (setupStep) => {
-        console.log(`${setupStep.setupId} + ${setupStep.currentStep}`)
+      connection.on('OnSetupStarted', (setupStep: SetupStep) => {
+        console.log(`${setupStep.setupId} + ${setupStep.currentStep.stepName} + ${setupStep.nextStep.stepName}`)
         setSetupId(setupStep.setupId)
+        setSetupStep(setupStep)
       })
-      connection.on('OnNextSetupStep', (setupStep) => {
-        console.log(`Next step: ${setupStep.currentStep}`)
-        if (currentStepName !== setupStep.currentStep) {
-          navigate(setupStep.currentStep)
+      connection.on('OnNextSetupStep', (nextSetupStep: SetupStep) => {
+        console.log(`Next step: ${nextSetupStep.nextStep.stepName}`)
+        setSetupStep(nextSetupStep)
+        if (setupStep?.currentStep.order !== nextSetupStep.nextStep.order) {
+          navigateStep(nextSetupStep.nextStep)
         }
+        // if (setupStep?.currentStep.order === nextSetupStep.currentStep.order) {
+        //   console.log('Step orders are the same, not navigating.')
+        //   setSetupStep(nextSetupStep)
+        //   return
+        // }
+
+        // if (setupStep?.currentStep.stepName !== nextSetupStep.nextStep.stepName) {
+        //   setSetupStep(nextSetupStep)
+        //   navigateStep(nextSetupStep.nextStep)
+        // } else {
+        //   setSetupStep(nextSetupStep)
+        // }
       })
     }
     else {
@@ -141,51 +216,8 @@ const SetupLayout: FC<SetupLayoutProps> = ({ setupId, setSetupId }) => {
     if (step === undefined) {
       return
     }
-    setCurrentStepId(step.stepId)
+    setCurrentStepId(step.stepOrder)
   }, [])
-
-  const navigateStep = (stepName: string) => {
-    navigate(`/setup?step=${stepName}`)
-  }
-
-  const handleBack = () => {
-    const previousStepId = currentStepId - 1
-    const previousStepName = SetupSteps.find(s => s.stepId === previousStepId)?.stepName
-    if (previousStepName === undefined) {
-      return
-    }
-    navigateStep(previousStepName)
-  }
-
-  const handleNext = async () => {
-    if (isNextStepLoading) {
-      return
-    }
-    setIsNextStepLoading(true)
-    try {
-      if (onNextStepCallback) {
-        const stepCommand = onNextStepCallback()
-        if (stepCommand) {
-          const setupCommand = SetupStepFactory.createSetupCommand(setupId!, 'CreateNewAccount', stepCommand) // TODO: Actually handle correct step name
-          await setupCommand.execute()
-        }
-      }
-
-      // Should be done after getting information from the websockets.
-      const nextStepId = currentStepId + 1
-      const nextStepName = SetupSteps.find(s => s.stepId === nextStepId)?.stepName
-      if (isLastStep()) {
-        navigate(`/environments`)
-      }
-      if (nextStepName === undefined) {
-        return
-      }
-      navigateStep(nextStepName)
-    }
-    finally {
-      setIsNextStepLoading(false)
-    }
-  }
 
   return (
     <RootContainer>
@@ -208,8 +240,8 @@ const SetupLayout: FC<SetupLayoutProps> = ({ setupId, setSetupId }) => {
           <SetupFormContainer>
             <Outlet context={outletContext} />
             <NavigationButtons
-              isFirstStep={currentStepId === SetupSteps[0].stepId}
-              isLastStep={isLastStep()}
+              isFirstStep={setupStep?.currentStep.isFirstStep || false}
+              isLastStep={setupStep?.currentStep.isLastStep || false}
               handleBack={handleBack}
               handleNext={handleNext}
               isNextStepLoading={isNextStepLoading}
@@ -222,12 +254,9 @@ const SetupLayout: FC<SetupLayoutProps> = ({ setupId, setSetupId }) => {
 }
 
 const SetupLayoutWithWebSocket: FC = () => {
-  const [setupId, setSetupId] = useState<string>('')
-  const setupIdRef = useRef(setupId)
-
   return (
-    <WebSocketProvider endpoint="setup" queryParams={{ setupId: setupIdRef.current }}>
-      <SetupLayout setSetupId={setSetupId} setupId={setupId} />
+    <WebSocketProvider endpoint="setup">
+      <SetupLayout />
     </WebSocketProvider>
   )
 }

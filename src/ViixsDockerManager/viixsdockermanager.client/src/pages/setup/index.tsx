@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { SetupStep } from './_models/setup.tsx'
+import type { SetupStepConfiguration } from './_models/setup.tsx'
 import { Button, Grid, Step, StepLabel, Stepper, styled, Typography, useMediaQuery, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useEffect, useState } from 'react'
@@ -242,7 +242,7 @@ import { SetupSteps } from './_models/setup.tsx'
 const SetupPage: FC = () => {
   const [searchParams] = useSearchParams()
 
-  const [setupStep, setSetupStep] = useState<SetupStep>()
+  const [setupStep, setSetupStep] = useState<SetupStepConfiguration>()
 
   useEffect(() => {
     const step = searchParams.get('step')

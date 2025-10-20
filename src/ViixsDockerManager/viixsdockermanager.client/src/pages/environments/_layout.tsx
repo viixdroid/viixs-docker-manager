@@ -88,18 +88,18 @@ const DockLightLayout: FC = () => {
   ]
 
   return (
-    <EnvironmentProvider>
-      <Box sx={{ display: 'flex' }}>
-        <MuiAppBar
-          position="fixed"
-          color="primary"
-          elevation={0}
-          sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}
+    // <EnvironmentProvider>
+    <Box sx={{ display: 'flex' }}>
+      <MuiAppBar
+        position="fixed"
+        color="primary"
+        elevation={0}
+        sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar
+          sx={{ justifyContent: 'space-between' }}
         >
-          <Toolbar
-            sx={{ justifyContent: 'space-between' }}
-          >
-            {/* <Box
+          {/* <Box
             component="img"
             sx={{
               height: 32,
@@ -112,100 +112,109 @@ const DockLightLayout: FC = () => {
             src="/favicon.svg"
           /> */}
 
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-            >
-              Viixs Docker Manager
-            </Typography>
-            <ThemeSwitcherButton />
-          </Toolbar>
-        </MuiAppBar>
-
-        <Drawer
-          variant="permanent"
-          open={open}
-        >
-          <Toolbar />
-
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-          }}
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
           >
-            <List>
-              {menuItems.map(item => (
-                <ListItem
-                  key={item.text}
-                  disablePadding
-                  sx={{ display: 'block' }}
+            Viixs Docker Manager
+          </Typography>
+          <ThemeSwitcherButton />
+        </Toolbar>
+      </MuiAppBar>
+
+      <Drawer
+        variant="permanent"
+        open={open}
+      >
+        <Toolbar />
+
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+        }}
+        >
+          <List>
+            {menuItems.map(item => (
+              <ListItem
+                key={item.text}
+                disablePadding
+                sx={{ display: 'block' }}
+              >
+                <ListItemButton
+                  component={RouterLink}
+                  to={item.path}
+                  selected={pathname === item.path}
+                  sx={{ minHeight: 48, px: 2.5, justifyContent: open ? 'initial' : 'center' }}
                 >
-                  <ListItemButton
-                    component={RouterLink}
-                    to={item.path}
-                    selected={pathname === item.path}
-                    sx={{ minHeight: 48, px: 2.5, justifyContent: open ? 'initial' : 'center' }}
+                  <ListItemIcon sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
                   >
-                    <ListItemIcon sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                    >
-                      {item.icon}
-                    </ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
 
-                    <ListItemText
-                      primary={item.text}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-
-            <Box sx={{ flexGrow: 1 }} />
-
-            <List>
-              <ListItem>
-                {open
-                  && <ListItemText primary="Version xyz" />}
+                  <ListItemText
+                    primary={item.text}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
               </ListItem>
-            </List>
-          </Box>
-        </Drawer>
+            ))}
+          </List>
 
-        <Box
-          component="main"
-          sx={{ flexGrow: 1, p: 3 }}
-        >
-          <Toolbar />
-          <WebSocketProvider
-            endpoint="docklight"
-          // queryParams={{ environmentId: environment?.environmentId || '' }}
-          >
-            <Outlet />
-          </WebSocketProvider>
+          <Box sx={{ flexGrow: 1 }} />
+
+          <List>
+            <ListItem>
+              {open
+                && <ListItemText primary="Version xyz" />}
+            </ListItem>
+          </List>
         </Box>
+      </Drawer>
 
-        <DrawerToggleButton
-          open={open}
-          handleToggle={() => setOpen(!open)}
-          drawerWidth={drawerWidth}
-        />
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3 }}
+      >
+        <Toolbar />
+        <WebSocketProvider
+          endpoint="docklight"
+        // queryParams={{ environmentId: environment?.environmentId || '' }}
+        >
+          <Outlet />
+        </WebSocketProvider>
       </Box>
+
+      <DrawerToggleButton
+        open={open}
+        handleToggle={() => setOpen(!open)}
+        drawerWidth={drawerWidth}
+      />
+      {/* </EnvironmentProvider> */ }
+    </Box>
+  )
+}
+
+const DockLightLayoutWithWebSocket: FC = () => {
+  const { environment } = useEnvironment()
+  return (
+    <WebSocketProvider endpoint="docklight" queryParams={{ environmentId: environment?.environmentId || '' }}>
+      <DockLightLayout />
+    </WebSocketProvider>
+  )
+}
+
+const DockLightLayoutWithEnvironment: FC = () => {
+  return (
+    <EnvironmentProvider>
+      <DockLightLayoutWithWebSocket />
     </EnvironmentProvider>
   )
 }
 
-// const DockLightLayoutWithWebSocket: FC = () => {
-//   return (
-//     <WebSocketProvider endpoint="docklight" queryParams={{ userId: '12345', sessionId: 'abcde' }}>
-//       <DockLightLayout />
-//     </WebSocketProvider>
-//   )
-// }
-
-export default DockLightLayout // WithWebSocket
+export default DockLightLayoutWithEnvironment // WithWebSocket

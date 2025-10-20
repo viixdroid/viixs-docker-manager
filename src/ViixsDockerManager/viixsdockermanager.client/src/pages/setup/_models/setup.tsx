@@ -1,40 +1,56 @@
 import type { ReactNode } from 'react'
 import type { ICommand } from '../../../models/command-model'
-import SetupActionService from '../../../services/SetupActionService'
+import SetupActionService from '../../../services/SetupServices'
 import ConnectToDockLightEnvironmentStep from '../_steps/ConnectToDockLightEnvironment'
-import RegisterNewUserStep from '../_steps/RegisterNewAccount'
+import CreateNewAccountStep from '../_steps/CreateNewAccountStep'
+import { SetupStep, SetupStepHandler } from './setupHandler'
 
-export interface SetupStep {
-  stepId: number // order of the step
-  stepName: string
+export type SetupStepNameStrings = 'Welcome' | 'CreateNewAccount' | 'ConnectToDockLightEnvironment' | 'Finish'
+
+export interface SetupStepConfiguration {
+  stepOrder: number // order of the step
+  stepName: SetupStepNameStrings
   title: string
   description: string
   component?: ReactNode
 }
 
-export const SetupSteps: SetupStep[] = [
+export interface SetupStepName {
+  stepName: SetupStepNameStrings
+  order: number
+  isFirstStep: boolean
+  isLastStep: boolean
+}
+
+export interface SetupStep {
+  setupId: string
+  currentStep: SetupStepName
+  nextStep: SetupStepName
+}
+
+export const SetupSteps: SetupStepConfiguration[] = [
   {
-    stepId: 0,
+    stepOrder: 1,
     stepName: 'Welcome',
     title: 'Welcome!',
     description: 'In the following steps you will setup Viixs Docker Manager',
   },
   {
-    stepId: 1,
-    stepName: 'RegisterNewAccount',
+    stepOrder: 2,
+    stepName: 'CreateNewAccount',
     title: 'Create account',
     description: 'Create your user account to get started with Viixs Docker Manager.',
-    component: <RegisterNewUserStep />,
+    component: <CreateNewAccountStep />,
   },
   {
-    stepId: 2,
+    stepOrder: 3,
     stepName: 'ConnectToDockLightEnvironment',
     title: 'Connect to Docker',
     description: 'Connect to your local Docker to start managing your containers.',
     component: <ConnectToDockLightEnvironmentStep />,
   },
   {
-    stepId: 3,
+    stepOrder: 4,
     stepName: 'Finish',
     title: 'Finished!',
     description: 'You are all set! Click finish to complete this setup and start using Viixs Docker Manager.',
@@ -52,6 +68,19 @@ export class StartSetupCommand implements ICommand {
 
   execute(): Promise<void> {
     return SetupActionService.startSetup(this)
+  }
+}
+
+export class SetupStartedCommand extends SetupStepHandler<SetupStartedCommand> {
+  setupId: string
+
+  constructor(setupId: string) {
+    super()
+    this.setupId = setupId
+  }
+
+  protected executeStep(step: SetupStep<SetupStartedCommand>): Promise<void> {
+    return SetupActionService.setupStarted(step)
   }
 }
 

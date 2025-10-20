@@ -6,8 +6,8 @@ import { Box, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput
 import { useEffect, useRef, useState } from 'react'
 import { useOutletContext } from 'react-router'
 import { useWebSocketContext } from '../../../components/providers/WebSocketHubProvider'
-import useWebSocket from '../../../hooks/useWebSocket'
-import { CreateUserAccountCommand } from '../_models/createuserAccount'
+import ErrorLabel from '../_components/(content)/(createNewAccount)/ErrorLabel'
+import { CreateUserAccountCommand } from '../_models/userAccount'
 
 const FormBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -16,7 +16,7 @@ const FormBox = styled(Box)(({ theme }) => ({
 }))
 
 // TODO: check if there is already a user
-const RegisterNewUserStep: FC = () => {
+const CreateNewAccountStep: FC = () => {
   const { connection } = useWebSocketContext()
   const theme = useTheme()
   const { onNextStepCallback, isDisabled } = useOutletContext<SetupStepOutletContext<CreateUserAccountCommand>>()
@@ -29,8 +29,8 @@ const RegisterNewUserStep: FC = () => {
   const [isPasswordError, setIsPasswordError] = useState<boolean>(false)
   const [isEmailError, setIsEmailError] = useState<boolean>(false)
 
-  const [emailErrorText, setEmailErrorText] = useState<string>('')
-  const [passwordErrorTextArray, setPasswordErrorTextArray] = useState<string[]>('')
+  const [emailErrorTextArray, setEmailErrorTextArray] = useState<string[]>([])
+  const [passwordErrorTextArray, setPasswordErrorTextArray] = useState<string[]>([])
 
   const emailAddressRef = useRef(emailAddress)
   const passwordRef = useRef(password)
@@ -56,15 +56,19 @@ const RegisterNewUserStep: FC = () => {
         console.log(errorDetails)
 
         // Collect all error messages for each category
-        const emailErrors = errorDetails
-          .filter(errorDetail => errorDetail.category === 'Email')
-          .map(errorDetail => errorDetail.description)
+        const emailErrors = Array.from(
+          new Set(
+            errorDetails
+              .filter(errorDetail => errorDetail.category === 'Email')
+              .map(errorDetail => errorDetail.description),
+          ),
+        )
         const passwordErrors = errorDetails
           .filter(errorDetail => errorDetail.category === 'Password')
           .map(errorDetail => errorDetail.description)
 
         setIsEmailError(emailErrors.length > 0)
-        setEmailErrorText(emailErrors.join('\n'))
+        setEmailErrorTextArray(emailErrors)
 
         setIsPasswordError(passwordErrors.length > 0)
         setPasswordErrorTextArray(passwordErrors)
@@ -99,10 +103,10 @@ const RegisterNewUserStep: FC = () => {
           required
           disabled={isDisabled}
           error={isEmailError}
-          helperText={isEmailError ? emailErrorText : ''}
           value={emailAddress}
           onChange={e => setEmailAddress(e.target.value)}
         />
+        {isEmailError ? (<ErrorLabel errors={emailErrorTextArray} />) : null}
         <FormControl variant="outlined" fullWidth required>
           <InputLabel htmlFor="useraccount-password" required>
             Password
@@ -132,19 +136,11 @@ const RegisterNewUserStep: FC = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-          {isPasswordError && (
-            <Box component="ul" mt={1} sx={{ pl: 2, mb: 0 }}>
-              {passwordErrorTextArray.map((err, idx) => (
-                <li key={idx} style={{ color: theme.palette.error.main, fontSize: '0.75rem' }}>
-                  {err}
-                </li>
-              ))}
-            </Box>
-          )}
+          {isPasswordError ? (<ErrorLabel errors={passwordErrorTextArray} />) : null}
         </FormControl>
       </Stack>
     </FormBox>
   )
 }
 
-export default RegisterNewUserStep
+export default CreateNewAccountStep

@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { SetupStep } from '../../_models/setup'
+import type { SetupStepConfiguration } from '../../_models/setup'
 import { Box, styled, Typography } from '@mui/material'
 
 const ContentContainer = styled(Box)(() => ({
@@ -32,7 +32,7 @@ const TitleContent = styled(Typography)({
 })
 
 interface SetupStepProps {
-  step: SetupStep
+  step: SetupStepConfiguration
 }
 
 const SetupStepContent: FC<SetupStepProps> = ({ step }) => {

@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { SetupStep } from '../../_models/setup'
+import type { SetupStepConfiguration } from '../../_models/setup'
 import { Box, Step, StepLabel, Stepper, styled, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useNavigate } from 'react-router'
 
@@ -94,7 +94,7 @@ const ClickableStepLabel = styled(StepLabel)(() => ({
 
 interface SetupProgressProps {
   currentStep: number
-  setupSteps: SetupStep[]
+  setupSteps: SetupStepConfiguration[]
 }
 
 const SetupProgress: FC<SetupProgressProps> = ({ currentStep, setupSteps }) => {
@@ -112,7 +112,7 @@ const SetupProgress: FC<SetupProgressProps> = ({ currentStep, setupSteps }) => {
       )}
       <ProgessStepper activeStep={currentStep} orientation={isMobile ? 'horizontal' : 'vertical'}>
         {setupSteps.map(step => (
-          <Step key={step.stepId}>
+          <Step key={step.stepOrder}>
             <ClickableStepLabel onClick={() => navigate(`/setup?step=${step.stepName}`)}>
               {step.title}
             </ClickableStepLabel>

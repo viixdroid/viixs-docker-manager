@@ -1,5 +1,5 @@
 import type { SetupStep } from './setupHandler'
-import SetupActionService from '../../../services/SetupActionService'
+import SetupActionService from '../../../services/SetupServices'
 import { SetupStepHandler } from './setupHandler'
 
 export class CreateUserAccountCommand extends SetupStepHandler<CreateUserAccountCommand> {

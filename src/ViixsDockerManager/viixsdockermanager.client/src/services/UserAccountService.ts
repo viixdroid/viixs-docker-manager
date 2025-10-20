@@ -1,4 +1,4 @@
-import type { CreateUserAccountCommand } from '../pages/setup/_models/createuserAccount'
+import type { CreateUserAccountCommand } from '../pages/setup/_models/userAccount'
 import backendApi from '../clients/BackendApiClient'
 
 const Url = 'users'

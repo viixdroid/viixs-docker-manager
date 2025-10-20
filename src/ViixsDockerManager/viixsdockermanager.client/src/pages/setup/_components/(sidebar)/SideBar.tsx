@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import type { SetupStep } from '../../_models/setup'
+import type { SetupStepConfiguration } from '../../_models/setup'
 import { Box, Grid, styled } from '@mui/material'
 import ThemeSwitcherButton from '../../../../components/themes/ThemeSwitcherButton'
 import SetupProgress from './SetupProgress'
@@ -61,7 +61,7 @@ interface SideBarProps {
   mobileTitle: string
   footerContent: string | React.ReactNode
   currentStep: number
-  setupSteps: SetupStep[]
+  setupSteps: SetupStepConfiguration[]
 }
 
 const SideBar: FC<SideBarProps> = ({ currentStep, footerContent, mobileTitle, setupSteps, title }) => {

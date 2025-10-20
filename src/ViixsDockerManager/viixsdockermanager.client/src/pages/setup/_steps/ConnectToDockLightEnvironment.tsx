@@ -1,11 +1,12 @@
 import type { FC } from 'react'
 import type { ApiObject } from '../../../models/api-object.ts'
-import type { CreateDockLightEnvironmentCommand, InitialDockLightEnvironment } from '../_models/initialdocklightenvironment.ts'
+import type { CreateDockLightEnvironmentCommand, DockLightEnvironmentConfig } from '../_models/docklightEnvironment.ts'
 import { Alert, Button, Stack, styled, TextField, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import DockLightEnvironmentService from '../../../services/DockLightEnvironmentService.ts'
+import { GetDockLightEnvironmentConfig } from '../_models/docklightEnvironment.ts'
 
 const FormBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -20,18 +21,23 @@ const StyledAlert = styled(Alert)(({ theme }) => ({
 const ConnectToDockLightEnvironmentStep: FC = () => {
   const navigate = useNavigate()
 
-  const [initialEnvironment, setInitialEnvironment] = useState<InitialDockLightEnvironment>()
+  const [initialEnvironment, setInitialEnvironment] = useState<DockLightEnvironmentConfig>()
   const [name, setName] = useState<string>()
 
   const getPossibleDockerProtocols = async () => {
-    const response = await fetch('/api/docklightenvironments/setup/protocols')
-    const result: ApiObject<InitialDockLightEnvironment> = await response.json() // TODO: Do not assume this is always goes right and such. use service or hooks or smth.
-    if (!result.isSuccess) {
-      throw new Error(result.errors?.toString())
-    }
-    if (result.result) {
-      setInitialEnvironment(result.result)
-    }
+    const dockerProtocolQuery = new GetDockLightEnvironmentConfig()
+    const queryResult = await dockerProtocolQuery.execute()
+
+    setInitialEnvironment(queryResult)
+
+    // const response = await fetch('/api/docklightenvironments/setup/protocols')
+    // const result: ApiObject<InitialDockLightEnvironment> = await response.json() // TODO: Do not assume this is always goes right and such. use service or hooks or smth.
+    // if (!result.isSuccess) {
+    //   throw new Error(result.errors?.toString())
+    // }
+    // if (result.result) {
+    //   setInitialEnvironment(result.result)
+    // }
   }
 
   const saveNewEnvironment = async () => {
