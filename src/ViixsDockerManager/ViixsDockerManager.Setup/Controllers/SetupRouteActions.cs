@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ViixsDockerManager.Mediator;
@@ -21,9 +22,11 @@ internal static class SetupRouteActions
         builder.MapGet("/currentStep", GetCurrentSetupStep);
         builder.MapPost("/currentStep", SetCurrentSetupStep);
 
-        builder.MapGet("/protocols", GetDockLightProtocols);
+        builder.MapGet("/docklight/configuration", GetDockLightProtocols);
 
         builder.MapPost("/updateStep", UpdateStep);
+
+        builder.MapPost("/started", SetSetupStarted);
 
         builder.MapPost("/start", StartSetup);
         builder.MapPost("/createuser", CreateUserAccount);
@@ -31,6 +34,7 @@ internal static class SetupRouteActions
         builder.MapPost("/finish", FinishSetup);
         return builder;
     }
+
 
     private static Task<IsSetupDone> GetIsSetupDone([FromServices] IMediator mediator)
     {
@@ -49,7 +53,7 @@ internal static class SetupRouteActions
         return mediator.Send(query);
     }
 
-    private static Task<InitialDockerEnvironment> GetDockLightProtocols([FromServices] IMediator mediator)
+    private static Task<DockLightEnvironmentConfig> GetDockLightProtocols([FromServices] IMediator mediator)
     {
         var query = new GetPossibleDockerProtocolsQuery();
         return mediator.Send(query);
@@ -59,6 +63,10 @@ internal static class SetupRouteActions
     {
         //_ = mediator.Send(startSetupCommand);//sets current step to "Welcome"
         return mediator.Send(startSetupCommand);
+    }
+    private static Task SetSetupStarted([FromBody] SetupCommand<SetupStartedCommand> setupStartedCommand, [FromServices] IMediator mediator)
+    {
+        return mediator.Send(setupStartedCommand);
     }
 
     private static Task UpdateStep([FromBody] SetupCommand updateSetupStepCommand, [FromServices] IMediator mediator)

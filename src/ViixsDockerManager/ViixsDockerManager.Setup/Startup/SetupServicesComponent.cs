@@ -37,6 +37,9 @@ public class SetupServicesComponent(IConfiguration configuration) : ServiceCompo
     {
         services.RegisterCommandHandler<StartSetupHandler, StartSetupCommand>();
 
+        services.RegisterCommandHandler<SetupHandler<SetupStartedCommand>, SetupCommand<SetupStartedCommand>>();
+        services.RegisterCommandHandler<SetupStartedHandler, SetupStartedCommand>();
+
         services.RegisterCommandHandler<CreateUserAccountHandler, CreateFirstUserAccountCommand>();
         services.RegisterCommandHandler<SetupHandler<CreateFirstUserAccountCommand>, SetupCommand<CreateFirstUserAccountCommand>>();
 

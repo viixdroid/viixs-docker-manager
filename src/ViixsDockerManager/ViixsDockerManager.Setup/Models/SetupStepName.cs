@@ -3,12 +3,12 @@ using ViixsDockerManager.Shared.Helpers;
 
 namespace ViixsDockerManager.Setup.Models;
 
-internal record SetupStepName
+public record SetupStepName
 {
-    public static SetupStepName Welcome = new("Welcome");
-    public static SetupStepName CreateNewAccount = new("CreateNewAccount");
-    public static SetupStepName ConnectToDockLightEnvironment = new("ConnectToDockLightEnvironment");
-    public static SetupStepName Finish = new("Finish");
+    public static readonly SetupStepName Welcome = new SetupStepName("Welcome", 1, true, false);
+    public static readonly SetupStepName CreateNewAccount = new SetupStepName("CreateNewAccount", 2, false, false);
+    public static readonly SetupStepName ConnectToDockLightEnvironment = new SetupStepName("ConnectToDockLightEnvironment", 3, false, false);
+    public static readonly SetupStepName Finish = new SetupStepName("Finish", 4, false, true);
 
     private static readonly ImmutableArray<SetupStepName> _steps = [
         Welcome,
@@ -17,12 +17,18 @@ internal record SetupStepName
         Finish
     ];
 
-    private SetupStepName(string stepName)
+    private SetupStepName(string stepName, int order, bool isFirstStep, bool isLastStep)
     {
         StepName = stepName;
+        Order = order;
+        IsFirstStep = isFirstStep;
+        IsLastStep = isLastStep;
     }
 
     public string StepName { get; }
+    public int Order { get; }
+    public bool IsFirstStep { get; }
+    public bool IsLastStep { get; }
 
     public static implicit operator string(SetupStepName setupStepName)
     {

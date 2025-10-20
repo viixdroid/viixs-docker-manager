@@ -3,11 +3,12 @@ using ViixsDockerManager.Shared.Helpers;
 
 namespace ViixsDockerManager.Setup.Models.Dtos;
 
-public sealed record SetupStep(Guid SetupId, string CurrentStep)
+public sealed record SetupStep(Guid SetupId, SetupStepName CurrentStep, SetupStepName? NextStep)
 {
     public static implicit operator SetupStep(SetupState setupState)
     {
         setupState = Guard.ValueIsNotNull(setupState, nameof(setupState));
-        return new SetupStep(setupState.SetupId, setupState.CurrentStep);
+        var currentStepName = (SetupStepName)setupState.CurrentStep;
+        return new SetupStep(setupState.SetupId, currentStepName, SetupStepName.GetNextStep(currentStepName) ?? null);
     }
 }

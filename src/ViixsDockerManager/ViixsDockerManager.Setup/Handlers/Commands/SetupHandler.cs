@@ -38,8 +38,9 @@ internal sealed class SetupHandler<TCommand>(
         }
         catch
         {
-            nextStep = step;
+            //nextStep = step;
+            return;
         }
-        await sendSetupStateNotifications.SendNextSetupStepAsync(new Models.Dtos.SetupStep(setupId, nextStep!));
+        await sendSetupStateNotifications.SendNextSetupStepAsync(new Models.Dtos.SetupStep(setupId, step, nextStep!));
     }
 }

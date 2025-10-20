@@ -65,7 +65,15 @@ public class DatabaseReadRepository<TReadDbContext, TEntity>(
     {
         var queryBuilder = new DatabaseQueryBuilder<TEntity>(GetQueryable());
         queryBuilder.ApplyFilter(filter);
+        queryBuilder.ApplyOrdering([new TmpDefaultOrderStrategy<TEntity>()]);
         return await ReadUnitOfWork.GetFirstOrDefaultForQueryAsync(queryBuilder);
     }
 
+    class TmpDefaultOrderStrategy<TEntity1> : Queries.Ordering.IDatabaseOrderStrategy<TEntity1>
+            where TEntity1 : class, IEntity
+    {
+        public IQueryable<TEntity1> ApplyOrdering(IQueryable<TEntity1> query, bool isFirstOrder)
+            => query.OrderBy(e => e.Id);
+    }
 }
+
