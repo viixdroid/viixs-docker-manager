@@ -1,0 +1,3 @@
+### Get Docker configuration for setup
+
+GET {{host}}/api/setup/docklight/configuration

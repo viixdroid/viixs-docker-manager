@@ -76,14 +76,12 @@ internal static class SetupRouteActions
 
     private static Task CreateUserAccount([FromBody] SetupCommand<CreateFirstUserAccountCommand> createUserAccountCommand, [FromServices] IMediator mediator)
     {
-        //_ = mediator.Send(createUserAccountCommand);//sets curent step to CreateNewUserAccount
         return mediator.Send(createUserAccountCommand);
     }
 
     private static Task CreateDockLightEnvironment([FromBody] SetupCommand<CreateDockLightEnvironmentCommand> createDockLightEnvironmentCommand, [FromServices] IMediator mediator)
     {
-        _ = mediator.Send(createDockLightEnvironmentCommand);//sets current step to "ConnectToDocker"
-        return mediator.Send(createDockLightEnvironmentCommand.InternalCommand);
+        return mediator.Send(createDockLightEnvironmentCommand);
     }
 
     private static Task FinishSetup([FromBody] SetupCommand<FinishSetupCommand> finishSetupCommand, [FromServices] IMediator mediator)
