@@ -10,7 +10,7 @@ namespace ViixsDockerManager.DockLight.Services;
 
 internal class DockerImageService : IDockerImageService
 {
-    private IImageOperations _images;
+    private readonly IImageOperations _images;
 
     public DockerImageService(IImageOperations images) => _images = images;
 

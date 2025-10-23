@@ -10,7 +10,7 @@ namespace ViixsDockerManager.DockLight.Services;
 
 internal class DockerSystemService : IDockerSystemService
 {
-    private ISystemOperations _system;
+    private readonly ISystemOperations _system;
 
     public DockerSystemService(ISystemOperations system) => _system = system;
 
