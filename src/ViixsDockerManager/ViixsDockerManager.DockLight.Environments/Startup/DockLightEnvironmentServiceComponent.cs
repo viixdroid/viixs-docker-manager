@@ -2,14 +2,16 @@
 using Microsoft.Extensions.DependencyInjection;
 using ViixsDockerManager.DockLight.Environments.DbContexts;
 using ViixsDockerManager.DockLight.Environments.Handlers;
+using ViixsDockerManager.DockLight.Environments.Models.Commands.DockLightEnvironments;
 using ViixsDockerManager.DockLight.Environments.Models.Queries;
+using ViixsDockerManager.DockLight.Environments.Services;
 using ViixsDockerManager.DockLight.Shared.Entities;
 using ViixsDockerManager.Mediator.Extensions;
 using ViixsDockerManager.Shared.AspNet.Startup;
 using ViixsDockerManager.Shared.Database.Extensions;
 using ViixsDockerManager.Shared.Database.Models;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
-using ViixsDockerManager.Shared.Models.Commands.DockLightEnvironments;
+using ViixsDockerManager.Shared.Extensions;
 using ViixsDockerManager.Shared.Models.Queries.DockLightEnvironments;
 
 namespace ViixsDockerManager.DockLight.Environments.Startup;
@@ -23,6 +25,8 @@ public sealed class DockLightEnvironmentServiceComponent(IConfiguration configur
 
         services.AddWriteDatabaseServices<DockLightEnvironmentWriteDbContext>(configuration, migrationsHistory: new MigrationsHistory("DockLightEnvironment"));
         services.AddWriteEntityServices<DockLightEnvironmentWriteDbContext, DockLightEnvironment>();
+
+        services.AddDecoration<IDockLightEnvironmentService, DockLightEnvironmentService>();
     }
 
     protected override void ConfigureQueryHandlers(IServiceCollection services)
