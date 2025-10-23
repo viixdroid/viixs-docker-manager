@@ -1,6 +1,8 @@
 import type { ApiObject } from '../../../models/api-object'
 import type { IQuery } from '../../../models/query-model'
-import { SetupQueryService } from '../../../services/SetupServices'
+import type { SetupStepCommand } from './setupHandler'
+import SetupActionService, { SetupQueryService } from '../../../services/SetupServices'
+import { SetupStepHandler } from './setupHandler'
 
 export interface DockerProtocol {
   protocolUri: string
@@ -12,7 +14,7 @@ export interface DockLightEnvironmentConfig {
   protocol: DockerProtocol
 }
 
-export interface CreateDockLightEnvironmentCommand {
+export interface CreateDockLightEnvironmentCommand1 {
   name: string | undefined
   apiLocation: string | undefined
 }
@@ -20,9 +22,21 @@ export interface CreateDockLightEnvironmentCommand {
 export class GetDockLightEnvironmentConfig implements IQuery<DockLightEnvironmentConfig> {
   async execute(): Promise<DockLightEnvironmentConfig> {
     const result = await SetupQueryService.getPossibleDockerProtocols()
-    if (result.isSuccess && result.result) {
-      return result.result
-    }
-    throw new Error(result.errors?.toString())
+    return result
+  }
+}
+
+export class CreateDockLightEnvironmentCommand extends SetupStepHandler<CreateDockLightEnvironmentCommand> {
+  name: string
+  apiLocation: string
+
+  constructor(name: string, apiLocation: string) {
+    super()
+    this.name = name
+    this.apiLocation = apiLocation
+  }
+
+  protected executeStep(step: SetupStepCommand<CreateDockLightEnvironmentCommand>): Promise<void> {
+    return SetupActionService.createDockLightEnvironment(step)
   }
 }

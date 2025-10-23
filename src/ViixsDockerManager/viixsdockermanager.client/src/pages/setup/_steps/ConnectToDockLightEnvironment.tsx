@@ -1,12 +1,13 @@
 import type { FC } from 'react'
 import type { ApiObject } from '../../../models/api-object.ts'
-import type { CreateDockLightEnvironmentCommand, DockLightEnvironmentConfig } from '../_models/docklightEnvironment.ts'
+import type { DockLightEnvironmentConfig } from '../_models/docklightEnvironment.ts'
+import type { SetupStepOutletContext } from '../_models/setupHandler.ts'
 import { Alert, Button, Stack, styled, TextField, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate, useOutletContext } from 'react-router'
 import DockLightEnvironmentService from '../../../services/DockLightEnvironmentService.ts'
-import { GetDockLightEnvironmentConfig } from '../_models/docklightEnvironment.ts'
+import { CreateDockLightEnvironmentCommand, GetDockLightEnvironmentConfig } from '../_models/docklightEnvironment.ts'
 
 const FormBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -19,43 +20,44 @@ const StyledAlert = styled(Alert)(({ theme }) => ({
 }))
 
 const ConnectToDockLightEnvironmentStep: FC = () => {
-  const navigate = useNavigate()
+  const { onNextStepCallback } = useOutletContext<SetupStepOutletContext<CreateDockLightEnvironmentCommand>>()
 
   const [initialEnvironment, setInitialEnvironment] = useState<DockLightEnvironmentConfig>()
-  const [name, setName] = useState<string>()
+  const [protocol, setProtocol] = useState<string>('')
+  const [name, setName] = useState<string>('')
+  const nameRef = useRef(name)
+  const protocolRef = useRef(protocol)
 
   const getPossibleDockerProtocols = async () => {
     const dockerProtocolQuery = new GetDockLightEnvironmentConfig()
     const queryResult = await dockerProtocolQuery.execute()
-
+    setProtocol(queryResult.protocol.protocolUri)
     setInitialEnvironment(queryResult)
-
-    // const response = await fetch('/api/docklightenvironments/setup/protocols')
-    // const result: ApiObject<InitialDockLightEnvironment> = await response.json() // TODO: Do not assume this is always goes right and such. use service or hooks or smth.
-    // if (!result.isSuccess) {
-    //   throw new Error(result.errors?.toString())
-    // }
-    // if (result.result) {
-    //   setInitialEnvironment(result.result)
-    // }
   }
 
-  const saveNewEnvironment = async () => {
-    const command: CreateDockLightEnvironmentCommand = {
-      name,
-      apiLocation: initialEnvironment?.protocol.protocolUri,
-    }
-
-    try {
-      await DockLightEnvironmentService.createDockLightEnvironment(command)
-      navigate('/')
-    }
-    catch (err) {
-      console.error(err)
-    }
+  const saveNewEnvironment = (): CreateDockLightEnvironmentCommand => {
+    return new CreateDockLightEnvironmentCommand(nameRef.current, protocolRef.current)
   }
   useEffect(() => {
     void getPossibleDockerProtocols()
+  }, [])
+
+  useEffect(() => {
+    protocolRef.current = protocol
+  }, [protocol])
+
+  useEffect(() => {
+    nameRef.current = name
+  }, [name])
+
+  useEffect(() => {
+    // Register a function once, on mount
+    onNextStepCallback(() => saveNewEnvironment())
+
+    return () => {
+      // Clean up when unmounting
+      onNextStepCallback(() => undefined)
+    }
   }, [])
 
   return (
@@ -70,6 +72,12 @@ const ConnectToDockLightEnvironmentStep: FC = () => {
               {initialEnvironment?.environment}
             </Box>
             {initialEnvironment?.isRunningInDocker ? ' in docker.' : '.'}
+            <br />
+            <br />
+            {'We will connect to Docker using: '}
+            <Box component="span" sx={{ fontWeight: 'bold' }}>
+              {initialEnvironment?.protocol.protocolUri}
+            </Box>
           </StyledAlert>
           <TextField
             fullWidth
@@ -80,19 +88,6 @@ const ConnectToDockLightEnvironmentStep: FC = () => {
             value={name}
             onChange={e => setName(e.target.value)}
           />
-
-          <TextField
-            label="Docker API Endpoint"
-            id="connection"
-            fullWidth
-            defaultValue={initialEnvironment?.protocol.protocolUri ?? ''}
-            slotProps={{
-              input: {
-                readOnly: true,
-              },
-            }}
-          />
-
         </Stack>
       </FormBox>
 

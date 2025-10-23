@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react'
 import type { ICommand } from '../../../models/command-model'
+import type { SetupStepCommand } from './setupHandler'
 import SetupActionService from '../../../services/SetupServices'
 import ConnectToDockLightEnvironmentStep from '../_steps/ConnectToDockLightEnvironment'
 import CreateNewAccountStep from '../_steps/CreateNewAccountStep'
-import { SetupStep, SetupStepHandler } from './setupHandler'
+import { SetupStepHandler } from './setupHandler'
 
 export type SetupStepNameStrings = 'Welcome' | 'CreateNewAccount' | 'ConnectToDockLightEnvironment' | 'Finish'
 
@@ -25,7 +26,6 @@ export interface SetupStepName {
 export interface SetupStep {
   setupId: string
   currentStep: SetupStepName
-  nextStep: SetupStepName
 }
 
 export const SetupSteps: SetupStepConfiguration[] = [
@@ -79,7 +79,7 @@ export class SetupStartedCommand extends SetupStepHandler<SetupStartedCommand> {
     this.setupId = setupId
   }
 
-  protected executeStep(step: SetupStep<SetupStartedCommand>): Promise<void> {
+  protected executeStep(step: SetupStepCommand<SetupStartedCommand>): Promise<void> {
     return SetupActionService.setupStarted(step)
   }
 }

@@ -1,7 +1,6 @@
-import type { ApiObject } from '../models/api-object'
-import type { DockLightEnvironmentConfig, GetDockLightEnvironmentConfig } from '../pages/setup/_models/docklightEnvironment'
+import type { CreateDockLightEnvironmentCommand, DockLightEnvironmentConfig } from '../pages/setup/_models/docklightEnvironment'
 import type { SetupStartedCommand, StartSetupCommand } from '../pages/setup/_models/setup'
-import type { SetupStep } from '../pages/setup/_models/setupHandler'
+import type { SetupStepCommand } from '../pages/setup/_models/setupHandler'
 import type { CreateUserAccountCommand } from '../pages/setup/_models/userAccount'
 import backendApi from '../clients/BackendApiClient'
 
@@ -10,12 +9,13 @@ const QueryUrl = (query: string) => `setup/${query}`
 
 const SetupActionService = {
   startSetup: (startSetupCommand: StartSetupCommand): Promise<void> => backendApi.post(ActionUrl('start'), { json: startSetupCommand }),
-  setupStarted: (setupStartedCommand: SetupStep<SetupStartedCommand>): Promise<void> => backendApi.post(ActionUrl('started'), { json: setupStartedCommand }),
-  createUser: (createUserCommand: SetupStep<CreateUserAccountCommand>): Promise<void> => backendApi.post(ActionUrl('createuser'), { json: createUserCommand }),
+  setupStarted: (setupStartedCommand: SetupStepCommand<SetupStartedCommand>): Promise<void> => backendApi.post(ActionUrl('started'), { json: setupStartedCommand }),
+  createUser: (createUserCommand: SetupStepCommand<CreateUserAccountCommand>): Promise<void> => backendApi.post(ActionUrl('createuser'), { json: createUserCommand }),
+  createDockLightEnvironment: (createDockLightEnvironmentCommand: SetupStepCommand<CreateDockLightEnvironmentCommand>): Promise<void> => backendApi.post(ActionUrl('createdocklightenvironment'), { json: createDockLightEnvironmentCommand }),
 }
 
 const SetupQueryService = {
-  getPossibleDockerProtocols: (): Promise<ApiObject<DockLightEnvironmentConfig>> => backendApi.get(QueryUrl('docklight/configuration')),
+  getPossibleDockerProtocols: (): Promise<DockLightEnvironmentConfig> => backendApi.get(QueryUrl('docklight/configuration')),
 }
 
 export default SetupActionService

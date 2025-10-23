@@ -1,4 +1,4 @@
-import type { SetupStep } from './setupHandler'
+import type { SetupStepCommand } from './setupHandler'
 import SetupActionService from '../../../services/SetupServices'
 import { SetupStepHandler } from './setupHandler'
 
@@ -12,7 +12,7 @@ export class CreateUserAccountCommand extends SetupStepHandler<CreateUserAccount
     this.password = password
   }
 
-  protected executeStep(step: SetupStep<CreateUserAccountCommand>): Promise<void> {
+  protected executeStep(step: SetupStepCommand<CreateUserAccountCommand>): Promise<void> {
     return SetupActionService.createUser(step)
   }
 }

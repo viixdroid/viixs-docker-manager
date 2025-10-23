@@ -6,9 +6,9 @@ export interface SetupStepOutletContext<TCommand extends SetupStepHandler<TComma
 }
 
 export abstract class SetupStepHandler<TSelf extends SetupStepHandler<TSelf>> implements ICommand {
-  protected abstract executeStep(step: SetupStep<TSelf>): Promise<void>
+  protected abstract executeStep(step: SetupStepCommand<TSelf>): Promise<void>
 
-  executeWithSetup(step: SetupStep<TSelf>): Promise<void> {
+  executeWithSetup(step: SetupStepCommand<TSelf>): Promise<void> {
     return this.executeStep(step)
   }
 
@@ -17,7 +17,7 @@ export abstract class SetupStepHandler<TSelf extends SetupStepHandler<TSelf>> im
   }
 }
 
-export class SetupStep<TInternalCommand extends SetupStepHandler<TInternalCommand>> implements ICommand {
+export class SetupStepCommand<TInternalCommand extends SetupStepHandler<TInternalCommand>> implements ICommand {
   setupId: string
   internalCommand: TInternalCommand
   currentSetupStepName: string

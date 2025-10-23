@@ -125,12 +125,13 @@ const SetupLayout: FC<SetupLayoutProps> = () => {
         }
       }
       if (setupStep) {
-        console.log(`Current Step: ${setupStep.currentStep.stepName}, Next Step: ${setupStep.nextStep.stepName}`)
-        if (setupStep.nextStep.isLastStep) {
+        console.log(`Current Step: ${setupStep.currentStep.stepName}`)
+        if (setupStep.currentStep.isLastStep) {
+          connection?.stop()
           navigate(`/environments`)
         }
         else if (setupStep.currentStep.isFirstStep) {
-          console.log(`${setupStep.currentStep.stepName} + ${setupStep.nextStep.stepName} + ${setupStep.currentStep.isFirstStep}`)
+          console.log(`${setupStep.currentStep.stepName} + ${setupStep.currentStep.isFirstStep}`)
 
           const setupStartedCommand = SetupStepFactory.createSetupCommand(setupId!, setupStep?.currentStep.stepName ?? 'Welcome', new SetupStartedCommand(setupId!))
           await setupStartedCommand.execute()
@@ -177,15 +178,16 @@ const SetupLayout: FC<SetupLayoutProps> = () => {
   useEffect(() => {
     if (connection) {
       connection.on('OnSetupStarted', (setupStep: SetupStep) => {
-        console.log(`${setupStep.setupId} + ${setupStep.currentStep.stepName} + ${setupStep.nextStep.stepName}`)
+        console.log(`${setupStep.setupId} + ${setupStep.currentStep.stepName}`)
         setSetupId(setupStep.setupId)
         setSetupStep(setupStep)
+        connection.off('OnSetupStarted')
       })
       connection.on('OnNextSetupStep', (nextSetupStep: SetupStep) => {
-        console.log(`Next step: ${nextSetupStep.nextStep.stepName}`)
+        console.log(`Next step: ${nextSetupStep.currentStep.stepName}`)
         setSetupStep(nextSetupStep)
-        if (setupStep?.currentStep.order !== nextSetupStep.nextStep.order) {
-          navigateStep(nextSetupStep.nextStep)
+        if (setupStep?.currentStep.order !== nextSetupStep.currentStep.order) {
+          navigateStep(nextSetupStep.currentStep)
         }
         // if (setupStep?.currentStep.order === nextSetupStep.currentStep.order) {
         //   console.log('Step orders are the same, not navigating.')
