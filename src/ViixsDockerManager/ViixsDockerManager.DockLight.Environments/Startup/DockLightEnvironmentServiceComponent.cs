@@ -13,6 +13,7 @@ using ViixsDockerManager.Shared.Database.Models;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
 using ViixsDockerManager.Shared.Models.Queries.DockLightEnvironments;
+using ViixsDockerManager.Shared.Services;
 
 namespace ViixsDockerManager.DockLight.Environments.Startup;
 
@@ -27,6 +28,7 @@ public sealed class DockLightEnvironmentServiceComponent(IConfiguration configur
         services.AddWriteEntityServices<DockLightEnvironmentWriteDbContext, DockLightEnvironment>();
 
         services.AddDecoration<IDockLightEnvironmentService, DockLightEnvironmentService>();
+        services.AddDecoration<ISharedDockLightEnvironmentService, DockLightEnvironmentService>();
     }
 
     protected override void ConfigureQueryHandlers(IServiceCollection services)

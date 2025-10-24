@@ -2,7 +2,7 @@
 
 namespace ViixsDockerManager.Shared.Services;
 
-public interface ISharedDockLightEnvironmentService
+public interface ISharedDockLightEnvironmentService : IViixsBaseService
 {
     Task CreateDockLightEnvironment(ICreateDockLightEnvironmentCommand createDockLightEnvironmentCommand);
 }
