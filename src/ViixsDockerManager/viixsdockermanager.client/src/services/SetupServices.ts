@@ -1,5 +1,6 @@
+import type { IsSetupFinished } from '../pages/_models/setup'
 import type { CreateDockLightEnvironmentCommand, DockLightEnvironmentConfig } from '../pages/setup/_models/docklightEnvironment'
-import type { SetupStartedCommand, StartSetupCommand } from '../pages/setup/_models/setup'
+import type { FinishSetupCommand, SetupStartedCommand, StartSetupCommand } from '../pages/setup/_models/setup'
 import type { SetupStepCommand } from '../pages/setup/_models/setupHandler'
 import type { CreateUserAccountCommand } from '../pages/setup/_models/userAccount'
 import backendApi from '../clients/BackendApiClient'
@@ -12,9 +13,11 @@ const SetupActionService = {
   setupStarted: (setupStartedCommand: SetupStepCommand<SetupStartedCommand>): Promise<void> => backendApi.post(ActionUrl('started'), { json: setupStartedCommand }),
   createUser: (createUserCommand: SetupStepCommand<CreateUserAccountCommand>): Promise<void> => backendApi.post(ActionUrl('createuser'), { json: createUserCommand }),
   createDockLightEnvironment: (createDockLightEnvironmentCommand: SetupStepCommand<CreateDockLightEnvironmentCommand>): Promise<void> => backendApi.post(ActionUrl('createdocklightenvironment'), { json: createDockLightEnvironmentCommand }),
+  finishSetup: (finishSetupCommand: FinishSetupCommand): Promise<void> => backendApi.post(ActionUrl('finish'), { json: finishSetupCommand }),
 }
 
 const SetupQueryService = {
+  isSetupFinished: (): Promise<IsSetupFinished> => backendApi.get(QueryUrl('issetupfinished')),
   getPossibleDockerProtocols: (): Promise<DockLightEnvironmentConfig> => backendApi.get(QueryUrl('docklight/configuration')),
 }
 

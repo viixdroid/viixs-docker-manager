@@ -10,11 +10,11 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
   borderTop: `1px solid ${theme.palette.divider}`,
 }))
 
-const BackButton = styled(Button)(() => ({
-  paddingLeft: 32,
-  paddingRight: 32,
-  minWidth: 120,
-}))
+// const BackButton = styled(Button)(() => ({
+//   paddingLeft: 32,
+//   paddingRight: 32,
+//   minWidth: 120,
+// }))
 
 const NextButton = styled(Button)({
   paddingLeft: 32,
@@ -23,23 +23,23 @@ const NextButton = styled(Button)({
 })
 
 interface NavigationButtonsProps {
-  handleBack: () => void
+  // handleBack: () => void
   handleNext: () => void
-  isFirstStep: boolean
+  // isFirstStep: boolean
   isLastStep: boolean
   isNextStepLoading?: boolean
 }
 
 const NavigationButtons: FC<NavigationButtonsProps> = ({
-  handleBack,
+  // handleBack,
   handleNext,
-  isFirstStep,
+  // isFirstStep,
   isLastStep,
   isNextStepLoading,
 }) => {
   return (
     <ButtonContainer>
-      {isFirstStep
+      {/* {isFirstStep
         ? null
         : (
             <BackButton
@@ -50,7 +50,7 @@ const NavigationButtons: FC<NavigationButtonsProps> = ({
             >
               Back
             </BackButton>
-          )}
+          )} */}
 
       <NextButton
         variant="contained"

@@ -182,12 +182,12 @@ const DockLightLayout: FC = () => {
         sx={{ flexGrow: 1, p: 3 }}
       >
         <Toolbar />
-        <WebSocketProvider
+        {/* <WebSocketProvider
           endpoint="docklight"
         // queryParams={{ environmentId: environment?.environmentId || '' }}
-        >
-          <Outlet />
-        </WebSocketProvider>
+        > */}
+        <Outlet />
+        {/* </WebSocketProvider> */}
       </Box>
 
       <DrawerToggleButton
@@ -195,7 +195,7 @@ const DockLightLayout: FC = () => {
         handleToggle={() => setOpen(!open)}
         drawerWidth={drawerWidth}
       />
-      {/* </EnvironmentProvider> */ }
+      {/* </EnvironmentProvider> */}
     </Box>
   )
 }

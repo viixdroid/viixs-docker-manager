@@ -30,27 +30,27 @@ export interface SetupStep {
 
 export const SetupSteps: SetupStepConfiguration[] = [
   {
-    stepOrder: 1,
+    stepOrder: 0,
     stepName: 'Welcome',
     title: 'Welcome!',
     description: 'In the following steps you will setup Viixs Docker Manager',
   },
   {
-    stepOrder: 2,
+    stepOrder: 1,
     stepName: 'CreateNewAccount',
     title: 'Create account',
     description: 'Create your user account to get started with Viixs Docker Manager.',
     component: <CreateNewAccountStep />,
   },
   {
-    stepOrder: 3,
+    stepOrder: 2,
     stepName: 'ConnectToDockLightEnvironment',
     title: 'Connect to Docker',
     description: 'Connect to your local Docker to start managing your containers.',
     component: <ConnectToDockLightEnvironmentStep />,
   },
   {
-    stepOrder: 4,
+    stepOrder: 3,
     stepName: 'Finish',
     title: 'Finished!',
     description: 'You are all set! Click finish to complete this setup and start using Viixs Docker Manager.',
@@ -84,53 +84,14 @@ export class SetupStartedCommand extends SetupStepHandler<SetupStartedCommand> {
   }
 }
 
-// export class SetupCommand2 implements ICommand {
-//   setupId: string
-//   internalCommand: ICommand
+export class FinishSetupCommand implements ICommand {
+  setupId: string
 
-//   constructor(setupId: string, internalCommand: ICommand) {
-//     this.setupId = setupId
-//     this.internalCommand = internalCommand
-//   }
+  constructor(setupId: string) {
+    this.setupId = setupId
+  }
 
-//   execute(): Promise<void> {
-//     return SetupActionService.executeStep2(this)
-//   }
-// }
-
-// export class SetupCommand<TInternalCommand> implements ICommand {
-//   setupId: string
-//   internalCommand: TInternalCommand
-
-//   constructor(setupId: string, internalCommand: TInternalCommand) {
-//     this.internalCommand = internalCommand
-//     this.setupId = setupId
-//   }
-
-//   execute(): Promise<void> {
-//     return SetupActionService.executeStep(this)
-//   }
-// }
-
-// export abstract class BaseSetupCommand<TInternalCommand> implements ICommand {
-//   command: SetupCommand<TInternalCommand>
-
-//   constructor(command: SetupCommand<TInternalCommand>) {
-//     this.command = command
-//   }
-
-//   protected abstract executeCommand(command: SetupCommand<TInternalCommand>): Promise<void>
-
-//   execute(): Promise<void> {
-//     return this.executeCommand(this.command)
-//   }
-// }
-
-// export abstract class BaseSetupCommandG<TInternalCommand extends ICommand> extends SetupCommand<TInternalCommand> {
-//   abstract url: string
-//   abstract executeInteral(command: BaseSetupCommand<TInternalCommand>): Promise<void>
-
-//   public execute(): Promise<void> {
-//     return this.executeInteral(this)
-//   }
-// }
+  execute(): Promise<void> {
+    return SetupActionService.finishSetup(this)
+  }
+}

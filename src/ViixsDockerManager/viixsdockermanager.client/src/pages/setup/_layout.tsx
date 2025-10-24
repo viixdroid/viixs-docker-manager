@@ -1,17 +1,15 @@
 import type { FC } from 'react'
-import type { WebSocketClient } from '../../clients/WebSocketClient'
-import type { SetupStep, SetupStepConfiguration, SetupStepName, SetupStepNameStrings } from './_models/setup'
+import type { SetupStep, SetupStepName } from './_models/setup'
 import type { SetupStepHandler, SetupStepOutletContext } from './_models/setupHandler'
 import type { CreateUserAccountCommand } from './_models/userAccount'
 import { Box, Grid, styled } from '@mui/material'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useNavigate, useSearchParams } from 'react-router'
-import { WebSocketClientManager } from '../../clients/managers/WebSocketClientManager'
 import WebSocketProvider, { useWebSocketContext } from '../../components/providers/WebSocketHubProvider'
 import NavigationButtons from './_components/(navigation)/NavigationButtons'
 import SideBar from './_components/(sidebar)/SideBar'
 import { SetupStepFactory } from './_factories/setupStepFactory'
-import { SetupStartedCommand, SetupSteps, StartSetupCommand } from './_models/setup'
+import { FinishSetupCommand, SetupStartedCommand, SetupSteps, StartSetupCommand } from './_models/setup'
 
 type SetupStepCommands
   = | CreateUserAccountCommand
@@ -61,13 +59,11 @@ const SetupLayout: FC<SetupLayoutProps> = () => {
 
   const [isNextStepLoading, setIsNextStepLoading] = useState<boolean>(false)
 
-  const [webSocketClientManager] = useState<WebSocketClientManager>(new WebSocketClientManager())
-  const [webSocketClient, setWebSocketClient] = useState<WebSocketClient>()
   const { connection } = useWebSocketContext()
   const [setupId, setSetupId] = useState<string>()
   const [setupStep, setSetupStep] = useState<SetupStep>()
 
-  const isLastStep = () => currentStepId === SetupSteps[SetupSteps.length - 1].stepOrder
+  // const isLastStep = () => currentStepId === SetupSteps[SetupSteps.length - 1].stepOrder
   // const theme = useTheme()
   // const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -98,17 +94,17 @@ const SetupLayout: FC<SetupLayoutProps> = () => {
   const navigateStep = (setupStepName: SetupStepName) => {
     navigate(`/setup?step=${setupStepName.stepName}`)
   }
-  const handleBack = () => {
-    // get previous step name and navigate to it.
-    // maybe save it in a state?
+  // const handleBack = () => {
+  //   // get previous step name and navigate to it.
+  //   // maybe save it in a state?
 
-    const previousStepId = currentStepId - 1
-    const previousStepName = SetupSteps.find(s => s.stepOrder === previousStepId)?.stepName
-    if (previousStepName === undefined) {
-      return
-    }
-    navigateStep(previousStepName)
-  }
+  //   const previousStepId = currentStepId - 1
+  //   const previousStepName = SetupSteps.find(s => s.stepOrder === previousStepId)?.stepName
+  //   if (previousStepName === undefined) {
+  //     return
+  //   }
+  //   navigateStep(previousStepName)
+  // }
 
   const handleNext = async () => {
     if (isNextStepLoading) {
@@ -119,19 +115,21 @@ const SetupLayout: FC<SetupLayoutProps> = () => {
       if (onNextStepCallback) {
         const stepCommand = onNextStepCallback()
         if (stepCommand) {
-          console.log(`Current setupStepname? : ${setupStep?.currentStep.stepName}`)
+          // console.log(`Current setupStepname? : ${setupStep?.currentStep.stepName}`)
           const setupCommand = SetupStepFactory.createSetupCommand(setupId!, setupStep?.currentStep.stepName ?? '', stepCommand) // TODO: Actually handle correct step name
           await setupCommand.execute()
         }
       }
       if (setupStep) {
-        console.log(`Current Step: ${setupStep.currentStep.stepName}`)
+        // console.log(`Current Step: ${setupStep.currentStep.stepName}`)
         if (setupStep.currentStep.isLastStep) {
           connection?.stop()
+          const finishSetupCommand = new FinishSetupCommand(setupId!)
+          await finishSetupCommand.execute()
           navigate(`/environments`)
         }
         else if (setupStep.currentStep.isFirstStep) {
-          console.log(`${setupStep.currentStep.stepName} + ${setupStep.currentStep.isFirstStep}`)
+          // console.log(`${setupStep.currentStep.stepName} + ${setupStep.currentStep.isFirstStep}`)
 
           const setupStartedCommand = SetupStepFactory.createSetupCommand(setupId!, setupStep?.currentStep.stepName ?? 'Welcome', new SetupStartedCommand(setupId!))
           await setupStartedCommand.execute()
@@ -161,7 +159,7 @@ const SetupLayout: FC<SetupLayoutProps> = () => {
 
   useEffect(() => {
     if (connection) {
-      console.log(connection.connectionId)
+      // console.log(connection.connectionId)
       const command = new StartSetupCommand(connection.connectionId!)
       command.execute()
     }
@@ -178,13 +176,13 @@ const SetupLayout: FC<SetupLayoutProps> = () => {
   useEffect(() => {
     if (connection) {
       connection.on('OnSetupStarted', (setupStep: SetupStep) => {
-        console.log(`${setupStep.setupId} + ${setupStep.currentStep.stepName}`)
+        // console.log(`${setupStep.setupId} + ${setupStep.currentStep.stepName}`)
         setSetupId(setupStep.setupId)
         setSetupStep(setupStep)
         connection.off('OnSetupStarted')
       })
       connection.on('OnNextSetupStep', (nextSetupStep: SetupStep) => {
-        console.log(`Next step: ${nextSetupStep.currentStep.stepName}`)
+        // console.log(`Next step: ${nextSetupStep.currentStep.stepName}`)
         setSetupStep(nextSetupStep)
         if (setupStep?.currentStep.order !== nextSetupStep.currentStep.order) {
           navigateStep(nextSetupStep.currentStep)
@@ -235,16 +233,16 @@ const SetupLayout: FC<SetupLayoutProps> = () => {
               {setupId}
             </>
           )}
-          currentStep={currentStepId}
+          currentStep={setupStep?.currentStep.order || 0}
           setupSteps={SetupSteps}
         />
         <SetupContentContainer flexGrow={1} size={{ xs: 12, md: 9 }}>
           <SetupFormContainer>
             <Outlet context={outletContext} />
             <NavigationButtons
-              isFirstStep={setupStep?.currentStep.isFirstStep || false}
+              // isFirstStep={setupStep?.currentStep.isFirstStep || false}
               isLastStep={setupStep?.currentStep.isLastStep || false}
-              handleBack={handleBack}
+              // handleBack={() => { }}
               handleNext={handleNext}
               isNextStepLoading={isNextStepLoading}
             />

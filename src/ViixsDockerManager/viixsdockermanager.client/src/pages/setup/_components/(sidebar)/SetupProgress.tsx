@@ -84,13 +84,13 @@ const ProgessStepper = styled(Stepper)(({ theme }) => ({
   },
 }))
 
-const ClickableStepLabel = styled(StepLabel)(() => ({
-  'cursor': 'pointer',
-  '&:hover': {
-    cursor: 'pointer',
-  },
+// const ClickableStepLabel = styled(StepLabel)(() => ({
+//   'cursor': 'pointer',
+//   '&:hover': {
+//     cursor: 'pointer',
+//   },
 
-}))
+// }))
 
 interface SetupProgressProps {
   currentStep: number
@@ -98,7 +98,7 @@ interface SetupProgressProps {
 }
 
 const SetupProgress: FC<SetupProgressProps> = ({ currentStep, setupSteps }) => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -107,15 +107,16 @@ const SetupProgress: FC<SetupProgressProps> = ({ currentStep, setupSteps }) => {
       <ProgressTitle variant="subtitle2">Your progress</ProgressTitle>
       {isMobile && (
         <MobileProgressText>
-          {`${setupSteps[currentStep].title} - Step ${currentStep + 1} of ${setupSteps.length}`}
+          {`${setupSteps[currentStep].title} - Step ${setupSteps[currentStep].stepOrder} of ${setupSteps.length}`}
         </MobileProgressText>
       )}
       <ProgessStepper activeStep={currentStep} orientation={isMobile ? 'horizontal' : 'vertical'}>
         {setupSteps.map(step => (
           <Step key={step.stepOrder}>
-            <ClickableStepLabel onClick={() => navigate(`/setup?step=${step.stepName}`)}>
+            <StepLabel>
+              {/* onClick={() => navigate(`/setup?step=${step.stepName}`)}> */}
               {step.title}
-            </ClickableStepLabel>
+            </StepLabel>
           </Step>
         ))}
       </ProgessStepper>
