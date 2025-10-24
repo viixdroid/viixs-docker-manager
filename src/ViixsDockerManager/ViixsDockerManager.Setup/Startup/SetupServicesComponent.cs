@@ -4,8 +4,10 @@ using ViixsDockerManager.Mediator.Extensions;
 using ViixsDockerManager.Setup.Controllers.Hubs;
 using ViixsDockerManager.Setup.DbContexts;
 using ViixsDockerManager.Setup.Handlers.Commands;
+using ViixsDockerManager.Setup.Handlers.Queries;
 using ViixsDockerManager.Setup.Models.Commands;
 using ViixsDockerManager.Setup.Models.Entities;
+using ViixsDockerManager.Setup.Models.Queries;
 using ViixsDockerManager.Setup.Services;
 using ViixsDockerManager.Setup.Services.Interfaces;
 using ViixsDockerManager.Shared.AspNet.Startup;
@@ -13,7 +15,6 @@ using ViixsDockerManager.Shared.Database.Extensions;
 using ViixsDockerManager.Shared.Database.Models;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
-using ViixsDockerManager.Shared.Models.Commands.DockLightEnvironments;
 using ViixsDockerManager.Shared.WebSockets;
 using ViixsDockerManager.Shared.WebSockets.Interfaces;
 
@@ -31,6 +32,13 @@ public class SetupServicesComponent(IConfiguration configuration) : ServiceCompo
 
         services.AddDecoration<ISendSetupStateNotifications, SendSetupStateNotifications>();
         services.AddSingleton<IConnectionRegistery<SetupInformationHub>, ConnectionRegistery<SetupInformationHub>>();
+
+        services.AddDecoration<ISetupService, SetupService>();
+    }
+
+    protected override void ConfigureQueryHandlers(IServiceCollection services)
+    {
+        services.RegisterQueryHandler<IsSetupFinishedHandler, IsSetupFinishedQuery>();
     }
 
     protected override void ConfigureCommandHandlers(IServiceCollection services)
@@ -43,7 +51,9 @@ public class SetupServicesComponent(IConfiguration configuration) : ServiceCompo
         services.RegisterCommandHandler<CreateUserAccountHandler, CreateFirstUserAccountCommand>();
         services.RegisterCommandHandler<SetupHandler<CreateFirstUserAccountCommand>, SetupCommand<CreateFirstUserAccountCommand>>();
 
-        //services.RegisterCommandHandler<CreateDockLightEnvironmentHandler, CreateDockLightEnvironmentCommand>();
-        services.RegisterCommandHandler<SetupHandler<CreateDockLightEnvironmentCommand>, SetupCommand<CreateDockLightEnvironmentCommand>>();
+        services.RegisterCommandHandler<CreateFirstDockLightEnvironmentHandler, CreateFirstDockLightEnvironmentCommand>();
+        services.RegisterCommandHandler<SetupHandler<CreateFirstDockLightEnvironmentCommand>, SetupCommand<CreateFirstDockLightEnvironmentCommand>>();
+
+        services.RegisterCommandHandler<FinishSetupHandler, FinishSetupCommand>();
     }
 }

@@ -17,7 +17,7 @@ internal static class SetupRouteActions
 {
     public static RouteGroupBuilder MapSetupRouteActions(this RouteGroupBuilder builder)
     {
-        builder.MapGet("/issetupdone", GetIsSetupDone);
+        builder.MapGet("/issetupfinished", GetIsSetupDone);
 
         builder.MapGet("/currentStep", GetCurrentSetupStep);
         builder.MapPost("/currentStep", SetCurrentSetupStep);
@@ -36,9 +36,9 @@ internal static class SetupRouteActions
     }
 
 
-    private static Task<IsSetupDone> GetIsSetupDone([FromServices] IMediator mediator)
+    private static Task<IsSetupFinished> GetIsSetupDone([FromServices] IMediator mediator)
     {
-        var query = new IsSetupDoneQuery();
+        var query = new IsSetupFinishedQuery();
         return mediator.Send(query);
     }
 
@@ -79,14 +79,13 @@ internal static class SetupRouteActions
         return mediator.Send(createUserAccountCommand);
     }
 
-    private static Task CreateDockLightEnvironment([FromBody] SetupCommand<CreateDockLightEnvironmentCommand> createDockLightEnvironmentCommand, [FromServices] IMediator mediator)
+    private static Task CreateDockLightEnvironment([FromBody] SetupCommand<CreateFirstDockLightEnvironmentCommand> createDockLightEnvironmentCommand, [FromServices] IMediator mediator)
     {
         return mediator.Send(createDockLightEnvironmentCommand);
     }
 
-    private static Task FinishSetup([FromBody] SetupCommand<FinishSetupCommand> finishSetupCommand, [FromServices] IMediator mediator)
-    {
-        _ = mediator.Send(finishSetupCommand);//Sets current step to finished and sets setup to finished
-        return mediator.Send(finishSetupCommand.InternalCommand);
+    private static Task FinishSetup([FromBody] FinishSetupCommand finishSetupCommand, [FromServices] IMediator mediator)
+    {        
+        return mediator.Send(finishSetupCommand);
     }
 }

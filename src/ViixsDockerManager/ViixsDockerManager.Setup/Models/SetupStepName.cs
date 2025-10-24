@@ -5,10 +5,10 @@ namespace ViixsDockerManager.Setup.Models;
 
 public record SetupStepName
 {
-    public static readonly SetupStepName Welcome = new SetupStepName("Welcome", 1, true, false);
-    public static readonly SetupStepName CreateNewAccount = new SetupStepName("CreateNewAccount", 2, false, false);
-    public static readonly SetupStepName ConnectToDockLightEnvironment = new SetupStepName("ConnectToDockLightEnvironment", 3, false, false);
-    public static readonly SetupStepName Finish = new SetupStepName("Finish", 4, false, true);
+    public static readonly SetupStepName Welcome = new SetupStepName("Welcome", 0, true, false);
+    public static readonly SetupStepName CreateNewAccount = new SetupStepName("CreateNewAccount", 1, false, false);
+    public static readonly SetupStepName ConnectToDockLightEnvironment = new SetupStepName("ConnectToDockLightEnvironment", 2, false, false);
+    public static readonly SetupStepName Finish = new SetupStepName("Finish", 3, false, true);
 
     private static readonly ImmutableArray<SetupStepName> _steps = [
         Welcome,

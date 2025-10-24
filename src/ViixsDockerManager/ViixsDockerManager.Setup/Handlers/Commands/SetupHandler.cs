@@ -3,8 +3,10 @@ using ViixsDockerManager.Mediator.Commands;
 using ViixsDockerManager.Setup.Exceptions;
 using ViixsDockerManager.Setup.Models;
 using ViixsDockerManager.Setup.Models.Commands;
+using ViixsDockerManager.Setup.Models.Dtos;
 using ViixsDockerManager.Setup.Models.Entities;
 using ViixsDockerManager.Setup.Models.Entities.Filters;
+using ViixsDockerManager.Setup.Services;
 using ViixsDockerManager.Setup.Services.Interfaces;
 using ViixsDockerManager.Shared.Database.Repositories;
 using ViixsDockerManager.Shared.Helpers;
@@ -13,7 +15,7 @@ using ViixsDockerManager.Shared.Models.Commands.Users;
 namespace ViixsDockerManager.Setup.Handlers.Commands;
 
 internal sealed class SetupHandler<TCommand>(
-    IDatabaseReadRepository<SetupState> setupStateReadRepository,
+    ISetupService setupService,
     ISendSetupStateNotifications sendSetupStateNotifications,
     IMediator mediator
     ) : ICommandHandler<SetupCommand<TCommand>>
@@ -21,16 +23,9 @@ internal sealed class SetupHandler<TCommand>(
 {
     public async Task Handle(SetupCommand<TCommand> command, CancellationToken cancellationToken = default)
     {
-        var setupId = Guard.ValueIsNotNull(command.SetupId, nameof(command.SetupId));
-        var currentStep = await setupStateReadRepository.GetByFilterAsync(new GetStateBySetupIdFilter(setupId));
-
-        if (currentStep is null)
-        {
-            throw new SetupIdDoesNotExistException(setupId);
-        }
-
         var step = (SetupStepName)command.CurrentSetupStepName;
         var nextStep = SetupStepName.GetNextStep(step);
+        var currentSetupState = await setupService.GetSetupStateBySetupId(command.SetupId);
 
         try
         {
@@ -40,6 +35,9 @@ internal sealed class SetupHandler<TCommand>(
         {
             nextStep = step;
         }
-        await sendSetupStateNotifications.SendNextSetupStepAsync(new Models.Dtos.SetupStep(setupId, nextStep!));
+
+        currentSetupState.UpdateSetupState(step, nextStep!);        
+        await setupService.UpdateSetupState(currentSetupState);
+        await sendSetupStateNotifications.SendNextSetupStepAsync(new SetupStep(currentSetupState.SetupId, nextStep!));
     }
 }
