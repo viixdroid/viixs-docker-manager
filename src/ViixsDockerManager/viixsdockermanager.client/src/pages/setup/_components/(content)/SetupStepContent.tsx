@@ -45,7 +45,7 @@ const SetupStepContent: FC<SetupStepProps> = ({ step }) => {
               {step.title}
             </TitleContent>
           </Title>
-          <Typography variant="body1" color="text.primary">
+          <Typography variant="body1" color="text.primary" style={{ whiteSpace: 'pre-line' }}>
             {step.description}
           </Typography>
         </TitleSection>
