@@ -10,16 +10,16 @@ import DockLightEnvironmentService from '../../services/DockLightEnvironmentServ
 const EnvironmentListPage: FC = () => {
   const { chooseEnvironment } = useEnvironment()
   const navigate = useNavigate()
-  const { connect } = useDockLightHub()
+  // const { connect } = useDockLightHub()
 
   const [environments, setEnvironments] = useState<DockLightEnvironment[]>([])
 
-  const connectWebSocket = async (environmentId: string) => {
-    await connect(environmentId)
-  }
+  // const connectWebSocket = async (environmentId: string) => {
+  //   await connect(environmentId)
+  // }
 
   const navigateToContainers = (environment: DockLightEnvironment) => {
-    connectWebSocket(environment.environmentId)
+    // connectWebSocket(environment.environmentId)
     chooseEnvironment(environment)
   }
 

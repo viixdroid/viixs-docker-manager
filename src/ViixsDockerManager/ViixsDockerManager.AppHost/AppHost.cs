@@ -17,7 +17,8 @@ var backend = builder.AddProject<Projects.ViixsDockerManager_Server>("viixsdocke
 
 builder.AddNpmApp("viixsdockermanager-client", "../viixsdockermanager.client", scriptName: "dev")
     .WithReference(backend)
-    .WithEndpoint(targetPort: 55596, scheme: "https", isExternal: true)
+    .WithEndpoint(targetPort: 55596, scheme: "https", isExternal: true, env: "FRONTEND_PORT")
+    .WithExternalHttpEndpoints()
     .PublishAsDockerFile();
 
 builder.Build().Run();

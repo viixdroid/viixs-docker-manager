@@ -33,6 +33,7 @@
         <ProjectReference Include="..\ViixsDockerManager.DockLight.Environments\ViixsDockerManager.DockLight.Environments.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.DockLight.Containers\ViixsDockerManager.DockLight.Containers.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.ServiceDefaults\ViixsDockerManager.ServiceDefaults.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Setup\ViixsDockerManager.Setup.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.Shared.AspNet.csproj" />

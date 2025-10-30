@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using ViixsDockerManager.DockLight.Environments.Models.Commands;
+using ViixsDockerManager.DockLight.Environments.Models.Commands.DockLightEnvironments;
 using ViixsDockerManager.DockLight.Environments.Models.Queries;
 using ViixsDockerManager.DockLight.Shared.Entities;
 using ViixsDockerManager.Mediator;

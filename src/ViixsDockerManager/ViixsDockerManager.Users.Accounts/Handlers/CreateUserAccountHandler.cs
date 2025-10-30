@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ViixsDockerManager.Mediator.Commands;
+using ViixsDockerManager.Shared.Models.Exceptions;
 using ViixsDockerManager.Users.Accounts.Commands;
 using ViixsDockerManager.Users.Accounts.Models;
 using ViixsDockerManager.Users.Accounts.Services.Interfaces;
@@ -27,12 +28,12 @@ internal class CreateUserAccountHandler(ISendUserAccountNotifications sendUserAc
         var user = new ViixsDockerManagerUser();
         await userStore.SetUserNameAsync(user, command.EmailAddress, cancellationToken);
         await userManager.SetEmailAsync(user, command.EmailAddress);
-
+        
         var createResult = await userManager.CreateAsync(user, command.Password);
-
+        
         if (!createResult.Succeeded)
         {
-            return false;
+            throw new CouldNotCreateUserException(createResult.ToString());
         }
 
         if (!hasExisingUsers)

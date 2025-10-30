@@ -14,7 +14,7 @@ export function ModernMonochromeTheme(mode: PaletteMode): Theme {
         main: isLight ? ThemeColors.graphiteGray : ThemeColors.silverGray,
       },
       secondary: {
-        main: isLight ? ThemeColors.fuchsiaPink : ThemeColors.rosePink,
+        main: isLight ? ThemeColors.fuchsiaPink : ThemeColors.fuchsiaPink,
       },
       error: {
         main: isLight ? ThemeColors.crimsonRed : ThemeColors.salmonRed,

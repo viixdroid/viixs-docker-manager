@@ -8,11 +8,16 @@
     <Project Path="ViixsDockerManager.DockLight.Environments/ViixsDockerManager.DockLight.Environments.csproj" />
     <Project Path="ViixsDockerManager.DockLight.Shared/ViixsDockerManager.DockLight.Shared.csproj" />
   </Folder>
+  <Folder Name="/Setup/">
+    <Project Path="ViixsDockerManager.Setup/ViixsDockerManager.Setup.csproj" Id="f40f447e-a085-48d9-b5cc-5d549e0dfb1d" />
+  </Folder>
   <Folder Name="/Shared/">
     <Project Path="ViixsDockerManager.AspNet.Shared/ViixsDockerManager.Shared.AspNet.csproj" />
     <Project Path="ViixsDockerManager.Mediator/ViixsDockerManager.Mediator.csproj" />
     <Project Path="ViixsDockerManager.Shared.Database.Sqlite/ViixsDockerManager.Shared.Database.Sqlite.csproj" />
     <Project Path="ViixsDockerManager.Shared.Database/ViixsDockerManager.Shared.Database.csproj" />
+    <Project Path="ViixsDockerManager.Shared.Models/ViixsDockerManager.Shared.Models.csproj" Id="4f08dbbb-713a-4556-96eb-a78b35b72463" />
+    <Project Path="ViixsDockerManager.Shared.Services/ViixsDockerManager.Shared.Services.csproj" Id="23586e94-5895-46a1-b39f-00cb92079657" />
     <Project Path="ViixsDockerManager.Shared/ViixsDockerManager.Shared.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">

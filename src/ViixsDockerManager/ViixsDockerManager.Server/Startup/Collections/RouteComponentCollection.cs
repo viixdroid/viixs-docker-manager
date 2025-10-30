@@ -1,6 +1,7 @@
 ﻿using ViixsDockerManager.DockLight.Environments.Startup;
 using ViixsDockerManager.DockLight.Startup;
 using ViixsDockerManager.Server.Startup.Builders;
+using ViixsDockerManager.Setup.Startup;
 using ViixsDockerManager.Shared.AspNet.Startup.Interfaces;
 using ViixsDockerManager.Users.Accounts.Startup;
 
@@ -12,6 +13,7 @@ internal sealed class RouteComponentCollection : IBuilderCollection<IRouteCompon
         => [
             new DockLightEnvironmentRouteComponent(),
             new DockLightContainerRouteComponent(),
-            new UserAccountsRouteComponent()
+            new UserAccountsRouteComponent(),
+            new SetupRouteComponent()
             ];
 }

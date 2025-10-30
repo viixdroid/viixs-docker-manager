@@ -33,7 +33,7 @@ const DockLightHubProvider: FC<DockLightHubProviderProps> = ({ children }: DockL
     }
     catch (err) {
       console.error(err)
-      setTimeout(() => connect(environmentId), 500)
+      setTimeout(() => connect(environmentId), 1000)
     }
 
     setConnection(newConnection)

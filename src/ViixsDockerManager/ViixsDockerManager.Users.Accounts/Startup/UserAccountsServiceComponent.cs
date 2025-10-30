@@ -5,6 +5,7 @@ using ViixsDockerManager.Shared.AspNet.Startup;
 using ViixsDockerManager.Shared.Database.Models;
 using ViixsDockerManager.Shared.Database.Sqlite.Extensions;
 using ViixsDockerManager.Shared.Extensions;
+using ViixsDockerManager.Shared.Services;
 using ViixsDockerManager.Users.Accounts.Commands;
 using ViixsDockerManager.Users.Accounts.DbContexts;
 using ViixsDockerManager.Users.Accounts.Handlers;
@@ -26,6 +27,9 @@ public sealed class UserAccountsServiceComponent(IConfiguration configuration) :
             .AddEntityFrameworkStores<UserAccountDbContext>();
 
         services.AddWriteDatabaseServices<UserAccountDbContext>(configuration, migrationsHistory: new MigrationsHistory("UserIdentity"));
+
+        services.AddScoped<ISharedUserAccountService, UserAccountService>();
+        services.AddScoped<IUserAccountService, UserAccountService>();
     }
 
     protected override void ConfigureCommandHandlers(IServiceCollection services)

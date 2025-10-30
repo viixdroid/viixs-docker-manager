@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ViixsDockerManager.Mediator\ViixsDockerManager.Mediator.csproj" />
+    <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
+    <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
+    <ProjectReference Include="..\ViixsDockerManager.Shared.Models\ViixsDockerManager.Shared.Models.csproj" />
+    <ProjectReference Include="..\ViixsDockerManager.Shared.Services\ViixsDockerManager.Shared.Services.csproj" />
+  </ItemGroup>
+
+</Project>

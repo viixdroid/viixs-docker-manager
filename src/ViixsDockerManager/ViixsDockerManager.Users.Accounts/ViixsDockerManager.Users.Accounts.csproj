@@ -17,7 +17,15 @@
         <ProjectReference Include="..\ViixsDockerManager.Mediator\ViixsDockerManager.Mediator.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared.Models\ViixsDockerManager.Shared.Models.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared.Services\ViixsDockerManager.Shared.Services.csproj" />
         <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Commands\" />
+      <Folder Include="Exceptions\" />
     </ItemGroup>
 
 </Project>

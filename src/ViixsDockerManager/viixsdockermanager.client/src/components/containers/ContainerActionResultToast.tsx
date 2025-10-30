@@ -5,6 +5,7 @@ import { Alert, Snackbar } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { OnContainerKilled, OnContainerRestarted, OnContainerStarted, OnContainerStopped } from '../../constants/ContainerActions'
 import { useDockLightHub } from '../providers/DockLightHubProvider'
+import { useWebSocketContext } from '../providers/WebSocketHubProvider'
 
 interface ContainerActionResultToastProps {
   afterToastShown: (containerId: string) => void
@@ -19,7 +20,7 @@ interface ToastConfig {
 const ContainerActionResultToast: FC<ContainerActionResultToastProps> = ({
   afterToastShown,
 }: ContainerActionResultToastProps) => {
-  const { connection } = useDockLightHub()
+  const { connection } = useWebSocketContext()
 
   const [message, setMessage] = useState<string>()
   const [openSnackBar, setOpenSnackBar] = useState<boolean>()

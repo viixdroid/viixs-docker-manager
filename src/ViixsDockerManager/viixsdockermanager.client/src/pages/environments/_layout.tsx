@@ -22,7 +22,8 @@ import { useState } from 'react'
 import { Outlet, Link as RouterLink, useLocation } from 'react-router'
 import DrawerToggleButton from '../../components/DrawerToggleButton'
 import DockLightHubProvider from '../../components/providers/DockLightHubProvider'
-import EnvironmentProvider from '../../components/providers/EnvironmentProvider'
+import EnvironmentProvider, { useEnvironment } from '../../components/providers/EnvironmentProvider'
+import WebSocketProvider from '../../components/providers/WebSocketHubProvider'
 import ThemeSwitcherButton from '../../components/themes/ThemeSwitcherButton'
 
 const drawerWidth = 240
@@ -77,6 +78,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
 const DockLightLayout: FC = () => {
   const [open, setOpen] = useState(true) // State to control the drawer
   const { pathname } = useLocation()
+  // const { environment } = useEnvironment()
 
   // TODO: pass menuitems
   const menuItems = [
@@ -86,6 +88,7 @@ const DockLightLayout: FC = () => {
   ]
 
   return (
+    // <EnvironmentProvider>
     <Box sx={{ display: 'flex' }}>
       <MuiAppBar
         position="fixed"
@@ -179,11 +182,12 @@ const DockLightLayout: FC = () => {
         sx={{ flexGrow: 1, p: 3 }}
       >
         <Toolbar />
-        <EnvironmentProvider>
-          <DockLightHubProvider>
-            <Outlet />
-          </DockLightHubProvider>
-        </EnvironmentProvider>
+        {/* <WebSocketProvider
+          endpoint="docklight"
+        // queryParams={{ environmentId: environment?.environmentId || '' }}
+        > */}
+        <Outlet />
+        {/* </WebSocketProvider> */}
       </Box>
 
       <DrawerToggleButton
@@ -191,8 +195,26 @@ const DockLightLayout: FC = () => {
         handleToggle={() => setOpen(!open)}
         drawerWidth={drawerWidth}
       />
+      {/* </EnvironmentProvider> */}
     </Box>
   )
 }
 
-export default DockLightLayout
+const DockLightLayoutWithWebSocket: FC = () => {
+  const { environment } = useEnvironment()
+  return (
+    <WebSocketProvider endpoint="docklight" queryParams={{ environmentId: environment?.environmentId || '' }}>
+      <DockLightLayout />
+    </WebSocketProvider>
+  )
+}
+
+const DockLightLayoutWithEnvironment: FC = () => {
+  return (
+    <EnvironmentProvider>
+      <DockLightLayoutWithWebSocket />
+    </EnvironmentProvider>
+  )
+}
+
+export default DockLightLayoutWithEnvironment // WithWebSocket

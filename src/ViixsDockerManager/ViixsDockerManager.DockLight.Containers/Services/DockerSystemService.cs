@@ -10,10 +10,12 @@ namespace ViixsDockerManager.DockLight.Services;
 
 internal class DockerSystemService : IDockerSystemService
 {
-    private ISystemOperations _system;
+    private readonly ISystemOperations _system;
 
     public DockerSystemService(ISystemOperations system) => _system = system;
 
     public Task<string> GetDockerVersionAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
     public Task<string> GetSystemInfoAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+    //Implmement MonitorEvents.
 }

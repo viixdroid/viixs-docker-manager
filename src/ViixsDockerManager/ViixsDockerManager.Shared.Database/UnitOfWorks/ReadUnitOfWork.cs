@@ -29,4 +29,9 @@ public class ReadUnitOfWork<TEntity> : IReadUnitOfWork<TEntity>
     {
         return await query.AsQueryable().CountAsync();
     }
+
+    public async Task<bool> AnyAsync(IQuerySource<TEntity> query)
+    {
+        return await query.AsQueryable().AnyAsync();
+    }
 }

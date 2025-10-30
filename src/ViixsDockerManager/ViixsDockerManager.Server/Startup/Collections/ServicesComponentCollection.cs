@@ -3,6 +3,7 @@ using ViixsDockerManager.DockLight.Startup;
 using ViixsDockerManager.Mediator.Startup;
 using ViixsDockerManager.Server.Components;
 using ViixsDockerManager.Server.Startup.Builders;
+using ViixsDockerManager.Setup.Startup;
 using ViixsDockerManager.Shared.AspNet.Startup.Interfaces;
 using ViixsDockerManager.Users.Accounts.Startup;
 
@@ -17,6 +18,7 @@ internal class ServicesComponentCollection(IConfiguration configuration)
             new DockLightEnvironmentServiceComponent(configuration),
             new DockLightContainerServiceComponent(),
             new UserAccountsServiceComponent(configuration),
+            new SetupServicesComponent(configuration),
             new WebAppServiceComponent()
             ];
 }
