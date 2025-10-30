@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ViixDockerManager.Shared.SourceGenerators\ViixDockerManager.Shared.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.Shared.AspNet.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Mediator\ViixsDockerManager.Mediator.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared\ViixsDockerManager.Shared.csproj" />
+    </ItemGroup>
+
+</Project>
