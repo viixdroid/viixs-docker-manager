@@ -21,7 +21,7 @@ internal class CreateUserAccountHandler(
         }
         catch (CouldNotCreateUserException e)
         {
-            await sendSetupStateNotifications.SendOnUserCreationFailedAsync(e.Errors); //rename to user creation failed
+            await sendSetupStateNotifications.SendOnUserCreationFailedAsync(e.Errors); 
             throw;
         }
         catch (ViixsDockerManagerException e)

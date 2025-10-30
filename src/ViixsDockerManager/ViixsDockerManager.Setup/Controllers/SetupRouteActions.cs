@@ -19,12 +19,7 @@ internal static class SetupRouteActions
     {
         builder.MapGet("/issetupfinished", GetIsSetupDone);
 
-        builder.MapGet("/currentStep", GetCurrentSetupStep);
-        builder.MapPost("/currentStep", SetCurrentSetupStep);
-
         builder.MapGet("/docklight/configuration", GetDockLightProtocols);
-
-        builder.MapPost("/updateStep", UpdateStep);
 
         builder.MapPost("/started", SetSetupStarted);
 
@@ -42,17 +37,6 @@ internal static class SetupRouteActions
         return mediator.Send(query);
     }
 
-    private static Task SetCurrentSetupStep([FromBody] SetCurrentSetupStepCommand setCurrentSetupStepCommand, [FromServices] IMediator mediator)
-    {
-        return mediator.Send(setCurrentSetupStepCommand);
-    }
-
-    private static Task<SetupStep> GetCurrentSetupStep([FromServices] IMediator mediator)
-    {
-        var query = new GetCurrentSetupStepQuery();
-        return mediator.Send(query);
-    }
-
     private static Task<DockLightEnvironmentConfig> GetDockLightProtocols([FromServices] IMediator mediator)
     {
         var query = new GetPossibleDockerProtocolsQuery();
@@ -61,17 +45,11 @@ internal static class SetupRouteActions
 
     private static Task StartSetup([FromBody] StartSetupCommand startSetupCommand, [FromServices] IMediator mediator)
     {
-        //_ = mediator.Send(startSetupCommand);//sets current step to "Welcome"
         return mediator.Send(startSetupCommand);
     }
     private static Task SetSetupStarted([FromBody] SetupCommand<SetupStartedCommand> setupStartedCommand, [FromServices] IMediator mediator)
     {
         return mediator.Send(setupStartedCommand);
-    }
-
-    private static Task UpdateStep([FromBody] SetupCommand updateSetupStepCommand, [FromServices] IMediator mediator)
-    {
-        return mediator.Send(updateSetupStepCommand);
     }
 
     private static Task CreateUserAccount([FromBody] SetupCommand<CreateFirstUserAccountCommand> createUserAccountCommand, [FromServices] IMediator mediator)
