@@ -15,10 +15,9 @@ const FormBox = styled(Box)(({ theme }) => ({
   gap: theme.spacing(4),
 }))
 
-// TODO: check if there is already a user
 const CreateNewAccountStep: FC = () => {
   const { connection } = useWebSocketContext()
-  const theme = useTheme()
+
   const { onNextStepCallback, isDisabled } = useOutletContext<SetupStepOutletContext<CreateUserAccountCommand>>()
 
   const [emailAddress, setEmailAddress] = useState<string>('')
@@ -51,10 +50,7 @@ const CreateNewAccountStep: FC = () => {
 
   useEffect(() => {
     if (connection) {
-      console.log(connection.connectionId)
       connection.on('OnUserCreationFailed', (errorDetails: ErrorDetail[]) => {
-        console.log(errorDetails)
-
         // Collect all error messages for each category
         const emailErrors = Array.from(
           new Set(
@@ -72,7 +68,6 @@ const CreateNewAccountStep: FC = () => {
 
         setIsPasswordError(passwordErrors.length > 0)
         setPasswordErrorTextArray(passwordErrors)
-        console.log(passwordErrors)
       })
     }
   }, [connection])
