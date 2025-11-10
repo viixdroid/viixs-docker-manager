@@ -1,0 +1,3 @@
+# Get version string
+
+GET {{host}}/api/version/
