@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ViixDockerManager.Shared.SourceGenerators\ViixDockerManager.Shared.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\ViixDockerManager.Shared.SourceGenerators\ViixsDockerManager.Shared.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.Shared.AspNet.csproj" />
