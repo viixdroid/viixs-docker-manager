@@ -12,7 +12,7 @@
     <Project Path="ViixsDockerManager.Setup/ViixsDockerManager.Setup.csproj" Id="f40f447e-a085-48d9-b5cc-5d549e0dfb1d" />
   </Folder>
   <Folder Name="/Shared/">
-    <Project Path="ViixDockerManager.Shared.SourceGenerators/ViixsDockerManager.Shared.SourceGenerators.csproj" Id="1fe78f92-3583-4c7a-90f2-1952042215b6" />
+    <Project Path="ViixsDockerManager.Shared.SourceGenerators/ViixsDockerManager.Shared.SourceGenerators.csproj" Id="1fe78f92-3583-4c7a-90f2-1952042215b6" />
     <Project Path="ViixsDockerManager.AspNet.Shared/ViixsDockerManager.Shared.AspNet.csproj" />
     <Project Path="ViixsDockerManager.Mediator/ViixsDockerManager.Mediator.csproj" />
     <Project Path="ViixsDockerManager.Shared.Database.Sqlite/ViixsDockerManager.Shared.Database.Sqlite.csproj" />
@@ -28,7 +28,7 @@
     <Project Path="ViixsDockerManager.Users.Accounts/ViixsDockerManager.Users.Accounts.csproj" Id="f4fcbf86-875b-4466-99bb-26e8b856a5c8" />
   </Folder>
   <Folder Name="/Version/">
-    <Project Path="ViixDockerManager.Version/ViixsDockerManager.Version.csproj" Id="8f50c18e-1206-4b52-b943-bb04a62cb91a" />
+    <Project Path="ViixsDockerManager.Version/ViixsDockerManager.Version.csproj" Id="8f50c18e-1206-4b52-b943-bb04a62cb91a" />
   </Folder>
   <Project Path="viixsdockermanager.client/viixsdockermanager.client.esproj">
     <Build />

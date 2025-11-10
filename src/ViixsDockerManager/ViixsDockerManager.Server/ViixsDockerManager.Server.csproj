@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ViixDockerManager.Version\ViixsDockerManager.Version.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Version\ViixsDockerManager.Version.csproj" />
         <ProjectReference Include="..\viixsdockermanager.client\viixsdockermanager.client.esproj">
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
