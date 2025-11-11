@@ -56,7 +56,7 @@ internal class ViixsControllerGenerator
                 var method = routeAction.GeneratedHttpMethodName.GetHttpMethodName();
                 var methodName = $"{method}{routeAction.Action}";
                 var isGet = method == HttpMethod.Get.Method.GetHttpMethodName();
-                var methodReturnType = method == HttpMethod.Get.Method ? $"Task<{routeAction.ReturnType}>" : "Task";
+                var methodReturnType = isGet ? $"Task<{routeAction.ReturnType}>" : "Task";
 
                 var signature = GetMethodSignature(routeAction, method, isGet);
 
