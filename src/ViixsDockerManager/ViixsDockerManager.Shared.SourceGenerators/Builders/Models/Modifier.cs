@@ -1,4 +1,4 @@
-﻿namespace ViixsDockerManager.Shared.SourceGenerators.Builders;
+﻿namespace ViixsDockerManager.Shared.SourceGenerators.Builders.Models;
 
 internal class Modifier
 {

@@ -1,63 +1,56 @@
 ﻿using System.Text;
+using ViixsDockerManager.Shared.SourceGenerators.Builders.Interfaces;
+using ViixsDockerManager.Shared.SourceGenerators.Builders.Models;
 
 namespace ViixsDockerManager.Shared.SourceGenerators.Builders;
 
-internal class ClassBuilder
+internal class ClassBuilder : BuilderBase<Classz>
 {
-    private readonly string _className;
-    private readonly ICollection<Modifier> _modifiers = [];
-    private readonly ICollection<IMethod> _methods = [];
-    private readonly ICollection<IUsing> _usings = [];
-
-    private ClassBuilder(string className)
+    private ClassBuilder()
+        : base()
     {
-        _className = className;
     }
 
-    internal static ClassBuilder Create(string className)
+    internal static ClassBuilder Create()
     {
-        return new ClassBuilder(className);
+        return new ClassBuilder();
+    }
+
+    internal ClassBuilder WithClassName(string className)
+    {
+        ToBuild.ClassName = className;
+        return this;
+    }
+
+    internal ClassBuilder WithNameSpace(NameZpace nameSpace)
+    {
+        ToBuild.NameSpace = nameSpace;
+        return this;
     }
 
     internal ClassBuilder WithModifier(Modifier modifier)
     {
-        _modifiers.Add(modifier);
+        ToBuild.Modifiers?.Add(modifier);
         return this;
     }
 
     internal ClassBuilder WithMethod(IMethod method)
     {
-        _methods.Add(method);
+        ToBuild.Methods?.Add(method);
         return this;
     }
 
-    internal ClassBuilder WithUsings(IUsing @using)
+    internal ClassBuilder WithMethod(Action<MethodBuilder> methodBuilderAction)
     {
-        _usings.Add(@using);
+        var methodBuilder = MethodBuilder.Create();
+        methodBuilderAction(methodBuilder);
+        ToBuild.Methods?.Add(methodBuilder.Build());
         return this;
     }
 
-    internal IClass Build()
+    internal ClassBuilder WithUsing(Usingz @using)
     {
-        var stringBuilder = new StringBuilder();
-        foreach (var usingString in _usings)
-        {
-            stringBuilder.AppendLine(usingString.GetUsingString());
-        }
-        if (_usings.Count > 0)
-        {
-            stringBuilder.AppendLine();
-        }
-        var modifiersString = string.Join(" ", _modifiers.OrderBy(m => m.Order).Select(modifier => (string)modifier));
-        stringBuilder.AppendLine($"{modifiersString} class {_className}");
-        stringBuilder.AppendLine("{");
-        foreach (var method in _methods)
-        {
-            var methodString = method.GetMethodString();
-            var indentedMethodString = IndentMethodString(methodString);
-            stringBuilder.AppendLine(indentedMethodString);
-        }
-        stringBuilder.AppendLine("}");
-        return stringBuilder.ToString();
-    }   
+        ToBuild.Usings?.Add(@using);
+        return this;
+    }
 }
