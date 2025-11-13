@@ -11,6 +11,7 @@ public sealed class VersionServiceComponent : ServiceComponent
     protected override void ConfigureQueryHandlers(IServiceCollection services)
     {
         services.RegisterQueryHandler<VersionRequestHandler, VersionRequestQuery>();
+        services.RegisterQueryHandler<VersionObjRequestHandler, VersionObjQuery>();
     }
 
     protected override void ConfigureServices(IServiceCollection services)
