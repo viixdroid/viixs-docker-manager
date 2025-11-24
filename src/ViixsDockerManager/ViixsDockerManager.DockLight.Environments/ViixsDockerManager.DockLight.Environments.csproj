@@ -7,12 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.Shared.AspNet.csproj" />
-      <ProjectReference Include="..\ViixsDockerManager.DockLight.Shared\ViixsDockerManager.DockLight.Shared.csproj" />
-      <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
-      <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
-      <ProjectReference Include="..\ViixsDockerManager.Shared.Models\ViixsDockerManager.Shared.Models.csproj" />
-      <ProjectReference Include="..\ViixsDockerManager.Shared.Services\ViixsDockerManager.Shared.Services.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared.SourceGenerators\ViixsDockerManager.Shared.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ViixsDockerManager.AspNet.Shared\ViixsDockerManager.Shared.AspNet.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.DockLight.Shared\ViixsDockerManager.DockLight.Shared.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared.Database.Sqlite\ViixsDockerManager.Shared.Database.Sqlite.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared.Database\ViixsDockerManager.Shared.Database.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared.Models\ViixsDockerManager.Shared.Models.csproj" />
+        <ProjectReference Include="..\ViixsDockerManager.Shared.Services\ViixsDockerManager.Shared.Services.csproj" />
     </ItemGroup>
 
 </Project>
