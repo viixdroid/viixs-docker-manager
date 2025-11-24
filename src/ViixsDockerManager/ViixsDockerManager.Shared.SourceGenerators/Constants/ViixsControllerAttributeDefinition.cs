@@ -17,7 +17,7 @@ internal static class ViixsControllerAttributeDefinition
         namespace ViixsDockerManager.Shared.Attributes
         {        
             [Embedded]
-            [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+            [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
             public class ViixsControllerAttribute : Attribute           
             {
                 public ViixsControllerAttribute(Type queryOrCommandType)
@@ -33,7 +33,7 @@ internal static class ViixsControllerAttributeDefinition
                 public string QueryOrCommandTypeName { get; }
                 public string ControllerName { get; init; } = string.Empty;
                 public string Action { get; init; } = string.Empty;
-                public HttpMethod HttpMethod { get; init; } = HttpMethod.Get;
+                public string HttpMethod { get; init; } = "GET";
             }
         }
         """;

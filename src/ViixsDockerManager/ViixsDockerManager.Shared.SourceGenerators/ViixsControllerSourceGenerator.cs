@@ -15,6 +15,28 @@ public class ViixsControllerSourceGenerator : IIncrementalGenerator
     private const string IQueryUnboundName = "ViixsDockerManager.Mediator.Queries.IQueryHandler<,>";
     private const string ICommandUnboundName = "ViixsDockerManager.Mediator.Commands.ICommandHandler<>";
 
+    // Diagnostic descriptor for duplicate controller names
+    private static readonly DiagnosticDescriptor DuplicateControllerNameDescriptor =
+        new DiagnosticDescriptor(
+            id: "VDM001",
+            title: "Duplicate generated controller name",
+            messageFormat: "A controller named '{0}' was already generated. Conflicting handler type: '{1}'.",
+            category: "ViixsSourceGenerator",
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+
+    // Diagnostic descriptor when attribute doesn't supply a concrete command/query type
+    private static readonly DiagnosticDescriptor MissingConcreteTypeDescriptor =
+        new DiagnosticDescriptor(
+            id: "VDM002",
+            title: "ViixsController attribute must reference a concrete command or query type",
+            messageFormat: "The ViixsController attribute on handler '{0}' must provide a concrete command/query type (e.g. typeof(MyCommand)). The generator could not determine a concrete parameter type.",
+            category: "ViixsSourceGenerator",
+            defaultSeverity: DiagnosticSeverity.Error,
+            isEnabledByDefault: true
+        );
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(i =>
