@@ -1,3 +1,8 @@
-# Get version string
+### Get version string
 
 GET {{host}}/api/version/
+
+
+### Get version obj
+GET {{host}}/api/version/obj
+
