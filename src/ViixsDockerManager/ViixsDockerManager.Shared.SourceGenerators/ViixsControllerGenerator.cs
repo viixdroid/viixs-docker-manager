@@ -13,21 +13,28 @@ internal class ViixsControllerGenerator
     private const string Indent4 = "    ";
     internal static IEnumerable<(string controllerName, string sourceCode)> GenerateControllerSource(IEnumerable<GeneratedControllerData> controllerData)
     {
-        HashSet<(string, string)> returnList = [];
+        const string defaultNamespace = "ViixsDockerManager.GeneratedControllers"; //TODO: move to const
+
+        var results = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
         if (!controllerData.Any())
         {
-            return returnList;
-            //yield return (string.Empty, string.Empty);
+            return results.Select(kv => (kv.Key, kv.Value));
         }
 
-        var groupedControllers = controllerData.GroupBy(data => (data.GeneratedControllerName, data.GeneratedNamespace));
+        var groupedControllers = controllerData.GroupBy(data => data.GeneratedControllerName);
         var controllerName = string.Empty;
 
         foreach (var groupedController in groupedControllers)
         {
             var stringBuilder = new StringBuilder();
-            controllerName = $"{groupedController.Key.GeneratedControllerName}RouteActions";
-            var nameSpace = groupedController.Key.GeneratedNamespace;
+            controllerName = $"{groupedController.Key}RouteActions";
+            var nameSpace = groupedController.Select(g => g.GeneratedNamespace).FirstOrDefault() ?? defaultNamespace;
+
+            if (results.ContainsKey(controllerName))
+            {
+                continue;
+            }
 
             var classBuilder = ClassBuilder.Create()
                 .WithNameSpace(nameSpace)
@@ -51,9 +58,9 @@ internal class ViixsControllerGenerator
                             foreach (var routeAction in groupedController)
                             {
                                 var method = routeAction.GeneratedHttpMethodName.GetHttpMethodName();
-                                var methodName = $"{method}{groupedController.Key.GeneratedControllerName}";
+                                var methodName = GenerateMethodName(method, routeAction);
 
-                                methodBodybuilder.AddLine($"builder.Map{method}(\"/{routeAction.Action}\", {methodName});");
+                                methodBodybuilder.AddLine($"builder.Map{method}(\"/{routeAction.Action.ToLowerInvariant()}\", {methodName});");
                             }
                             methodBodybuilder.AddLine();
                             methodBodybuilder.AddLine($"return builder;");
@@ -64,7 +71,8 @@ internal class ViixsControllerGenerator
                 classBuilder.WithMethod(methodBuilder =>
                 {
                     var method = routeAction.GeneratedHttpMethodName.GetHttpMethodName();
-                    var methodName = $"{method}{(string.IsNullOrEmpty(routeAction.Action) ? routeAction.GeneratedControllerName : routeAction.Action)}";
+                    var methodName = GenerateMethodName(method, routeAction);
+
                     var isGet = method == HttpMethod.Get.Method.GetHttpMethodName();
                     var methodReturnType = isGet ? $"Task<{routeAction.ReturnType}>" : "Task";
                     var builder = methodBuilder
@@ -77,7 +85,6 @@ internal class ViixsControllerGenerator
                         builder
                             .WithParameter("command", $"[FromBody] {routeAction.ParameterType}")
                             .WithBody(methodBodyBuilder => methodBodyBuilder.AddLine("return mediator.Send(command);"));
-
                     }
                     else
                     {
@@ -91,85 +98,22 @@ internal class ViixsControllerGenerator
                 });
             }
 
-            returnList.Add((controllerName, classBuilder.Build().GetClassString()));
-            //yield return (controllerName, classBuilder.Build().GetClassString());
-
-            //var uniqueSignatures = new HashSet<string>();
-
-            //foreach (var routeAction in groupedController)
-            //{
-            //    var method = routeAction.GeneratedHttpMethodName.GetHttpMethodName();
-            //    var methodName = $"{method}{routeAction.Action}";
-            //    var isGet = method == HttpMethod.Get.Method.GetHttpMethodName();
-            //    var methodReturnType = isGet ? $"Task<{routeAction.ReturnType}>" : "Task";
-
-            //    var signature = GetMethodSignature(routeAction, method, isGet);
-
-            //    if (!uniqueSignatures.Add(signature))
-            //    {
-            //        continue;
-            //    }
-
-            //    stringBuilder.AppendLine();
-            //    //TODO: summary ?
-            //    stringBuilder.AppendLine($"{Indent4}{signature}");
-            //    stringBuilder.AppendLine($"{Indent4}{OpenBrace}");
-            //    stringBuilder.AppendLine($"{Indent4}{Indent4}{BuildMethodBody(routeAction, method, isGet)}");
-            //    stringBuilder.AppendLine($"{Indent4}{CloseBrace}");
-            //}
-
-
-            //stringBuilder.AppendLine("// <auto-generated />");
-            //stringBuilder.AppendLine("#nullable enable");
-            //stringBuilder.AppendLine("using Microsoft.AspNetCore.Builder;");
-            //stringBuilder.AppendLine("using Microsoft.AspNetCore.Routing;");
-            //stringBuilder.AppendLine("using Microsoft.AspNetCore.Mvc;");
-            //stringBuilder.AppendLine("using ViixsDockerManager.Mediator;");
-            //stringBuilder.AppendLine($"namespace {nameSpace};");
-            //stringBuilder.AppendLine();
-            //stringBuilder.AppendLine($"internal static class {controllerName}");
-            //stringBuilder.AppendLine(OpenBrace);
-
-            //stringBuilder.AppendLine($"{Indent4}internal static RouteGroupBuilder Map{controllerName}(this RouteGroupBuilder builder)");
-            //stringBuilder.AppendLine($"{Indent4}{OpenBrace}");
-            //foreach (var routeAction in groupedController)
-            //{
-            //    var method = routeAction.GeneratedHttpMethodName.GetHttpMethodName();
-            //    var methodName = $"{method}{groupedController.Key.GeneratedControllerName}";
-
-            //    stringBuilder.AppendLine($"{Indent4}{Indent4}builder.Map{method}(\"/{routeAction.Action}\", {methodName});");
-            //}
-            //stringBuilder.AppendLine();
-            //stringBuilder.AppendLine($"{Indent4}{Indent4}return builder;");
-            //stringBuilder.AppendLine($"{Indent4}{CloseBrace}");
-
-            //var uniqueSignatures = new HashSet<string>();
-
-            //foreach (var routeAction in groupedController)
-            //{
-            //    var method = routeAction.GeneratedHttpMethodName.GetHttpMethodName();
-            //    var methodName = $"{method}{routeAction.Action}";
-            //    var isGet = method == HttpMethod.Get.Method.GetHttpMethodName();
-            //    var methodReturnType = isGet ? $"Task<{routeAction.ReturnType}>" : "Task";
-
-            //    var signature = GetMethodSignature(routeAction, method, isGet);
-
-            //    if (!uniqueSignatures.Add(signature))
-            //    {
-            //        continue;
-            //    }
-
-            //    stringBuilder.AppendLine();
-            //    //TODO: summary ?
-            //    stringBuilder.AppendLine($"{Indent4}{signature}");
-            //    stringBuilder.AppendLine($"{Indent4}{OpenBrace}");
-            //    stringBuilder.AppendLine($"{Indent4}{Indent4}{BuildMethodBody(routeAction, method, isGet)}");
-            //    stringBuilder.AppendLine($"{Indent4}{CloseBrace}");
-            //}
-            //stringBuilder.AppendLine(CloseBrace);
-            //yield return (controllerName, stringBuilder.ToString());
+            var source = classBuilder.Build().GetClassString();
+            results.Add(controllerName, source);
         }
-        return returnList;
+        return results.Select(kv => (kv.Key, kv.Value));
+    }
+
+    private static string GenerateMethodName(string httpMethod, GeneratedControllerData routeAction)
+    {
+        //var method = routeAction.GeneratedHttpMethodName.GetHttpMethodName();
+        var objectName = string.IsNullOrEmpty(routeAction.Action) ? routeAction.GeneratedControllerName : routeAction.Action;
+        if (!char.IsUpper(objectName[0]))
+        {
+            objectName = char.ToUpperInvariant(objectName[0]) + objectName.Substring(1);
+        }
+
+        return $"{httpMethod}{objectName}";
     }
 
     private static string GetMethodSignature(GeneratedControllerData routeAction, string method, bool isGet)

@@ -1,4 +1,6 @@
-﻿namespace ViixsDockerManager.Shared.SourceGenerators.Models;
+﻿using Microsoft.CodeAnalysis;
+
+namespace ViixsDockerManager.Shared.SourceGenerators.Models;
 
 public readonly record struct GeneratedControllerData
 {
@@ -10,6 +12,7 @@ public readonly record struct GeneratedControllerData
     public readonly string GeneratedNamespace;
     public readonly string ParameterType;
     public readonly string? ReturnType;
+    public readonly Location? AttributeLocation;
 
     public GeneratedControllerData(
         string action,
@@ -19,7 +22,8 @@ public readonly record struct GeneratedControllerData
         string generatedNamespace,
         string generatedHttpMethodName,
         string parameterType,
-        string? returnType)
+        string? returnType,
+        Location? attributeLocation = null)
     {
         Action = action;
         TargetClassName = targetClassName;
@@ -29,6 +33,7 @@ public readonly record struct GeneratedControllerData
         GeneratedHttpMethodName = generatedHttpMethodName;
         ParameterType = parameterType;
         ReturnType = returnType;
+        AttributeLocation = attributeLocation;
     }
 
 }
