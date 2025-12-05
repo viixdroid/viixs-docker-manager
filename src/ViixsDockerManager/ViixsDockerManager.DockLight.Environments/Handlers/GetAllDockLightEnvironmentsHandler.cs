@@ -6,7 +6,7 @@ using ViixsDockerManager.Shared.Attributes;
 
 namespace ViixsDockerManager.DockLight.Environments.Handlers;
 
-[ViixsController(typeof(GetAllDockLightEnvironmentsQuery), Action = "", ControllerName = "DockLightEnvironments2")]
+[ViixsController(ControllerName = "DockLightEnvironments2")]
 public class GetAllDockLightEnvironmentsHandler(IDatabaseReadRepository<DockLightEnvironment> readRepository)
     : IQueryHandler<GetAllDockLightEnvironmentsQuery, IEnumerable<DockLightEnvironment>>
 {
