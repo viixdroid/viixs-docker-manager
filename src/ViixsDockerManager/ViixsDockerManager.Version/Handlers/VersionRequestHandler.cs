@@ -5,7 +5,7 @@ using ViixsDockerManager.Shared.Attributes;
 
 namespace ViixsDockerManager.Version.Handlers;
 
-[ViixsController(typeof(VersionRequestQuery), Action = "", ControllerName = "Version")]
+[ViixsController(ControllerName = "Version")]
 internal sealed class VersionRequestHandler : IQueryHandler<VersionRequestQuery, string>
 {
     public Task<string> Execute(VersionRequestQuery query, CancellationToken cancellationToken = default)

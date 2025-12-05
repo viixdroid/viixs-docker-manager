@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using ViixsDockerManager.Shared.AspNet.Startup;
-using ViixsDockerManager.Version.Handlers.Controllers;
+using ViixsDockerManager.Version.Controllers;
 
 namespace ViixsDockerManager.Version.Startup;
 

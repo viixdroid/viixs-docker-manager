@@ -5,7 +5,7 @@ using ViixsDockerManager.Version.Queries;
 
 namespace ViixsDockerManager.Version.Handlers;
 
-[ViixsController(typeof(VersionObjQuery), Action = "obj", ControllerName = "Version")]
+[ViixsController(Action = "obj", ControllerName = "Version")]
 internal sealed class VersionObjRequestHandler : IQueryHandler<VersionObjQuery, Models.Version>
 {
     public Task<Models.Version> Execute(VersionObjQuery query, CancellationToken cancellationToken = default)
