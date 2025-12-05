@@ -2,10 +2,11 @@
 using ViixsDockerManager.Setup.Models.Dtos;
 using ViixsDockerManager.Setup.Models.Queries;
 using ViixsDockerManager.Setup.Services;
+using ViixsDockerManager.Shared.Attributes;
 
 namespace ViixsDockerManager.Setup.Handlers.Queries;
 
-//[ViixController(Group = "Setup", Action = "/isSetupFinished")]
+[ViixsController(Action = "isSetupFinished", ControllerName = "SetupRoute2")]
 internal sealed class IsSetupFinishedHandler(ISetupService setupService) : IQueryHandler<IsSetupFinishedQuery, IsSetupFinished>
 {
     public async Task<IsSetupFinished> Execute(IsSetupFinishedQuery query, CancellationToken cancellationToken = default)
