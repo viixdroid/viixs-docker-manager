@@ -10,14 +10,13 @@ internal static class HttpMethodNameHelpers
     {
         return methodName.ToUpperInvariant() switch
         {
-            "GET" => "Get",
             "POST" => "Post",
             "PUT" => "Put",
             "DELETE" => "Delete",
             "PATCH" => "Patch",
             "HEAD" => "Head",
             "OPTIONS" => "Options",
-            _ => throw new ArgumentException($"Unsupported HTTP method name: {methodName}", nameof(methodName))
+            "GET" or _ => "Get",
         };
     }
 }
