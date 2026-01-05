@@ -16,21 +16,23 @@ internal static class CommandOrQueryInterfaceResolver
         var definitionName = namedTypeSymbol.OriginalDefinition?.Name;
         var typeArguments = namedTypeSymbol.TypeArguments;
 
-        var hasNonConcreteTypeArgument = typeArguments.Any(IsConcreteType);
+        var hasConcreteTypeArgument = typeArguments.Any(IsConcreteType);
 
         string? parameterType = null;
         string? returnType = null;
-        if (hasNonConcreteTypeArgument)
+        if (!hasConcreteTypeArgument)
         {
-            if (definitionName == IQueryHandlerName && typeArguments.Length >= 2)
-            {
-                parameterType = typeArguments[0]?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                returnType = typeArguments[1]?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            }
-            else if (definitionName == ICommandHandlerName && typeArguments.Length >= 1)
-            {
-                parameterType = typeArguments[0]?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            }
+            return null;
+        }
+
+        if (definitionName == IQueryHandlerName && typeArguments.Length >= 2)
+        {
+            parameterType = typeArguments[0]?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            returnType = typeArguments[1]?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        }
+        else if (definitionName == ICommandHandlerName && typeArguments.Length >= 1)
+        {
+            parameterType = typeArguments[0]?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
         }
 
         if (parameterType is null || parameterType == string.Empty)
