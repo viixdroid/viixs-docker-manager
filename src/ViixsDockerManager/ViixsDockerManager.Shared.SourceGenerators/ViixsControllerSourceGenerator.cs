@@ -18,49 +18,49 @@ public class ViixsControllerSourceGenerator : IIncrementalGenerator
     private const string IQueryHandlerName = "IQueryHandler";
     private const string ICommandHandlerName = "ICommandHandler";
 
-    // Diagnostic descriptor for duplicate controller names
-    private static readonly DiagnosticDescriptor DuplicateControllerNameDescriptor =
-        new DiagnosticDescriptor(
-            id: "VDM001",
-            title: "Duplicate generated controller name",
-            messageFormat: "A controller namedTypeSymbol '{0}' was already generated. Conflicting handler typeSymbol: '{1}'.",
-            category: "ViixsSourceGenerator",
-            defaultSeverity: DiagnosticSeverity.Warning,
-            isEnabledByDefault: true
-        );
+    //// Diagnostic descriptor for duplicate controller names
+    //private static readonly DiagnosticDescriptor DuplicateControllerNameDescriptor =
+    //    new DiagnosticDescriptor(
+    //        id: "VDM001",
+    //        title: "Duplicate generated controller name",
+    //        messageFormat: "A controller namedTypeSymbol '{0}' was already generated. Conflicting handler typeSymbol: '{1}'.",
+    //        category: "ViixsSourceGenerator",
+    //        defaultSeverity: DiagnosticSeverity.Warning,
+    //        isEnabledByDefault: true
+    //    );
 
-    // Diagnostic descriptor when attribute doesn't supply a concrete command/query typeSymbol
-    private static readonly DiagnosticDescriptor MissingConcreteTypeDescriptor =
-        new DiagnosticDescriptor(
-            id: "VDM002",
-            title: "ViixsController attribute must reference a concrete command or query typeSymbol",
-            messageFormat: "The ViixsController attribute on handler '{0}' must provide a concrete command/query typeSymbol (e.g. typeof(MyCommand)). The generator cannot know at compile time what the concrete type is.",
-            category: "ViixsSourceGenerator",
-            defaultSeverity: DiagnosticSeverity.Error,
-            isEnabledByDefault: true
-        );
+    //// Diagnostic descriptor when attribute doesn't supply a concrete command/query typeSymbol
+    //private static readonly DiagnosticDescriptor MissingConcreteTypeDescriptor =
+    //    new DiagnosticDescriptor(
+    //        id: "VDM002",
+    //        title: "ViixsController attribute must reference a concrete command or query typeSymbol",
+    //        messageFormat: "The ViixsController attribute on handler '{0}' must provide a concrete command/query typeSymbol (e.g. typeof(MyCommand)). The generator cannot know at compile time what the concrete type is.",
+    //        category: "ViixsSourceGenerator",
+    //        defaultSeverity: DiagnosticSeverity.Error,
+    //        isEnabledByDefault: true
+    //    );
 
-    // Diagnostic when no controller name can be inferred and none supplied
-    private static readonly DiagnosticDescriptor MissingControllerNameDescriptor =
-        new DiagnosticDescriptor(
-            id: "VDM003",
-            title: "ControllerName could not be inferred",
-            messageFormat: "The ViixsController attribute on handler '{0}' did not supply a ControllerName and a default could not be inferred. Specify ControllerName in the attribute.",
-            category: "ViixsSourceGenerator",
-            defaultSeverity: DiagnosticSeverity.Error,
-            isEnabledByDefault: true
-        );
+    //// Diagnostic when no controller name can be inferred and none supplied
+    //private static readonly DiagnosticDescriptor MissingControllerNameDescriptor =
+    //    new DiagnosticDescriptor(
+    //        id: "VDM003",
+    //        title: "ControllerName could not be inferred",
+    //        messageFormat: "The ViixsController attribute on handler '{0}' did not supply a ControllerName and a default could not be inferred. Specify ControllerName in the attribute.",
+    //        category: "ViixsSourceGenerator",
+    //        defaultSeverity: DiagnosticSeverity.Error,
+    //        isEnabledByDefault: true
+    //    );
 
-    // Diagnostic when no controller name can be inferred and none supplied
-    private static readonly DiagnosticDescriptor MissingInterfacesDescriptor =
-        new DiagnosticDescriptor(
-            id: "VDM004",
-            title: "No ICommandHandler or IQueryHandler interface",
-            messageFormat: "The class '{0}' does not implement any ICommandHandler or IQueryHandler interfaces and cannot generate controllers",
-            category: "ViixsSourceGenerator",
-            defaultSeverity: DiagnosticSeverity.Error,
-            isEnabledByDefault: true
-        );
+    //// Diagnostic when no controller name can be inferred and none supplied
+    //private static readonly DiagnosticDescriptor MissingInterfacesDescriptor =
+    //    new DiagnosticDescriptor(
+    //        id: "VDM004",
+    //        title: "No ICommandHandler or IQueryHandler interface",
+    //        messageFormat: "The class '{0}' does not implement any ICommandHandler or IQueryHandler interfaces and cannot generate controllers",
+    //        category: "ViixsSourceGenerator",
+    //        defaultSeverity: DiagnosticSeverity.Error,
+    //        isEnabledByDefault: true
+    //    );
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -83,50 +83,26 @@ public class ViixsControllerSourceGenerator : IIncrementalGenerator
 
         var allControllersToGenerate = flattenedControllers.Collect();
 
-        context.RegisterSourceOutput(allControllersToGenerate, (productionContext, allControllers) =>
+        context.RegisterSourceOutput(allControllersToGenerate, (sourceProductionContext, allControllers) =>
         {
             var usedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            var allData = allControllers.ToList();
+            var generatedControllerDataList = allControllers.ToList();
 
             // Report missing concrete type diagnostics
-            for (var i = 0; i < allData.Count; i++)
-            {
-                var d = allData[i];
-                if (string.IsNullOrWhiteSpace(d.ParameterType))
-                {
-                    var location = d.AttributeLocation ?? Location.None;
-                    var diag = Diagnostic.Create(MissingConcreteTypeDescriptor, location, d.TargetClassName);
-                    productionContext.ReportDiagnostic(diag);
-                }
-
-                // Report missing controller name (inference failed and attribute didn't supply one)
-                if (string.IsNullOrWhiteSpace(d.GeneratedControllerName))
-                {
-                    var location = d.AttributeLocation ?? Location.None;
-                    var diag = Diagnostic.Create(MissingControllerNameDescriptor, location, d.TargetClassName);
-                    productionContext.ReportDiagnostic(diag);
-                }
-
-                if (d.Action == "MissingInterfacesDescriptor")
-                {
-                    var location = d.AttributeLocation ?? Location.None;
-                    var diag = Diagnostic.Create(MissingInterfacesDescriptor, location, d.TargetClassName);
-                    productionContext.ReportDiagnostic(diag);
-                }
-            }
+            CheckGeneratedControllerData(sourceProductionContext, generatedControllerDataList);
 
             // Group by controller name using an explicit dictionary to avoid LINQ allocations
             var groups = new Dictionary<string, List<GeneratedControllerData>>(StringComparer.OrdinalIgnoreCase);
-            foreach (var d in allData)
+            foreach (var generatedControllerData in generatedControllerDataList)
             {
-                var key = d.GeneratedControllerName ?? string.Empty;
+                var key = generatedControllerData.GeneratedControllerName ?? string.Empty;
                 if (!groups.TryGetValue(key, out var list))
                 {
-                    list = new List<GeneratedControllerData>();
+                    list = [];
                     groups[key] = list;
                 }
-                list.Add(d);
+                list.Add(generatedControllerData);
             }
 
             foreach (var kv in groups)
@@ -152,19 +128,40 @@ public class ViixsControllerSourceGenerator : IIncrementalGenerator
 
                     if (usedNames.Add(controllerName))
                     {
-                        productionContext.AddSource($"{controllerName}.g.cs", SourceText.From(source, Encoding.UTF8));
+                        sourceProductionContext.AddSource($"{controllerName}.g.cs", SourceText.From(source, Encoding.UTF8));
                     }
                     else
                     {
                         // Report a diagnostic about duplicate controllerName
                         // Try to include the handler typeSymbol from the current group for context
                         var conflictingHandler = group.Count > 0 ? group[0].TargetClassName : "UnknownHandler";
-                        var diag = Diagnostic.Create(DuplicateControllerNameDescriptor, Location.None, controllerName, conflictingHandler);
-                        productionContext.ReportDiagnostic(diag);
+                        DiagnosticDescriptorReporter.DuplicateControllerName.ReportDiagnostic(sourceProductionContext, group.Count > 0 ? group[0] : null, controllerName, conflictingHandler);
                     }
                 }
             }
         });
+    }
+
+    private static void CheckGeneratedControllerData(SourceProductionContext sourceProductionContext, List<GeneratedControllerData> generatedControllerDataList)
+    {
+        foreach (var generatedControllerData in generatedControllerDataList)
+        {
+            if (string.IsNullOrWhiteSpace(generatedControllerData.ParameterType))
+            {
+                DiagnosticDescriptorReporter.MissingConcreteType.ReportDiagnostic(sourceProductionContext, generatedControllerData);
+            }
+
+            // Report missing controller name (inference failed and attribute didn't supply one)
+            if (string.IsNullOrWhiteSpace(generatedControllerData.GeneratedControllerName))
+            {
+                DiagnosticDescriptorReporter.MissingControllerName.ReportDiagnostic(sourceProductionContext, generatedControllerData);
+            }
+
+            if (generatedControllerData.Action == "MissingInterfacesDescriptor")
+            {
+                DiagnosticDescriptorReporter.MissingInterfaces.ReportDiagnostic(sourceProductionContext, generatedControllerData);
+            }
+        }
     }
 
     private static IEnumerable<GeneratedControllerData>? GetGeneratedControllerData(GeneratorAttributeSyntaxContext context)
