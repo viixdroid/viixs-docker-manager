@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using ViixsDockerManager.Shared.SourceGenerators.Builders.Interfaces;
 
+using static ViixsDockerManager.Shared.SourceGenerators.Constants.ClassSymbolsConstants;
+
 namespace ViixsDockerManager.Shared.SourceGenerators.Builders.Models;
 
 internal class Classz : IClass
@@ -39,13 +41,13 @@ internal class Classz : IClass
 
         var modifiersString = string.Join(" ", Modifiers.OrderBy(m => m.Order).Select(modifier => (string)modifier));
         stringBuilder.AppendLine($"{modifiersString} class {ClassName}");
-        stringBuilder.AppendLine("{");
+        stringBuilder.AppendLine(OpenBrace);
         foreach (var method in Methods!)
         {
             var methodString = method.GetMethodString(Indentation.Indent4);
             stringBuilder.AppendLine(methodString);
         }
-        stringBuilder.AppendLine("}");
+        stringBuilder.AppendLine(CloseBrace);
         return stringBuilder.ToString();
     }
 }

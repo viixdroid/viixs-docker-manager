@@ -21,6 +21,5 @@ internal class MethodBody : IMethodBody
         }
 
         return stringBuilder.ToString().TrimEnd();
-        //return string.Join($"\r\n{Indentation.Indent4}{indentation}", Lines);
     }
 }

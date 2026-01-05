@@ -19,7 +19,5 @@ internal class Modifier
         Order = order;
     }
 
-
-
     public static implicit operator string(Modifier modifier) => modifier.ModifierString;
 }
